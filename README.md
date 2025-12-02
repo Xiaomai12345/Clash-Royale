@@ -3,271 +3,454 @@
 
 一.结构目录
 ```
-ClashRoyaleProject/
-├── Assets/
-│   ├── Scripts/
-│   │   ├── Core/
-│   │   │   ├── GameManager.cs           # 游戏主控制器
-│   │   │   ├── BattleManager.cs         # 对战管理
-│   │   │   ├── WaterSystem.cs           # 圣水系统
-│   │   │   └── TowerManager.cs          # 塔管理系统
-│   │   ├── Cards/
-│   │   │   ├── CardBase.cs              # 卡牌基类
-│   │   │   ├── UnitCard.cs              # 单位卡
-│   │   │   ├── BuildingCard.cs          # 建筑卡
-│   │   │   ├── SpellCard.cs             # 法术卡
-│   │   │   ├── CardDeck.cs              # 卡组管理
-│   │   │   └── CardDatabase.cs          # 卡牌数据库
-│   │   ├── Units/
-│   │   │   ├── UnitBase.cs              # 单位基类
-│   │   │   ├── MeleeUnit.cs             # 近战单位
-│   │   │   ├── RangedUnit.cs            # 远程单位
-│   │   │   ├── AirUnit.cs               # 空中单位
-│   │   │   └── UnitSpawner.cs           # 单位生成器
-│   │   ├── UI/
-│   │   │   ├── UIManager.cs             # UI管理器
-│   │   │   ├── MainMenuUI.cs            # 主菜单
-│   │   │   ├── BattleUI.cs              # 对战UI
-│   │   │   ├── CardSlotUI.cs            # 卡牌槽位
-│   │   │   └── WaterBarUI.cs            # 圣水条
-│   │   ├── Combat/
-│   │   │   ├── DamageSystem.cs          # 伤害系统
-│   │   │   ├── TargetFinder.cs          # 目标查找
-│   │   │   ├── Pathfinding.cs           # 路径寻找
-│   │   │   └── CollisionSystem.cs       # 碰撞检测
-│   │   └── Utilities/
-│   │       ├── AudioManager.cs          # 音频管理
-│   │       ├── PoolManager.cs           # 对象池
-│   │       └── Constants.cs             # 游戏常量
-│   ├── Prefabs/
-│   │   ├── Cards/                       # 卡牌预制体
-│   │   ├── Units/                       # 单位预制体
-│   │   ├── Buildings/                   # 建筑预制体
-│   │   ├── Towers/                      # 塔预制体
-│   │   └── UI/                          # UI预制体
-│   ├── Scenes/
-│   │   ├── MainMenu.unity               # 主菜单场景
-│   │   └── BattleScene.unity            # 对战场景
-│   └── Audio/
-│       ├── Music/                       # 背景音乐
-│       └── SFX/                         # 音效
-├── Docs/
-│   ├── 设计文档.md
-│   ├── 卡牌数据表.xlsx
-│   └── API文档.md
-└── README.md
+ClashRoyale_UE5/
+├── Source/
+│   ├── ClashRoyale.Target.cs
+│   ├── ClashRoyaleEditor.Target.cs
+│   └── ClashRoyale/
+│       ├── ClashRoyale.Build.cs
+│       ├── ClashRoyale.cpp
+│       ├── ClashRoyale.h
+│       ├── Public/
+│       │   ├── Game/
+│       │   │   ├── CRGameModeBase.h
+│       │   │   ├── CRGameState.h
+│       │   │   ├── CRPlayerController.h
+│       │   │   └── CRPlayerState.h
+│       │   ├── Actors/
+│       │   │   ├── Units/
+│       │   │   │   ├── CRUnitBase.h
+│       │   │   │   ├── MeleeUnit.h
+│       │   │   │   ├── RangedUnit.h
+│       │   │   │   ├── FlyingUnit.h
+│       │   │   │   └── GiantUnit.h
+│       │   │   ├── Buildings/
+│       │   │   │   ├── TowerBase.h
+│       │   │   │   ├── KingTower.h
+│       │   │   │   ├── PrincessTower.h
+│       │   │   │   └── SpawnBuilding.h
+│       │   │   └── Projectiles/
+│       │   │       ├── ProjectileBase.h
+│       │   │       └── ArrowProjectile.h
+│       │   ├── Components/
+│       │   │   ├── Combat/
+│       │   │   │   ├── HealthComponent.h
+│       │   │   │   ├── AttackComponent.h
+│       │   │   │   └── TargetFinderComponent.h
+│       │   │   ├── Cards/
+│       │   │   │   ├── CardComponent.h
+│       │   │   │   ├── DeckComponent.h
+│       │   │   │   └── HandComponent.h
+│       │   │   ├── UI/
+│       │   │   │   ├── WaterComponent.h
+│       │   │   │   └── HUDWidget.h
+│       │   │   └── Movement/
+│       │   │       └── LaneMovementComponent.h
+│       │   ├── Data/
+│       │   │   ├── CardData.h
+│       │   │   ├── UnitData.h
+│       │   │   └── GameplayTags.h
+│       │   ├── UI/
+│       │   │   ├── CRHUD.h
+│       │   │   ├── CardSlotWidget.h
+│       │   │   ├── WaterBarWidget.h
+│       │   │   └── MainMenuWidget.h
+│       │   ├── AI/
+│       │   │   ├── UnitAIController.h
+│       │   │   └── BehaviorTree/
+│       │   │       ├── BTService_FindTarget.h
+│       │   │       └── BTTask_Attack.h
+│       │   └── Systems/
+│       │       ├── CardSystem.h
+│       │       ├── CombatSystem.h
+│       │       ├── WaterSystem.h
+│       │       └── SpawnSystem.h
+│       └── Private/
+│           ├── Game/
+│           │   ├── CRGameModeBase.cpp
+│           │   ├── CRGameState.cpp
+│           │   └── CRPlayerController.cpp
+│           ├── Actors/
+│           │   ├── Units/
+│           │   ├── Buildings/
+│           │   └── Projectiles/
+│           ├── Components/
+│           ├── UI/
+│           ├── AI/
+│           └── Systems/
+├── Content/
+│   ├── Maps/
+│   │   ├── MainMenu.umap
+│   │   └── BattleMap.umap
+│   ├── Data/
+│   │   ├── DataTables/
+│   │   │   ├── DT_Cards.udatatable
+│   │   │   └── DT_Units.udatatable
+│   │   └── JSON/
+│   │       ├── cards.json
+│   │       └── units.json
+│   └── Assets/
+│       ├── Meshes/
+│       ├── Materials/
+│       ├── Textures/
+│       └── Audio/
+└── Config/
 ```
-二.各源文件预期内容与任务
-Core/ 核心系统
+1. 游戏核心（Game/）
+   
+CRGameModeBase.h
 
-  1.GameManager.cs
-  
-    游戏全局状态管理 
-    场景切换控制    
-    游戏设置保存与加载
-    
-  2.BattleManager.cs
-  
-    对战流程控制（开始、暂停、结束）
-    胜负判定逻辑
-    计时器管理
-    皇冠计数
-    
-  3.WaterSystem.cs
-  
-    圣水自动增长逻辑（每X秒增长1点）
-    圣水上限管理（上限10点）
-    圣水消耗与验证
-    
-  4.TowerManager.cs
-  
-    塔的生命值管理
-    塔的摧毁判断
-    公主塔与国王塔的逻辑区分
-    
-Cards/ 卡牌系统
+```
+cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "GameFramework/GameModeBase.h"
+#include "CRGameModeBase.generated.h"
 
-  1.CardBase.cs（抽象类）
-  
-    卡牌通用属性：名称、消耗、描述
-    使用卡牌的虚方法
-    卡牌状态管理
+UCLASS()
+class CLASHROYALE_API ACRGameModeBase : public AGameModeBase
+{
+    GENERATED_BODY()
     
-  2.UnitCard.cs
-  
-    单位卡特定逻辑
-    生成对应单位的预制体
-    部署单位的坐标计算
+public:
+    ACRGameModeBase();
     
-  3.BuildingCard.cs
-  
-    建筑卡特定逻辑
-    建筑持续时间管理
-    建筑功能触发（如持续产出单位）
+    virtual void BeginPlay() override;
+    virtual void Tick(float DeltaTime) override;
     
-  4.SpellCard.cs
-  
-    法术卡特定逻辑
-    范围伤害计算
-    特效触发
+    // 游戏流程控制
+    void StartMatch();
+    void EndMatch(ETeam Winner);
+    void CheckWinCondition();
     
-  5.CardDeck.cs
-  
-    8张卡牌的卡组管理
-    随机抽牌与循环逻辑
-    当前手牌管理
+    // 圣水管理
+    void AddWater(ETeam Team, float Amount);
+    bool ConsumeWater(ETeam Team, int32 Amount);
     
-  6.CardDatabase.cs
-  
-    所有卡牌的配置数据存储
-    卡牌ID与预制体的映射
-    卡牌属性配置（JSON/可配置）
+private:
+    UPROPERTY()
+    class UWaterSystem* WaterSystem;
     
-Units/ 单位系统
+    UPROPERTY()
+    class UCombatSystem* CombatSystem;
+    
+    float MatchDuration;
+    float CurrentTime;
+};
+```
+CRGameState.h
+```
+cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "GameFramework/GameStateBase.h"
+#include "CRTypes.h"
+#include "CRGameState.generated.h"
 
-  1.UnitBase.cs
-  
-    单位通用属性：生命值、攻击力、攻击速度、移动速度
-    攻击逻辑基类
-    死亡处理
+UCLASS()
+class CLASHROYALE_API ACRGameState : public AGameStateBase
+{
+    GENERATED_BODY()
     
-  2.MeleeUnit.cs
-  
-    近战攻击逻辑
-    攻击范围判定
-    攻击动画控制
+public:
+    // 皇冠计数
+    int32 GetCrownCount(ETeam Team) const { return CrownCounts[Team]; }
+    void AddCrown(ETeam Team, int32 Count);
     
-  3.RangedUnit.cs
-  
-    远程攻击逻辑
-    投射物生成与跟踪
-    对空/对地属性
+    // 塔状态
+    TArray<class ATowerBase*> GetTeamTowers(ETeam Team) const;
     
-  4.AirUnit.cs
-  
-    空中单位特殊逻辑
-    飞行高度控制
-    只受对空攻击影响
+    // 游戏时间
+    float GetRemainingTime() const { return RemainingTime; }
     
-5.UnitSpawner.cs
+private:
+    TMap<ETeam, int32> CrownCounts;
+    TMap<ETeam, TArray<ATowerBase*>> TeamTowers;
+    float RemainingTime;
+};
+```
+2. 单位系统（Actors/Units/）
 
-    单位生成位置计算
-    单位初始化配置
-    单位回收管理
-    
-UI/ 用户界面
+CRUnitBase.h
+```
+cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "GameFramework/Character.h"
+#include "CRTypes.h"
+#include "CRUnitBase.generated.h"
 
-  1.UIManager.cs
-  
-    UI系统总控制
-    界面切换管理
-    事件响应处理
+UCLASS(abstract)
+class CLASHROYALE_API ACRUnitBase : public ACharacter
+{
+    GENERATED_BODY()
     
-  2.MainMenuUI.cs
-  
-    主菜单按钮事件
-    开始游戏流程
-    退出游戏确认
+public:
+    ACRUnitBase();
     
-  3.BattleUI.cs
-  
-    对战界面元素管理
-    倒计时显示
-    皇冠数量显示
+    virtual void BeginPlay() override;
+    virtual void Tick(float DeltaTime) override;
     
-  4.CardSlotUI.cs
-  
-    卡牌槽位显示
-    拖拽部署逻辑
-    卡牌冷却指示
+    // 战斗接口
+    virtual void Attack(AActor* Target);
+    virtual void TakeDamage(float Damage, EDamageType DamageType);
+    
+    // 移动接口
+    void SetTargetLane(ELane Lane);
+    void MoveToLocation(const FVector& Location);
+    
+    // 属性获取
+    ETeam GetTeam() const { return Team; }
+    EUnitType GetUnitType() const { return UnitType; }
+    bool IsAlive() const { return CurrentHealth > 0; }
+    
+protected:
+    // 组件
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    class UHealthComponent* HealthComponent;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    class UAttackComponent* AttackComponent;
+    
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+    class UTargetFinderComponent* TargetFinderComponent;
+    
+    // 基础属性
+    UPROPERTY(EditDefaultsOnly, Category = "Unit")
+    ETeam Team;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Unit")
+    EUnitType UnitType;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Unit")
+    float MoveSpeed;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Unit")
+    float AttackRange;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Unit")
+    float AttackSpeed;
+    
+    float CurrentHealth;
+    AActor* CurrentTarget;
+    ELane CurrentLane;
+};
+```
+3. 卡牌系统（Systems/CardSystem.h）
+```
+cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "CardData.h"
+#include "CardSystem.generated.h"
 
-  5.WaterBarUI.cs
-  
-    圣水条动态显示
-    圣水数值更新
-    颜色渐变效果
+UCLASS()
+class CLASHROYALE_API UCardSystem : public UObject
+{
+    GENERATED_BODY()
     
-Combat/ 战斗系统
-
-  1.DamageSystem.cs
-  
-    伤害计算公式
-    暴击/特殊伤害处理
-    伤害数值显示
+public:
+    void Initialize();
     
-  2.TargetFinder.cs
-  
-    自动寻找目标算法
-    攻击优先级逻辑（最近/建筑优先）
-    目标切换条件
+    // 卡牌管理
+    FCardData* GetCardData(FName CardID);
+    TArray<FCardData> GetDeckCards(int32 DeckID);
     
-  3.Pathfinding.cs
-  
-    A*或简化寻路算法
-    双路线路径规划
-    避障逻辑
+    // 卡牌使用
+    bool CanPlayCard(ETeam Team, FName CardID);
+    void PlayCard(ETeam Team, FName CardID, const FVector& Location);
     
-  4.CollisionSystem.cs
-  
-    单位间碰撞检测
-    攻击范围碰撞
-    法术范围判定
+    // 卡组循环
+    void DrawNextCard(ETeam Team);
+    TArray<FCardData> GetCurrentHand(ETeam Team);
     
-Utilities/ 工具类
-
-  1.AudioManager.cs
-  
-    背景音乐播放
-    音效池管理
-    音量控制
+private:
+    UPROPERTY()
+    class UDataTable* CardDataTable;
     
-  2.PoolManager.cs
-  
-    游戏对象池（优化性能）
-    单位/特效的复用
-    内存管理
+    TMap<ETeam, TArray<FCardData>> TeamDecks;
+    TMap<ETeam, TArray<FCardData>> TeamHands;
     
-3.Constants.cs
+    void LoadCardData();
+    void InitializeDecks();
+};
+```
+4. 战斗系统（Systems/CombatSystem.h）
+```
+cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "CombatSystem.generated.h"
 
-    游戏常量定义
-    配置参数
-    枚举类型定义
+UCLASS()
+class CLASHROYALE_API UCombatSystem : public UObject
+{
+    GENERATED_BODY()
     
-三.建议分工
+public:
+    // 伤害计算
+    static float CalculateDamage(float BaseDamage, EDamageType DamageType, 
+                                 EArmorType ArmorType, float RangeMultiplier = 1.0f);
+    
+    // 范围伤害
+    static void ApplyAreaDamage(const FVector& Origin, float Radius, 
+                                float Damage, ETeam InstigatorTeam, 
+                                EDamageType DamageType);
+    
+    // 目标查找
+    static AActor* FindBestTarget(const FVector& Origin, float Range, 
+                                  ETeam SeekingTeam, ETargetPriority Priority);
+    
+    // 碰撞检测
+    static bool CheckLineOfSight(const AActor* Source, const AActor* Target);
+    
+    // 攻击预测
+    static FVector PredictTargetLocation(const AActor* Target, float ProjectileSpeed, 
+                                         const FVector& LaunchLocation);
+};
+```
+5. UI 系统（UI/）
+   
+CRHUD.h
+```
+cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "GameFramework/HUD.h"
+#include "CRHUD.generated.h"
 
-成员A：核心系统与战斗
+UCLASS()
+class CLASHROYALE_API ACRHUD : public AHUD
+{
+    GENERATED_BODY()
+    
+public:
+    virtual void BeginPlay() override;
+    
+    // 创建UI
+    void CreateMainMenu();
+    void CreateBattleHUD();
+    void ShowGameOverScreen(ETeam Winner);
+    
+    // 更新UI
+    void UpdateWaterBar(ETeam Team, float Current, float Max);
+    void UpdateCardSlots(ETeam Team, const TArray<FCardData>& HandCards);
+    void UpdateTimer(float RemainingTime);
+    void UpdateCrowns(ETeam Team, int32 Count);
+    
+private:
+    // Widget引用
+    UPROPERTY()
+    class UMainMenuWidget* MainMenuWidget;
+    
+    UPROPERTY()
+    class UBattleHUDWidget* BattleHUDWidget;
+    
+    UPROPERTY()
+    class UCardSlotWidget* CardSlotWidgets[4]; // 4张手牌
+    
+    UPROPERTY()
+    class UWaterBarWidget* WaterBarWidget;
+};
+```
+CardSlotWidget.h
+```
+cpp
+#pragma once
+#include "CoreMinimal.h"
+#include "Blueprint/UserWidget.h"
+#include "Input/DragAndDrop.h"
+#include "CardSlotWidget.generated.h"
 
-主要负责：
-  GameManager / BattleManager / TowerManager
-  战斗系统（DamageSystem, TargetFinder, CollisionSystem）
-  单位系统（所有Unit相关脚本）
-  寻路与AI逻辑
-  
-辅助任务：
-  协助卡牌系统的战斗逻辑
-  性能优化（对象池）
+UCLASS()
+class CLASHROYALE_API UCardSlotWidget : public UUserWidget
+{
+    GENERATED_BODY()
+    
+public:
+    void SetCardData(const FCardData& CardData);
+    void UpdateCooldown(float Progress);
+    void SetAvailable(bool bAvailable);
+    
+protected:
+    virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, 
+                                          const FPointerEvent& InMouseEvent) override;
+    virtual void NativeOnDragDetected(const FGeometry& InGeometry, 
+                                     const FPointerEvent& InMouseEvent, 
+                                     UDragDropOperation*& OutOperation) override;
+    
+private:
+    FCardData CurrentCardData;
+    bool bIsOnCooldown;
+    float CooldownProgress;
+    
+    // UI元素绑定
+    class UTextBlock* CardNameText;
+    class UTextBlock* WaterCostText;
+    class UImage* CardIcon;
+    class UProgressBar* CooldownBar;
+};
+```
+成员A：游戏核心和框架
+负责模块：
+```
+GameMode, GameState, PlayerController
 
-成员B：卡牌系统与UI
+游戏规则和流程控制
 
-主要负责：
-  所有Card相关脚本（CardBase, UnitCard等）
-  CardDeck和CardDatabase
-  所有UI相关脚本（UIManager, BattleUI等）
-  拖拽部署系统
-  
-辅助任务：
-  协助单位生成逻辑
-  UI特效和动画
+圣水系统
 
-成员C：基础框架与工具
+网络同步（如需）
 
-主要负责：
-  WaterSystem（圣水系统）
-  音频系统（AudioManager）
-  场景搭建和预制体管理
-  工具类（Constants, PoolManager）
-  文档维护
-  
-辅助任务：
-  协助战斗逻辑实现
-  测试和bug修复
+核心文件：
+
+CRGameModeBase.h/cpp
+
+CRGameState.h/cpp
+
+WaterSystem.h/cpp
+
+CRTypes.h（所有枚举和数据结构）
+```
+成员B：单位和战斗系统
+负责模块：
+```
+所有Unit类（CRUnitBase及派生类）
+
+战斗系统（CombatSystem）
+
+伤害计算和碰撞
+
+AI控制器
+
+核心文件：
+
+CRUnitBase.h/cpp
+
+CombatSystem.h/cpp
+
+HealthComponent.h/cpp
+
+UnitAIController.h/cpp
+```
+成员C：卡牌和UI系统
+负责模块：
+```
+卡牌系统（CardSystem）
+
+数据管理（DataTables）
+
+UMG Widgets（纯C++实现）
+
+输入和拖拽系统
+
+核心文件：
+
+CardSystem.h/cpp
+
+CardData.h
+
+CRHUD.h/cpp
+
+所有Widget类（.h/cpp）
+```
