@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "CR",
+			"Path": "..\\Source\\CR.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "CREditor",
+			"Path": "..\\Source\\CREditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

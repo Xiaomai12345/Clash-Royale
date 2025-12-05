@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"D:\\Clash_Royale\\CR\\Source\\CR\\CR.Build.cs",
+		"D:\\Clash_Royale\\CR\\Source\\CR.Target.cs",
+		"D:\\Clash_Royale\\CR\\Source\\CREditor.Target.cs"
+	],
+	"EngineVersion": "5.7.0"
+}

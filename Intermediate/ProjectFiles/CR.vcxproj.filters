@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\CR.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\CR.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\CREditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Source\CR">
+      <UniqueIdentifier>{086DC211-057A-3F26-8E70-DB0B83EFCDA3}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\CR\CR.Build.cs">
+      <Filter>Source\CR</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\CR\CR.cpp">
+      <Filter>Source\CR</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\CR\CR.h">
+      <Filter>Source\CR</Filter>
+    </ClInclude>
+    <Filter Include="Source\CR\Public">
+      <UniqueIdentifier>{e22adc76-877b-46db-b0d8-5ef0378eda16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Game">
+      <UniqueIdentifier>{3de79c02-ef19-4f86-ae14-1ca500dce888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private">
+      <UniqueIdentifier>{8a5ed1bb-6bdf-46c2-8180-fe94a58bf7db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Actors">
+      <UniqueIdentifier>{058c40f2-0247-4f8b-b3a0-0a6d85b3d973}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Components">
+      <UniqueIdentifier>{7a8b13c3-d5cf-4c71-b2fd-3a9c3637e214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Data">
+      <UniqueIdentifier>{e7dbca04-cca9-4c6f-8993-5eca6fab75d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\UI">
+      <UniqueIdentifier>{bbb52d52-b1a2-4288-9aae-989ea6dbe9f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\AI">
+      <UniqueIdentifier>{2aee26e2-5b6a-49b1-829b-c3132065d08d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Systems">
+      <UniqueIdentifier>{8a7b93f2-a273-4898-9c88-6f9a93ed50c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Actors\Units">
+      <UniqueIdentifier>{52f4f913-95cf-4daa-a62c-8cf1935c4cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Actors\Buildings">
+      <UniqueIdentifier>{e14c614c-0de5-432d-b380-8c71fa4ce7d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Actors\Projectiles">
+      <UniqueIdentifier>{7fe62003-ee98-40d6-92c3-ea342a750240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Components\Combat">
+      <UniqueIdentifier>{e2d1c7e2-5bd1-469a-bf42-d328b537e164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Components\Cards">
+      <UniqueIdentifier>{2f1c8eae-61cc-4bf3-bf41-dd2c5a02b0cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\Components\Movement">
+      <UniqueIdentifier>{7a88e2ae-2ea0-4fe3-8b25-be025e403931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Game">
+      <UniqueIdentifier>{e1f39dd6-0c08-4127-9410-14bd859eabd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Actors">
+      <UniqueIdentifier>{d43ee097-d2c5-485b-bf10-512718e3ccc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Components">
+      <UniqueIdentifier>{d80b0700-c443-4e49-9571-e2130a19b7ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Systems">
+      <UniqueIdentifier>{e8ff0094-0d28-424d-b0bb-e06e6d865175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\UI">
+      <UniqueIdentifier>{ca360de9-941b-4dea-b4d4-02888ac30627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\AI">
+      <UniqueIdentifier>{968c09e7-5eda-4ee2-af68-79aca75ca698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Actors\Units">
+      <UniqueIdentifier>{8f146d0a-d1ec-4316-984e-3559ab84f958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Actors\Buildings">
+      <UniqueIdentifier>{5249f760-f403-40c8-9299-e282dd66651c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Actors\Projectiles">
+      <UniqueIdentifier>{89990a5f-8f25-48c1-ad62-ea7ac9c15454}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Components\Combat">
+      <UniqueIdentifier>{77087956-a19a-452e-8670-48fc9e46b626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Components\Cards">
+      <UniqueIdentifier>{b3030743-b5a4-4b9e-95a7-c28e0e66a7c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\Components\Movement">
+      <UniqueIdentifier>{baaa63d5-4945-4b87-af95-a2a958a067b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Public\AI\BehaviorTree">
+      <UniqueIdentifier>{ebe014de-3782-49b2-8715-9633b97c1e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CR\Private\AI\BehaviorTree">
+      <UniqueIdentifier>{02563842-2930-4f66-b29a-1d2db2b2c0ae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CRTypes.h">
+      <Filter>Source\CR\Public\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="CRGameModeBase.h">
+      <Filter>Source\CR\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CRGameState.h">
+      <Filter>Source\CR\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CRPlayerController.h">
+      <Filter>Source\CR\Public\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CRUnitBase.h">
+      <Filter>Source\CR\Public\Actors\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeUnit.h">
+      <Filter>Source\CR\Public\Actors\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="RangedUnit.h">
+      <Filter>Source\CR\Public\Actors\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyingUnit.h">
+      <Filter>Source\CR\Public\Actors\Units</Filter>
+    </ClInclude>
+    <ClInclude Include="TowerBase.h">
+      <Filter>Source\CR\Public\Actors\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="KingTower.h">
+      <Filter>Source\CR\Public\Actors\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="PrincessTower.h">
+      <Filter>Source\CR\Public\Actors\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileBase.h">
+      <Filter>Source\CR\Public\Actors\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Source\CR\Public\Components\Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackComponent.h">
+      <Filter>Source\CR\Public\Components\Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetFinderComponent.h">
+      <Filter>Source\CR\Public\Components\Combat</Filter>
+    </ClInclude>
+    <ClInclude Include="CardComponent.h">
+      <Filter>Source\CR\Public\Components\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="DeckComponent.h">
+      <Filter>Source\CR\Public\Components\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="HandComponent.h">
+      <Filter>Source\CR\Public\Components\Cards</Filter>
+    </ClInclude>
+    <ClInclude Include="LaneMovementComponent.h">
+      <Filter>Source\CR\Public\Components\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="CardData.h">
+      <Filter>Source\CR\Public\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitData.h">
+      <Filter>Source\CR\Public\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="CardSystem.h">
+      <Filter>Source\CR\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="CombatSystem.h">
+      <Filter>Source\CR\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterSystem.h">
+      <Filter>Source\CR\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnSystem.h">
+      <Filter>Source\CR\Public\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="CRHUD.h">
+      <Filter>Source\CR\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CardSlotWidget.h">
+      <Filter>Source\CR\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterBarWidget.h">
+      <Filter>Source\CR\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuWidget.h">
+      <Filter>Source\CR\Public\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitAIController.h">
+      <Filter>Source\CR\Public\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="BTService_FindTarget.h">
+      <Filter>Source\CR\Public\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="BTTask_Attack.h">
+      <Filter>Source\CR\Public\AI\BehaviorTree</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CRGameModeBase.cpp">
+      <Filter>Source\CR\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CRGameState.cpp">
+      <Filter>Source\CR\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CRPlayerController.cpp">
+      <Filter>Source\CR\Private\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CRUnitBase.cpp">
+      <Filter>Source\CR\Private\Actors\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeUnit.cpp">
+      <Filter>Source\CR\Private\Actors\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="RangedUnit.cpp">
+      <Filter>Source\CR\Private\Actors\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyingUnit.cpp">
+      <Filter>Source\CR\Private\Actors\Units</Filter>
+    </ClCompile>
+    <ClCompile Include="TowerBase.cpp">
+      <Filter>Source\CR\Private\Actors\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="KingTower.cpp">
+      <Filter>Source\CR\Private\Actors\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="PrincessTower.cpp">
+      <Filter>Source\CR\Private\Actors\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileBase.cpp">
+      <Filter>Source\CR\Private\Actors\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Source\CR\Private\Components\Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackComponent.cpp">
+      <Filter>Source\CR\Private\Components\Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetFinderComponent.cpp">
+      <Filter>Source\CR\Private\Components\Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="CardComponent.cpp">
+      <Filter>Source\CR\Private\Components\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="DeckComponent.cpp">
+      <Filter>Source\CR\Private\Components\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="HandComponent.cpp">
+      <Filter>Source\CR\Private\Components\Cards</Filter>
+    </ClCompile>
+    <ClCompile Include="LaneMovementComponent.cpp">
+      <Filter>Source\CR\Private\Components\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="CardSystem.cpp">
+      <Filter>Source\CR\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="CombatSystem.cpp">
+      <Filter>Source\CR\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterSystem.cpp">
+      <Filter>Source\CR\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnSystem.cpp">
+      <Filter>Source\CR\Private\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="CRHUD.cpp">
+      <Filter>Source\CR\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CardSlotWidget.cpp">
+      <Filter>Source\CR\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterBarWidget.cpp">
+      <Filter>Source\CR\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuWidget.cpp">
+      <Filter>Source\CR\Private\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitAIController.cpp">
+      <Filter>Source\CR\Private\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="BTService_FindTarget.cpp">
+      <Filter>Source\CR\Private\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="BTTask_Attack.cpp">
+      <Filter>Source\CR\Private\AI\BehaviorTree</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
