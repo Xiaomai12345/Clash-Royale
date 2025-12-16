@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{a22b6cab-5a63-4cbb-9ae2-f013dd69e579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Core">
+      <UniqueIdentifier>{46a1500d-4141-4b23-bc72-07cb17713d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Scenes">
+      <UniqueIdentifier>{7961ff19-7742-4f49-9d48-25aa34f2b331}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities">
+      <UniqueIdentifier>{36a4d3f7-5e8c-451a-ad13-596acf507df4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card">
+      <UniqueIdentifier>{34da6c1a-cc67-4f35-a02f-1fd2ca523384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Unit">
+      <UniqueIdentifier>{c52efd7d-160b-4bdd-bbe5-4828a51d76e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Tower">
+      <UniqueIdentifier>{95c3e5ad-9cd6-4d07-871a-b7e44720ee07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Projectile">
+      <UniqueIdentifier>{a547ac33-fbbf-412f-b1ec-7629b65481ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Managers">
+      <UniqueIdentifier>{74f60622-43cb-44f2-8017-7212d97495b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\UI">
+      <UniqueIdentifier>{5a2b1087-475d-4053-babc-d0b31e0713f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Utils">
+      <UniqueIdentifier>{5e9f1598-59b2-4f4d-a371-d77e6b76aa05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Systems">
+      <UniqueIdentifier>{a6f85c7e-3cd9-4ebd-b7bf-ddc9a72b880d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>Classes\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AudioManager.cpp">
+      <Filter>Classes\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameManager.cpp">
+      <Filter>Classes\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BattleScene.cpp">
+      <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainMenuScene.cpp">
+      <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BuildingCard.cpp">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Card.cpp">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SpellCard.cpp">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UnitCard.cpp">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\KingTower.cpp">
+      <Filter>Classes\Entities\Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PrincessTower.cpp">
+      <Filter>Classes\Entities\Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TowerBase.cpp">
+      <Filter>Classes\Entities\Tower</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Projectile.cpp">
+      <Filter>Classes\Entities\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BattleManager.cpp">
+      <Filter>Classes\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CardManager.cpp">
+      <Filter>Classes\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LevelManager.cpp">
+      <Filter>Classes\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Button.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CountdownLabel.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\HandCardUI.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ManaBar.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ConfigLoader.cpp">
+      <Filter>Classes\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AISystem.cpp">
+      <Filter>Classes\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CollisionSystem.cpp">
+      <Filter>Classes\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PathfindingSystem.cpp">
+      <Filter>Classes\Systems</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AudioManager.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameManager.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GlobalDefines.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BattleScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenuScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BuildingCard.h">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Card.h">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SpellCard.h">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UnitCard.h">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\KingTower.h">
+      <Filter>Classes\Entities\Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PrincessTower.h">
+      <Filter>Classes\Entities\Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TowerBase.h">
+      <Filter>Classes\Entities\Tower</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Projectile.h">
+      <Filter>Classes\Entities\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BattleManager.h">
+      <Filter>Classes\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CardManager.h">
+      <Filter>Classes\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LevelManager.h">
+      <Filter>Classes\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Button.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CountdownLabel.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\HandCardUI.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ManaBar.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ConfigLoader.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MathUtils.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Singleton.h">
+      <Filter>Classes\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AISystem.h">
+      <Filter>Classes\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CollisionSystem.h">
+      <Filter>Classes\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PathfindingSystem.h">
+      <Filter>Classes\Systems</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
