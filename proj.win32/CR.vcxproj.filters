@@ -120,6 +120,15 @@
     <ClCompile Include="..\Classes\PathfindingSystem.cpp">
       <Filter>Classes\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Battlefield.cpp">
+      <Filter>Classes\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UnitBase.cpp">
+      <Filter>Classes\Entities\Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ManaSystem.cpp">
+      <Filter>Classes\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -204,6 +213,15 @@
       <Filter>Classes\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\PathfindingSystem.h">
+      <Filter>Classes\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Battlefield.h">
+      <Filter>Classes\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UnitBase.h">
+      <Filter>Classes\Entities\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ManaSystem.h">
       <Filter>Classes\Systems</Filter>
     </ClInclude>
   </ItemGroup>

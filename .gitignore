@@ -1,0 +1,10 @@
+# Visual Studio / Win32 build
+Debug.win32/
+Release.win32/
+*.user
+*.suo
+*.ipch
+
+# Cocos 编译目录
+cocos2d/**/Debug.win32/
+cocos2d/**/Release.win32/
