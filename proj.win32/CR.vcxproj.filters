@@ -43,6 +43,51 @@
     <Filter Include="Classes\Systems">
       <UniqueIdentifier>{a6f85c7e-3cd9-4ebd-b7bf-ddc9a72b880d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Entities\Troop">
+      <UniqueIdentifier>{72189dfe-6e9d-486e-8002-29120be6c170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Troop\TroopAIComponent">
+      <UniqueIdentifier>{a4e1e505-5369-4f6f-bff4-74295b0962cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Troop\MoveComponent">
+      <UniqueIdentifier>{2b6a1f4d-5201-4e3e-9c9e-ef9386c10a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Attack">
+      <UniqueIdentifier>{2105fc77-4a78-4114-bc17-0ea5239833e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Attack\AttackBase">
+      <UniqueIdentifier>{650180d8-cf62-430f-94f9-ed799fdec8a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Attack\TroopAttack">
+      <UniqueIdentifier>{ebe41455-d756-4a10-b9c2-3bc3bc4f83c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Troop\TroopBase">
+      <UniqueIdentifier>{ad516234-edde-464c-887c-bec962ed2a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\AllCards">
+      <UniqueIdentifier>{8158cf67-c215-40d0-95d8-2db6178270c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Building">
+      <UniqueIdentifier>{a1dbc919-b224-4953-a097-118d67810abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Building\BuildingBase">
+      <UniqueIdentifier>{12fc4e27-f05b-4445-bc76-850688a37fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Building\BuildingAI">
+      <UniqueIdentifier>{508874d9-81a1-4966-8650-726693480f3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\AllCards\Buildings">
+      <UniqueIdentifier>{7e2a357b-e405-48e7-b7b5-b018aa148d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\AllCards\Troops">
+      <UniqueIdentifier>{1f72ca07-1a11-4575-bb5b-e562dcfbbc72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Attack\BuildingAttack">
+      <UniqueIdentifier>{97144b42-2bbd-435d-9dc8-fdff325d2bee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\BAttle">
+      <UniqueIdentifier>{06acead8-ef23-487c-8a7e-c0e9c1f82abd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -76,9 +121,6 @@
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\KingTower.cpp">
-      <Filter>Classes\Entities\Tower</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\PrincessTower.cpp">
       <Filter>Classes\Entities\Tower</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\TowerBase.cpp">
@@ -120,14 +162,59 @@
     <ClCompile Include="..\Classes\PathfindingSystem.cpp">
       <Filter>Classes\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Battlefield.cpp">
-      <Filter>Classes\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\UnitBase.cpp">
       <Filter>Classes\Entities\Unit</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ManaSystem.cpp">
       <Filter>Classes\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\RangedAttackComponent.cpp">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MeleeAttackComponent.cpp">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AttackComponent.cpp">
+      <Filter>Classes\Entities\Attack\AttackBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\KnightTroop.cpp">
+      <Filter>Classes\Entities\AllCards\Troops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BuildingBase.cpp">
+      <Filter>Classes\Entities\Building\BuildingBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BuildingAI.cpp">
+      <Filter>Classes\Entities\Building\BuildingAI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GroundMoveComponent.cpp">
+      <Filter>Classes\Entities\Troop\MoveComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MoveComponent.cpp">
+      <Filter>Classes\Entities\Troop\MoveComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TroopBase.cpp">
+      <Filter>Classes\Entities\Troop\TroopBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SimpleTroopAIComponent.cpp">
+      <Filter>Classes\Entities\Troop\TroopAIComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TroopAIComponent.cpp">
+      <Filter>Classes\Entities\Troop\TroopAIComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ArcherTroop.cpp">
+      <Filter>Classes\Entities\AllCards\Troops</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PrincessTower.cpp">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BuildingAttackComponent.cpp">
+      <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SimpleBuildingAI.cpp">
+      <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Battlefield.cpp">
+      <Filter>Classes\Entities\BAttle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -165,9 +252,6 @@
       <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\KingTower.h">
-      <Filter>Classes\Entities\Tower</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\PrincessTower.h">
       <Filter>Classes\Entities\Tower</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TowerBase.h">
@@ -215,14 +299,62 @@
     <ClInclude Include="..\Classes\PathfindingSystem.h">
       <Filter>Classes\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Battlefield.h">
-      <Filter>Classes\Entities</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\UnitBase.h">
       <Filter>Classes\Entities\Unit</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ManaSystem.h">
       <Filter>Classes\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\RangedAttackComponent.h">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MeleeAttackComponent.h">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AttackComponent.h">
+      <Filter>Classes\Entities\Attack\AttackBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\IAttackable.h">
+      <Filter>Classes\Entities\Attack\AttackBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\KnightTroop.h">
+      <Filter>Classes\Entities\AllCards\Troops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BuildingBase.h">
+      <Filter>Classes\Entities\Building\BuildingBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BuildingAI.h">
+      <Filter>Classes\Entities\Building\BuildingAI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GroundMoveComponent.h">
+      <Filter>Classes\Entities\Troop\MoveComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MoveComponent.h">
+      <Filter>Classes\Entities\Troop\MoveComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TroopBase.h">
+      <Filter>Classes\Entities\Troop\TroopBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SimpleTroopAIComponent.h">
+      <Filter>Classes\Entities\Troop\TroopAIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TroopAIComponent.h">
+      <Filter>Classes\Entities\Troop\TroopAIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ArcherTroop.h">
+      <Filter>Classes\Entities\AllCards\Troops</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PrincessTower.h">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BuildingAttackComponent.h">
+      <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SimpleBuildingAI.h">
+      <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Battlefield.h">
+      <Filter>Classes\Entities\BAttle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
