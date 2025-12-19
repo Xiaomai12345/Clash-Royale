@@ -51,8 +51,8 @@ void Battlefield::createBackground()
 
         // 获取原始尺寸并计算缩放
         Size originalSize = _background->getContentSize();
-        float scaleX =0.8*0.85;
-        float scaleY = 0.8*0.85;
+        float scaleX = 0.8 * 0.85;
+        float scaleY = 0.8 * 0.8;
 
         // 设置缩放
         _background->setScaleX(scaleX);
@@ -65,52 +65,18 @@ void Battlefield::createBackground()
     }
 
     _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // 锚点在顶部中间
-    _background->setPosition(_mapSize.width*0.8*0.85 / 2, _mapSize.height*0.8);  // 放在顶部
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8-50);  // 放在顶部
     addChild(_background, 0);
+    auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
+    lavenderRect->setPosition(0, _mapSize.height * 0.8-50);
+    this->addChild(lavenderRect);
 
-    // 保留原有的河流（半透明覆盖在图片上）
-    auto river = LayerColor::create(Color4B(30, 144, 255, 120),  // 改为半透明
-        _mapSize.width,
-        200);
-    river->setPosition(0, _mapSize.height / 2 - 100);
-    addChild(river, 1);  // 注意这里的层级设为1，让河流在背景之上
+
 }
 
 void Battlefield::createTowers()
 {
-    // 创建左方塔
-    for (int i = 0; i < 3; i++)
-    {
-        auto tower = TowerBase::create();
-        tower->initWithData(1, i == 0 ? 1 : 2, i + 1); // 玩家1，国王塔或公主塔
 
-        float x = 200;
-        float y = 0;
-        if (i == 0) y = _mapSize.height / 2; // 国王塔
-        else if (i == 1) y = _mapSize.height / 2 + 200; // 上公主塔
-        else y = _mapSize.height / 2 - 200; // 下公主塔
-
-        tower->setPosition(x, y);
-        addChild(tower, 10);
-        _allTowers.pushBack(tower);
-    }
-
-    // 创建右方塔
-    for (int i = 0; i < 3; i++)
-    {
-        auto tower = TowerBase::create();
-        tower->initWithData(2, i == 0 ? 1 : 2, i + 1);
-
-        float x = _mapSize.width - 200;
-        float y = 0;
-        if (i == 0) y = _mapSize.height / 2;
-        else if (i == 1) y = _mapSize.height / 2 + 200;
-        else y = _mapSize.height / 2 - 200;
-
-        tower->setPosition(x, y);
-        addChild(tower, 10);
-        _allTowers.pushBack(tower);
-    }
 }
 
 void Battlefield::createDebugLayer()

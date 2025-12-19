@@ -69,51 +69,57 @@ void BattleScene::setupUI()
     addChild(_manaBar, 100);
 
     // 创建倒计时标签
-    auto countdownLabel = Label::createWithSystemFont("03:00", "Arial", 36);
-    countdownLabel->setPosition(visibleSize.width / 2, visibleSize.height - 100);
+    auto countdownLabel = Label::create("Time Left :", "fonts/Clash_Regular.otf", 20);
+    auto countdown = Label::createWithSystemFont("3:00", "fonts/Clash_Regular.otf", 48);
+    countdown->setPosition(visibleSize.width-80, visibleSize.height - 70);
+    countdownLabel->setPosition(visibleSize.width-80, visibleSize.height-35);
+    countdown->setTextColor(Color4B::WHITE);
     countdownLabel->setTextColor(Color4B::WHITE);
-    countdownLabel->setTag(1001);
+    countdown->setTag(1001);
+    addChild(countdown, 100);
     addChild(countdownLabel, 100);
+    // 使用 DrawNode 绘制矩形框
+    auto drawNode = DrawNode::create();
 
-    // 创建皇冠计数器
-    auto createCrownDisplay = [this](int playerId, Vec2 position) {
-        auto node = Node::create();
-
-        // 皇冠图标
-        auto crown = Sprite::create();
-        auto crownColor = LayerColor::create(Color4B(255, 215, 0, 255), 30, 30);
-        crown->addChild(crownColor);
-        crown->setScale(0.8f);
-        node->addChild(crown, 0);
-
-        // 数量标签
-        auto label = Label::createWithSystemFont("0", "Arial", 24);
-        label->setPosition(25, 0);
-        label->setTextColor(Color4B::WHITE);
-        label->setTag(10);
-        node->addChild(label, 1);
-
-        node->setPosition(position);
-        node->setTag(2000 + playerId);
-        addChild(node, 100);
-        };
-
-    createCrownDisplay(1, Vec2(100, visibleSize.height - 50));
-    createCrownDisplay(2, Vec2(visibleSize.width - 100, visibleSize.height - 50));
-
-    // 调试按钮
-    auto debugButton = MenuItemLabel::create(
-        Label::createWithSystemFont("Debug", "Arial", 24),
-        [this](Ref* sender) {
-            _battlefield->enableDebugDraw(!_battlefield->isDebugDrawEnabled());
-        }
+    // 绘制填充矩形
+    drawNode->drawSolidRect(
+        Vec2(visibleSize.width - 140, visibleSize.height - 95),           // 左下角
+        Vec2(visibleSize.width - 20, visibleSize.height - 20),           // 右上角
+        Color4F(0, 0, 0,0.5f )  // 50%黑色填充
     );
 
-    debugButton->setPosition(Vec2(visibleSize.width - 80, 50));
+    // 绘制边框
+    drawNode->drawRect(
+        Vec2(visibleSize.width - 140, visibleSize.height - 95),           // 左下角
+        Vec2(visibleSize.width-20, visibleSize.height - 20),           // 右上角
+        Color4F(0, 0, 0, 1.0f)    // 黑色边框
+    );
 
-    auto menu = Menu::create(debugButton, nullptr);
-    menu->setPosition(Vec2::ZERO);
-    addChild(menu, 200);
+    addChild(drawNode, 90);
+
+    //绘制圣水倍率"X1"
+    auto closeLabel = Label::createWithSystemFont("\\", "Arial Bold", 48);
+    auto closeLabe2 = Label::createWithSystemFont("/", "Arial Bold", 48);
+    closeLabel->setTextColor(Color4B(128,0,128,255));
+    closeLabel->setPosition(visibleSize.width - 90, visibleSize.height - 120);
+    addChild(closeLabel,100);
+    closeLabe2->setTextColor(Color4B(128, 0, 128, 255));
+    closeLabe2->setPosition(visibleSize.width - 90, visibleSize.height - 120);
+    addChild(closeLabe2, 100);
+
+    //// 调试按钮
+    //auto debugButton = MenuItemLabel::create(
+    //    Label::createWithSystemFont("Debug", "Arial", 24),
+    //    [this](Ref* sender) {
+    //        _battlefield->enableDebugDraw(!_battlefield->isDebugDrawEnabled());
+    //    }
+    //);
+
+    //debugButton->setPosition(Vec2(visibleSize.width - 80, 50));
+
+    //auto menu = Menu::create(debugButton, nullptr);
+    //menu->setPosition(Vec2::ZERO);
+    //addChild(menu, 200);
 }
 
 void BattleScene::setupInput()
@@ -236,6 +242,7 @@ void BattleScene::startGame()
 
 void BattleScene::update(float delta)
 {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
     Scene::update(delta);
 
     if (!_gameStarted || _gameEnded)
@@ -251,10 +258,24 @@ void BattleScene::update(float delta)
     int minutes = remainingTime / 60;
     int seconds = remainingTime % 60;
 
+    if (minutes >= 1)
+    {
+        auto _manaMutiple = Label::createWithSystemFont("1", "Arial Bold", 48);
+        _manaMutiple->setTextColor(Color4B(128, 0, 128, 255));
+        _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
+        addChild(_manaMutiple, 100);
+    }
+    else if (minutes >= 0 && minutes < 1)
+    {
+        auto _manaMutiple = Label::createWithSystemFont("2", "Arial Bold", 48);
+        _manaMutiple->setTextColor(Color4B(128, 0, 128, 255));
+        _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
+        addChild(_manaMutiple, 100);
+    }
     auto countdownLabel = dynamic_cast<Label*>(getChildByTag(1001));
     if (countdownLabel)
     {
-        countdownLabel->setString(StringUtils::format("%02d:%02d", minutes, seconds));
+        countdownLabel->setString(StringUtils::format("%2d:%02d", minutes, seconds));
     }
 
     // 检查游戏结束条件

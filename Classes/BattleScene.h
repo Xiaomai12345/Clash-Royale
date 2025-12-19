@@ -37,7 +37,6 @@ private:
     bool _gameEnded;
     float _gameTime;
     float _totalGameTime;
-
     // Íæ¼ÒÐÅÏ¢
     int _playerCrowns[2];
     bool _isPlayer1;

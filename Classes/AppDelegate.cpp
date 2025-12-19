@@ -23,7 +23,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     _glview = _director->getOpenGLView();
     if (!_glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        _glview = GLViewImpl::createWithRect("ClashRoyale", cocos2d::Rect(0, 0, 1308*0.8*0.85, 1732*0.8));
+        _glview = GLViewImpl::createWithRect("ClashRoyale", cocos2d::Rect(0, 0, 1308 * 0.8 * 0.85, 1732 * 0.8));
 #else
         _glview = GLViewImpl::create("ClashRoyale");
 #endif
