@@ -132,9 +132,6 @@
     <ClCompile Include="..\Classes\UnitCard.cpp">
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\KingTower.cpp">
-      <Filter>Classes\Entities\Tower</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\TowerBase.cpp">
       <Filter>Classes\Entities\Tower</Filter>
     </ClCompile>
@@ -266,17 +263,11 @@
     <ClInclude Include="..\Classes\BuildingCard.h">
       <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Card.h">
-      <Filter>Classes\Entities\Card</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\SpellCard.h">
       <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\UnitCard.h">
       <Filter>Classes\Entities\Card</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\KingTower.h">
-      <Filter>Classes\Entities\Tower</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TowerBase.h">
       <Filter>Classes\Entities\Tower</Filter>
@@ -391,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\AreaAttack.h">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Card.h">
+      <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,7 @@ bool Battlefield::init()//ch
     // 创建地图元素
     createBackground();
 
+
     auto troop1 = KnightTroop::create();
     troop1->setPosition(Vec2(300, 300));
     this->addChild(troop1);
@@ -47,6 +48,8 @@ bool Battlefield::init()//ch
     this->addChild(fireball);
     fireball->cast(Vec2(320, 300),ECamp::RIGHT); // 固定测试点
     
+
+
 
 
     if (_debugEnabled)

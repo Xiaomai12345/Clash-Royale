@@ -173,7 +173,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\GameManager.cpp" />
     <ClCompile Include="..\Classes\GroundMoveComponent.cpp" />
     <ClCompile Include="..\Classes\HandCardUI.cpp" />
-    <ClCompile Include="..\Classes\KingTower.cpp" />
     <ClCompile Include="..\Classes\KnightTroop.cpp" />
     <ClCompile Include="..\Classes\LevelManager.cpp" />
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
@@ -223,7 +222,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GroundMoveComponent.h" />
     <ClInclude Include="..\Classes\HandCardUI.h" />
     <ClInclude Include="..\Classes\IAttackable.h" />
-    <ClInclude Include="..\Classes\KingTower.h" />
     <ClInclude Include="..\Classes\KnightTroop.h" />
     <ClInclude Include="..\Classes\LevelManager.h" />
     <ClInclude Include="..\Classes\MainMenuScene.h" />
