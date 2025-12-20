@@ -17,7 +17,7 @@ bool Battlefield::init()//ch
     _mapSize = Size(1308, 1732);
     _gridSize = Size(80, 80);
 
-    // ´´½¨µØÍ¼ÔªËØ
+    // åˆ›å»ºåœ°å›¾å…ƒç´ 
     createBackground();
 
 
@@ -30,7 +30,7 @@ bool Battlefield::init()//ch
     this->addChild(troop2);
 
     auto troop3 = KnightTroop::create();
-    troop3->setPosition(Vec2(500, 300)); // ¹ÊÒâ·ÅÔ¶
+    troop3->setPosition(Vec2(500, 300)); // æ•…æ„æ”¾è¿œ
     this->addChild(troop3);
 
     auto building = PrincessTower::create();
@@ -46,11 +46,8 @@ bool Battlefield::init()//ch
 
     auto fireball = SlowDownSpell::create();
     this->addChild(fireball);
-    fireball->cast(Vec2(320, 300),ECamp::RIGHT); // ¹Ì¶¨²âÊÔµã
+    fireball->cast(Vec2(320, 300),ECamp::RIGHT); // å›ºå®šæµ‹è¯•ç‚¹
     
-
-
-
 
     if (_debugEnabled)
     {
@@ -69,10 +66,10 @@ void Battlefield::setupBattlefield(int level)
 
 void Battlefield::createBackground()
 {
-    // ³¢ÊÔ¼ÓÔØÍ¼Æ¬±³¾°
+    // å°è¯•åŠ è½½å›¾ç‰‡èƒŒæ™¯
     _background = Sprite::create("Images/background/battlefield.jpg");
 
-    // Èç¹ûÍ¼Æ¬¼ÓÔØÊ§°Ü£¬Ê¹ÓÃ´¿É«±³¾°×÷Îªfallback
+    // å¦‚æœå›¾ç‰‡åŠ è½½å¤±è´¥ï¼Œä½¿ç”¨çº¯è‰²èƒŒæ™¯ä½œä¸ºfallback
     if (!_background)
     {
         CCLOG("Warning: Failed to load Images/background/battlefield.jpg, using fallback color");
@@ -86,12 +83,12 @@ void Battlefield::createBackground()
     {
         CCLOG("Successfully loaded battlefield background image");
 
-        // »ñÈ¡Ô­Ê¼³ß´ç²¢¼ÆËãËõ·Å
+        // è·å–åŸå§‹å°ºå¯¸å¹¶è®¡ç®—ç¼©æ”¾
         Size originalSize = _background->getContentSize();
         float scaleX = 0.8 * 0.85;
         float scaleY = 0.8 * 0.8;
 
-        // ÉèÖÃËõ·Å
+        // è®¾ç½®ç¼©æ”¾
         _background->setScaleX(scaleX);
         _background->setScaleY(scaleY);
 
@@ -101,8 +98,8 @@ void Battlefield::createBackground()
             originalSize.height * scaleY);
     }
 
-    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // ÃªµãÔÚ¶¥²¿ÖĞ¼ä
-    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8-50);  // ·ÅÔÚ¶¥²¿
+    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // é”šç‚¹åœ¨é¡¶éƒ¨ä¸­é—´
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8-50);  // æ”¾åœ¨é¡¶éƒ¨
     addChild(_background, 0);
     auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
     lavenderRect->setPosition(0, _mapSize.height * 0.8-50);
@@ -118,7 +115,7 @@ void Battlefield::createDebugLayer()
     _debugDrawNode = DrawNode::create();
     addChild(_debugDrawNode, 100);
 
-    // »æÖÆÍø¸ñ
+    // ç»˜åˆ¶ç½‘æ ¼
     for (int x = 0; x < _mapSize.width; x += _gridSize.width)
     {
         _debugDrawNode->drawLine(Vec2(x, 0), Vec2(x, _mapSize.height), Color4F::WHITE);
@@ -129,7 +126,7 @@ void Battlefield::createDebugLayer()
         _debugDrawNode->drawLine(Vec2(0, y), Vec2(_mapSize.width, y), Color4F::WHITE);
     }
 
-    // »æÖÆ²¿ÊğÇøÓò
+    // ç»˜åˆ¶éƒ¨ç½²åŒºåŸŸ
     Rect player1Area(0, 0, _mapSize.width / 2, _mapSize.height);
     Rect player2Area(_mapSize.width / 2, 0, _mapSize.width / 2, _mapSize.height);
 
@@ -144,7 +141,7 @@ void Battlefield::createDebugLayer()
 
 bool Battlefield::isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const
 {
-    // ¼òµ¥¼ì²é£ºÍæ¼Ò1Ö»ÄÜ²¿ÊğÔÚ×ó°ë³¡£¬Íæ¼Ò2ÔÚÓÒ°ë³¡
+    // ç®€å•æ£€æŸ¥ï¼šç©å®¶1åªèƒ½éƒ¨ç½²åœ¨å·¦åŠåœºï¼Œç©å®¶2åœ¨å³åŠåœº
     if (playerId == 1)
     {
         return worldPos.x < _mapSize.width / 2;

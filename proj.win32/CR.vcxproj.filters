@@ -19,21 +19,6 @@
     <Filter Include="Classes\Entities">
       <UniqueIdentifier>{36a4d3f7-5e8c-451a-ad13-596acf507df4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Entities\Card">
-      <UniqueIdentifier>{34da6c1a-cc67-4f35-a02f-1fd2ca523384}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Entities\Unit">
-      <UniqueIdentifier>{c52efd7d-160b-4bdd-bbe5-4828a51d76e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Entities\Tower">
-      <UniqueIdentifier>{95c3e5ad-9cd6-4d07-871a-b7e44720ee07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Entities\Projectile">
-      <UniqueIdentifier>{a547ac33-fbbf-412f-b1ec-7629b65481ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Managers">
-      <UniqueIdentifier>{74f60622-43cb-44f2-8017-7212d97495b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\UI">
       <UniqueIdentifier>{5a2b1087-475d-4053-babc-d0b31e0713f3}</UniqueIdentifier>
     </Filter>
@@ -151,9 +136,6 @@
       <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\CountdownLabel.cpp">
-      <Filter>Classes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\HandCardUI.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ManaBar.cpp">
@@ -288,9 +270,6 @@
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CountdownLabel.h">
-      <Filter>Classes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\HandCardUI.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ManaBar.h">
