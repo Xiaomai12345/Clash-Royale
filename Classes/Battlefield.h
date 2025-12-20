@@ -2,8 +2,7 @@
 #define BATTLEFIELD_H
 
 #include "cocos2d.h"
-#include "TowerBase.h"
-class TowerBase;
+
 
 class Battlefield : public cocos2d::Node
 {
@@ -26,12 +25,10 @@ public:
     void enableDebugDraw(bool enable);
     bool isDebugDrawEnabled() const { return _debugEnabled; }
 
-    // »ñÈ¡Ëþ
-    cocos2d::Vector<TowerBase*> getAllTowers() const { return _allTowers; }
+
 
 private:
     void createBackground();
-    void createTowers();
     void createDebugLayer();
 
 private:
@@ -42,8 +39,6 @@ private:
     cocos2d::Sprite* _background;
     cocos2d::DrawNode* _debugDrawNode;
 
-    // Ëþ
-    cocos2d::Vector<TowerBase*> _allTowers;
 
     // µ÷ÊÔ
     bool _debugEnabled;

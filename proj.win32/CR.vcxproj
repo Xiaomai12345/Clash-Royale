@@ -156,30 +156,34 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AttackComponent.cpp" />
     <ClCompile Include="..\Classes\AudioManager.cpp" />
     <ClCompile Include="..\Classes\Battlefield.cpp" />
-    <ClCompile Include="..\Classes\BattleManager.cpp" />
     <ClCompile Include="..\Classes\BattleScene.cpp" />
+<<<<<<< Updated upstream
     <ClCompile Include="..\Classes\BuildingAI.cpp" />
     <ClCompile Include="..\Classes\BuildingAttackComponent.cpp" />
     <ClCompile Include="..\Classes\BuildingBase.cpp" />
     <ClCompile Include="..\Classes\BuildingCard.cpp" />
+=======
+>>>>>>> Stashed changes
     <ClCompile Include="..\Classes\Button.cpp" />
-    <ClCompile Include="..\Classes\Card.cpp" />
-    <ClCompile Include="..\Classes\CardManager.cpp" />
     <ClCompile Include="..\Classes\CollisionSystem.cpp" />
     <ClCompile Include="..\Classes\ConfigLoader.cpp" />
     <ClCompile Include="..\Classes\CountdownLabel.cpp" />
     <ClCompile Include="..\Classes\GameManager.cpp" />
+<<<<<<< Updated upstream
     <ClCompile Include="..\Classes\GroundMoveComponent.cpp" />
     <ClCompile Include="..\Classes\HandCardUI.cpp" />
     <ClCompile Include="..\Classes\KingTower.cpp" />
     <ClCompile Include="..\Classes\KnightTroop.cpp" />
     <ClCompile Include="..\Classes\LevelManager.cpp" />
+=======
+>>>>>>> Stashed changes
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\ManaBar.cpp" />
     <ClCompile Include="..\Classes\ManaSystem.cpp" />
     <ClCompile Include="..\Classes\MeleeAttackComponent.cpp" />
     <ClCompile Include="..\Classes\MoveComponent.cpp" />
     <ClCompile Include="..\Classes\PathfindingSystem.cpp" />
+<<<<<<< Updated upstream
     <ClCompile Include="..\Classes\PrincessTower.cpp" />
     <ClCompile Include="..\Classes\Projectile.cpp" />
     <ClCompile Include="..\Classes\RangedAttackComponent.cpp" />
@@ -191,7 +195,24 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\TroopBase.cpp" />
     <ClCompile Include="..\Classes\UnitBase.cpp" />
     <ClCompile Include="..\Classes\UnitCard.cpp" />
+=======
+    <ClCompile Include="ArcherTroop.cpp" />
+    <ClCompile Include="AttackComponent.cpp" />
+    <ClCompile Include="BuildingAttackComponent.cpp" />
+    <ClCompile Include="BuildingBase.cpp" />
+    <ClCompile Include="BuildngAI.cpp" />
+    <ClCompile Include="GroundMoveComponent.cpp" />
+    <ClCompile Include="KnightTroop.cpp" />
+>>>>>>> Stashed changes
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MeleeAttackComponent.cpp" />
+    <ClCompile Include="MoveComponent.cpp" />
+    <ClCompile Include="PrincessTower.cpp" />
+    <ClCompile Include="RangedAttackComponent.cpp" />
+    <ClCompile Include="SimpleBuildingAI.cpp" />
+    <ClCompile Include="SimpleTroopAIComponent.cpp" />
+    <ClCompile Include="TroopAIComponent.cpp" />
+    <ClCompile Include="TroopBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AISystem.h" />
@@ -200,26 +221,29 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AttackComponent.h" />
     <ClInclude Include="..\Classes\AudioManager.h" />
     <ClInclude Include="..\Classes\Battlefield.h" />
-    <ClInclude Include="..\Classes\BattleManager.h" />
     <ClInclude Include="..\Classes\BattleScene.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="..\Classes\BuildingAI.h" />
     <ClInclude Include="..\Classes\BuildingAttackComponent.h" />
     <ClInclude Include="..\Classes\BuildingBase.h" />
     <ClInclude Include="..\Classes\BuildingCard.h" />
+=======
+>>>>>>> Stashed changes
     <ClInclude Include="..\Classes\Button.h" />
-    <ClInclude Include="..\Classes\Card.h" />
-    <ClInclude Include="..\Classes\CardManager.h" />
     <ClInclude Include="..\Classes\CollisionSystem.h" />
     <ClInclude Include="..\Classes\ConfigLoader.h" />
     <ClInclude Include="..\Classes\CountdownLabel.h" />
     <ClInclude Include="..\Classes\GameManager.h" />
     <ClInclude Include="..\Classes\GlobalDefines.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="..\Classes\GroundMoveComponent.h" />
     <ClInclude Include="..\Classes\HandCardUI.h" />
     <ClInclude Include="..\Classes\IAttackable.h" />
     <ClInclude Include="..\Classes\KingTower.h" />
     <ClInclude Include="..\Classes\KnightTroop.h" />
     <ClInclude Include="..\Classes\LevelManager.h" />
+=======
+>>>>>>> Stashed changes
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\ManaBar.h" />
     <ClInclude Include="..\Classes\ManaSystem.h" />
@@ -227,6 +251,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\MeleeAttackComponent.h" />
     <ClInclude Include="..\Classes\MoveComponent.h" />
     <ClInclude Include="..\Classes\PathfindingSystem.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="..\Classes\PrincessTower.h" />
     <ClInclude Include="..\Classes\Projectile.h" />
     <ClInclude Include="..\Classes\RangedAttackComponent.h" />
@@ -239,7 +264,26 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\TroopBase.h" />
     <ClInclude Include="..\Classes\UnitBase.h" />
     <ClInclude Include="..\Classes\UnitCard.h" />
+=======
+    <ClInclude Include="..\Classes\Singleton.h" />
+    <ClInclude Include="ArcherTroop.h" />
+    <ClInclude Include="AttackComponent.h" />
+    <ClInclude Include="BuildingAttackComponent.h" />
+    <ClInclude Include="BuildingAI.h" />
+    <ClInclude Include="BuildingBase.h" />
+    <ClInclude Include="GroundMoveComponent.h" />
+    <ClInclude Include="IAttackable.h" />
+    <ClInclude Include="KnightTroop.h" />
+>>>>>>> Stashed changes
     <ClInclude Include="main.h" />
+    <ClInclude Include="MeleeAttackComponent.h" />
+    <ClInclude Include="MoveComponent.h" />
+    <ClInclude Include="PrincessTower.h" />
+    <ClInclude Include="RangedAttackComponent.h" />
+    <ClInclude Include="SimpleBuildingAI.h" />
+    <ClInclude Include="SimpleTroopAIComponent.h" />
+    <ClInclude Include="TroopAIComponent.h" />
+    <ClInclude Include="TroopBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cocos2d\cocos\2d\libcocos2d.vcxproj">

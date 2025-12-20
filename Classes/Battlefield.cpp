@@ -17,6 +17,7 @@ bool Battlefield::init()//ch
 
     // 创建地图元素
     createBackground();
+<<<<<<< Updated upstream
 
     auto princessTower = PrincessTower::create();
     princessTower->setPosition(Vec2(220, 1020));
@@ -39,6 +40,8 @@ bool Battlefield::init()//ch
     leftKnight->getAIComponent()->setTarget(princessTower);
     rightKnight->getAIComponent()->setTarget(princessTower);
     // 驱动更新
+=======
+>>>>>>> Stashed changes
 
     if (_debugEnabled)
     {

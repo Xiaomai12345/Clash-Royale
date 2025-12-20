@@ -19,21 +19,6 @@
     <Filter Include="Classes\Entities">
       <UniqueIdentifier>{36a4d3f7-5e8c-451a-ad13-596acf507df4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Entities\Card">
-      <UniqueIdentifier>{34da6c1a-cc67-4f35-a02f-1fd2ca523384}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Entities\Unit">
-      <UniqueIdentifier>{c52efd7d-160b-4bdd-bbe5-4828a51d76e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Entities\Tower">
-      <UniqueIdentifier>{95c3e5ad-9cd6-4d07-871a-b7e44720ee07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Entities\Projectile">
-      <UniqueIdentifier>{a547ac33-fbbf-412f-b1ec-7629b65481ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Managers">
-      <UniqueIdentifier>{74f60622-43cb-44f2-8017-7212d97495b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\UI">
       <UniqueIdentifier>{5a2b1087-475d-4053-babc-d0b31e0713f3}</UniqueIdentifier>
     </Filter>
@@ -43,6 +28,7 @@
     <Filter Include="Classes\Systems">
       <UniqueIdentifier>{a6f85c7e-3cd9-4ebd-b7bf-ddc9a72b880d}</UniqueIdentifier>
     </Filter>
+<<<<<<< Updated upstream
     <Filter Include="Classes\Entities\Troop">
       <UniqueIdentifier>{72189dfe-6e9d-486e-8002-29120be6c170}</UniqueIdentifier>
     </Filter>
@@ -87,6 +73,52 @@
     </Filter>
     <Filter Include="Classes\Entities\BAttle">
       <UniqueIdentifier>{06acead8-ef23-487c-8a7e-c0e9c1f82abd}</UniqueIdentifier>
+=======
+    <Filter Include="Classes\Entities\Card">
+      <UniqueIdentifier>{416c4047-6f55-49c0-9060-4079a32af630}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Troop">
+      <UniqueIdentifier>{88fc9e6f-baa8-443d-92cb-63ebd2f7f491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Troop\TroopAIComponent">
+      <UniqueIdentifier>{ba4741d9-4f5f-4870-b25d-85aa1f419dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Troop\TroopMoveComponent">
+      <UniqueIdentifier>{9f411bff-6aad-405b-ae9d-ae03500f6121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Attack">
+      <UniqueIdentifier>{dc581698-70dd-4f13-a22b-54f0069f858c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Attack\TroopAttackComponent">
+      <UniqueIdentifier>{73bb41e6-b76f-4cb3-91e0-a5e41a754c3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Attack\AttackBase">
+      <UniqueIdentifier>{44fe80a0-a4e6-480e-8a65-721626eccb98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Attack\BulidingAttackComponent">
+      <UniqueIdentifier>{91fb8622-e557-456d-a912-8f5115beb9e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Troop\TroopBase">
+      <UniqueIdentifier>{bd597ee9-d1f0-4464-88d8-92717949bfd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Building">
+      <UniqueIdentifier>{e56e7558-e8da-4c62-a664-1ef120cc2574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Building\BuildingAI">
+      <UniqueIdentifier>{6198317d-8007-45eb-93f0-28e1a1a94fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Building\BuildingBase">
+      <UniqueIdentifier>{502e0c0b-6cfe-4075-920c-ca85278dfb24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Unit">
+      <UniqueIdentifier>{74c686c0-bec1-4ecf-aaf0-ff6929c2ade0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Unit\Troop">
+      <UniqueIdentifier>{289bd04b-0351-40ef-80ae-f2093e256e13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Card\Unit\Building">
+      <UniqueIdentifier>{3c9fe06a-8ca5-45e3-8904-3a7f1cfcc610}</UniqueIdentifier>
+>>>>>>> Stashed changes
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +140,7 @@
     <ClCompile Include="..\Classes\MainMenuScene.cpp">
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="..\Classes\BuildingCard.cpp">
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
@@ -138,13 +171,12 @@
     <ClCompile Include="..\Classes\LevelManager.cpp">
       <Filter>Classes\Managers</Filter>
     </ClCompile>
+=======
+>>>>>>> Stashed changes
     <ClCompile Include="..\Classes\Button.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\CountdownLabel.cpp">
-      <Filter>Classes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\HandCardUI.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ManaBar.cpp">
@@ -162,12 +194,18 @@
     <ClCompile Include="..\Classes\PathfindingSystem.cpp">
       <Filter>Classes\Systems</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="..\Classes\UnitBase.cpp">
       <Filter>Classes\Entities\Unit</Filter>
+=======
+    <ClCompile Include="..\Classes\Battlefield.cpp">
+      <Filter>Classes\Entities</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
     <ClCompile Include="..\Classes\ManaSystem.cpp">
       <Filter>Classes\Systems</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="..\Classes\RangedAttackComponent.cpp">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClCompile>
@@ -215,6 +253,52 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Battlefield.cpp">
       <Filter>Classes\Entities\BAttle</Filter>
+=======
+    <ClCompile Include="SimpleTroopAIComponent.cpp">
+      <Filter>Classes\Entities\Card\Troop\TroopAIComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="TroopAIComponent.cpp">
+      <Filter>Classes\Entities\Card\Troop\TroopAIComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveComponent.cpp">
+      <Filter>Classes\Entities\Card\Troop\TroopMoveComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundMoveComponent.cpp">
+      <Filter>Classes\Entities\Card\Troop\TroopMoveComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingAttackComponent.cpp">
+      <Filter>Classes\Entities\Card\Attack\BulidingAttackComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackComponent.cpp">
+      <Filter>Classes\Entities\Card\Attack\AttackBase</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeAttackComponent.cpp">
+      <Filter>Classes\Entities\Card\Attack\TroopAttackComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="RangedAttackComponent.cpp">
+      <Filter>Classes\Entities\Card\Attack\TroopAttackComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="TroopBase.cpp">
+      <Filter>Classes\Entities\Card\Troop\TroopBase</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildngAI.cpp">
+      <Filter>Classes\Entities\Card\Building\BuildingAI</Filter>
+    </ClCompile>
+    <ClCompile Include="BuildingBase.cpp">
+      <Filter>Classes\Entities\Card\Building\BuildingBase</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleBuildingAI.cpp">
+      <Filter>Classes\Entities\Card\Building\BuildingAI</Filter>
+    </ClCompile>
+    <ClCompile Include="KnightTroop.cpp">
+      <Filter>Classes\Entities\Card\Unit\Troop</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcherTroop.cpp">
+      <Filter>Classes\Entities\Card\Unit\Troop</Filter>
+    </ClCompile>
+    <ClCompile Include="PrincessTower.cpp">
+      <Filter>Classes\Entities\Card\Unit\Building</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +323,7 @@
     <ClInclude Include="..\Classes\MainMenuScene.h">
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="..\Classes\BuildingCard.h">
       <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
@@ -269,13 +354,12 @@
     <ClInclude Include="..\Classes\LevelManager.h">
       <Filter>Classes\Managers</Filter>
     </ClInclude>
+=======
+>>>>>>> Stashed changes
     <ClInclude Include="..\Classes\Button.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\CountdownLabel.h">
-      <Filter>Classes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\HandCardUI.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ManaBar.h">
@@ -299,12 +383,18 @@
     <ClInclude Include="..\Classes\PathfindingSystem.h">
       <Filter>Classes\Systems</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="..\Classes\UnitBase.h">
       <Filter>Classes\Entities\Unit</Filter>
+=======
+    <ClInclude Include="..\Classes\Battlefield.h">
+      <Filter>Classes\Entities</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
     <ClInclude Include="..\Classes\ManaSystem.h">
       <Filter>Classes\Systems</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="..\Classes\RangedAttackComponent.h">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClInclude>
@@ -355,6 +445,55 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Battlefield.h">
       <Filter>Classes\Entities\BAttle</Filter>
+=======
+    <ClInclude Include="SimpleTroopAIComponent.h">
+      <Filter>Classes\Entities\Card\Troop\TroopAIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="TroopAIComponent.h">
+      <Filter>Classes\Entities\Card\Troop\TroopAIComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveComponent.h">
+      <Filter>Classes\Entities\Card\Troop\TroopMoveComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundMoveComponent.h">
+      <Filter>Classes\Entities\Card\Troop\TroopMoveComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="IAttackable.h">
+      <Filter>Classes\Entities\Card\Attack\AttackBase</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingAttackComponent.h">
+      <Filter>Classes\Entities\Card\Attack\BulidingAttackComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackComponent.h">
+      <Filter>Classes\Entities\Card\Attack\AttackBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeAttackComponent.h">
+      <Filter>Classes\Entities\Card\Attack\TroopAttackComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="RangedAttackComponent.h">
+      <Filter>Classes\Entities\Card\Attack\TroopAttackComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="TroopBase.h">
+      <Filter>Classes\Entities\Card\Troop\TroopBase</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingAI.h">
+      <Filter>Classes\Entities\Card\Building\BuildingAI</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildingBase.h">
+      <Filter>Classes\Entities\Card\Building\BuildingBase</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleBuildingAI.h">
+      <Filter>Classes\Entities\Card\Building\BuildingAI</Filter>
+    </ClInclude>
+    <ClInclude Include="KnightTroop.h">
+      <Filter>Classes\Entities\Card\Unit\Troop</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcherTroop.h">
+      <Filter>Classes\Entities\Card\Unit\Troop</Filter>
+    </ClInclude>
+    <ClInclude Include="PrincessTower.h">
+      <Filter>Classes\Entities\Card\Unit\Building</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
