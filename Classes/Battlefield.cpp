@@ -1,8 +1,12 @@
 #include "Battlefield.h"
-
+#include"KnightTroop.h"
+#include"ArcherTroop.h"
+#include"TroopAIComponent.h"
+#include"SimpleTroopAIComponent.h"
+#include"PrincessTower.h"
 USING_NS_CC;
 
-bool Battlefield::init()
+bool Battlefield::init()//ch
 {
     if (!Node::init())
         return false;
@@ -13,7 +17,31 @@ bool Battlefield::init()
 
     // 创建地图元素
     createBackground();
-    createTowers();
+<<<<<<< Updated upstream
+
+    auto princessTower = PrincessTower::create();
+    princessTower->setPosition(Vec2(220, 1020));
+    princessTower->setCamp(ECamp::LEFT);
+    this->addChild(princessTower);
+
+    // ===== 左边士兵 =====
+    auto leftKnight = KnightTroop::create();
+    leftKnight->setPosition(Vec2(150, 200));
+    this->addChild(leftKnight);
+
+    // ===== 右边士兵 =====
+    auto rightKnight = ArcherTroop::create();
+    rightKnight->setPosition(Vec2(800, 400));
+    this->addChild(rightKnight);
+
+    // ===== 给 AI 设置不同阵营 / 方向（关键）=====
+    leftKnight->setCamp(ECamp::RIGHT);
+    rightKnight->setCamp(ECamp::RIGHT);
+    leftKnight->getAIComponent()->setTarget(princessTower);
+    rightKnight->getAIComponent()->setTarget(princessTower);
+    // 驱动更新
+=======
+>>>>>>> Stashed changes
 
     if (_debugEnabled)
     {
@@ -74,10 +102,7 @@ void Battlefield::createBackground()
 
 }
 
-void Battlefield::createTowers()
-{
 
-}
 
 void Battlefield::createDebugLayer()
 {

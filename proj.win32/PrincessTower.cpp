@@ -44,11 +44,11 @@ void PrincessTower::setupAttack()
 void PrincessTower::setupAppearance()
 {
     // 创建塔身
-    _sprite = Sprite::create("Images/towers/princess_tower_red.png");
+    _sprite = Sprite::create("PrincessTower.jpg");
     if (_sprite)
     {
         addChild(_sprite);
-        _sprite->setScale(1.0f);
+        _sprite->setScale(0.1f);
 
         // 简单装饰
         auto flag = Sprite::create("tower_flag.png");

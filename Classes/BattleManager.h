@@ -6,7 +6,6 @@
 
 class Battlefield;
 class UnitBase;
-class TowerBase;
 
 class BattleManager
 {

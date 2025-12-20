@@ -1,10 +1,6 @@
 #include "BattleScene.h"
 #include "Battlefield.h"
-#include "TowerBase.h"
-#include "Card.h"
 #include "ManaSystem.h"
-#include "BattleManager.h"
-#include "CardManager.h"
 #include "ManaBar.h"
 
 USING_NS_CC;
@@ -40,14 +36,9 @@ bool BattleScene::init()
     // 设置输入
     setupInput();
 
-    // 初始化管理器
-    BattleManager::getInstance()->init(_battlefield);
-
     // 初始化圣水系统
     ManaSystem::getInstance()->init(5.0f, 10.0f, 0.3333f);
 
-    // 初始化卡牌管理器
-    CardManager::getInstance()->init();
 
     // 开始游戏
     startGame();
@@ -147,16 +138,6 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
 
     Vec2 touchPos = touch->getLocation();
 
-    // 检查是否点击了卡牌（简化版本）
-    auto cardManager = CardManager::getInstance();
-    auto handCards = cardManager->getHandCards();
-
-    // 如果手牌区域有卡牌，可以选择（简化逻辑）
-    if (!handCards.empty())
-    {
-        _selectedCard = handCards[0]; // 选择第一张卡牌作为示例
-        _selectedCard->setSelected(true);
-    }
 
     // 创建拖拽虚影
     if (!_cardGhost)
@@ -173,70 +154,7 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
     return true;
 }
 
-void BattleScene::onTouchMoved(Touch* touch, Event* event)
-{
-    if (_cardGhost)
-    {
-        Vec2 touchPos = touch->getLocation();
-        _cardGhost->setPosition(touchPos);
 
-        // 检查部署位置是否有效
-        bool isValid = _battlefield->isValidDeployPosition(touchPos, _isPlayer1 ? 1 : 2);
-
-        // 改变虚影颜色表示有效性
-        auto layerColor = dynamic_cast<LayerColor*>(_cardGhost->getChildren().at(0));
-        if (layerColor)
-        {
-            if (isValid)
-            {
-                layerColor->setColor(Color3B(100, 255, 100));
-                layerColor->setOpacity(150);
-            }
-            else
-            {
-                layerColor->setColor(Color3B(255, 100, 100));
-                layerColor->setOpacity(100);
-            }
-        }
-    }
-}
-
-void BattleScene::onTouchEnded(Touch* touch, Event* event)
-{
-    if (_cardGhost && _selectedCard)
-    {
-        Vec2 touchPos = touch->getLocation();
-
-        // 检查是否可以部署
-        if (_battlefield->isValidDeployPosition(touchPos, _isPlayer1 ? 1 : 2))
-        {
-            // 检查圣水是否足够
-            float manaCost = _selectedCard->getManaCost();
-            auto manaSystem = ManaSystem::getInstance();
-
-            if (manaSystem->hasEnoughMana(manaCost))
-            {
-                if (manaSystem->consumeMana(manaCost))
-                {
-                    // 使用卡牌
-                    if (_selectedCard->use(touchPos, _isPlayer1 ? 1 : 2))
-                    {
-                        // 从手牌中移除该卡牌
-                        auto cardManager = CardManager::getInstance();
-                        cardManager->useCard(_selectedCard, touchPos, _isPlayer1 ? 1 : 2);
-
-                        CCLOG("Deployed card at (%.1f, %.1f)", touchPos.x, touchPos.y);
-                    }
-                }
-            }
-        }
-
-        // 取消选择
-        _selectedCard->setSelected(false);
-        _selectedCard = nullptr;
-        _cardGhost->setVisible(false);
-    }
-}
 
 void BattleScene::startGame()
 {
@@ -293,12 +211,6 @@ void BattleScene::update(float delta)
 
     // 更新圣水系统
     ManaSystem::getInstance()->update(delta);
-
-    // 更新战斗管理器
-    BattleManager::getInstance()->update(delta);
-
-    // 更新卡牌管理器
-    CardManager::getInstance()->update(delta);
 
     // 更新皇冠显示
     for (int i = 0; i < 2; i++)
