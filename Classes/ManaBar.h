@@ -2,6 +2,8 @@
 #define MANA_BAR_H
 
 #include "cocos2d.h"
+#include"ManaSystem.h"
+
 
 class ManaBar : public cocos2d::Node
 {
@@ -9,16 +11,27 @@ public:
     CREATE_FUNC(ManaBar);
 
     virtual bool init() override;
-    virtual void update(float delta) override;
+    virtual void update(float dt) override;
+
+    // …Ë÷√ •ÀÆ£®0~max£©
+    void setManaValue(float current, float max, bool animate = true);
 
 private:
     void createUI();
-    void updateManaDisplay();
+    void drawFillByPercent(float percent);
+    void addDivisionLines(float width, float height);
+    void updateFill();
 
 private:
-    cocos2d::ProgressTimer* _manaBar;
-    cocos2d::Label* _manaLabel;
-    cocos2d::Sprite* _background;
+    cocos2d::Node* _background = nullptr;
+    cocos2d::DrawNode* _fillNode = nullptr;
+    cocos2d::DrawNode* _lineNode = nullptr;
+    cocos2d::Label* _label = nullptr;
+
+    float _currentPercent = 0.0f;
+    int   _segments = 10;
+    float _width = 600.0f;
+    float _height = 50.0f;
 };
 
-#endif // MANA_BAR_H
+#endif

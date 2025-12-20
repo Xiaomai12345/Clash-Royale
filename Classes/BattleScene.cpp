@@ -23,7 +23,7 @@ bool BattleScene::init()
     _gameStarted = false;
     _gameEnded = false;
     _gameTime = 0.0f;
-    _totalGameTime = 180.0f;
+    _totalGameTime = 70.0f;
     _playerCrowns[0] = _playerCrowns[1] = 0;
     _isPlayer1 = true;
     _selectedCard = nullptr;
@@ -44,7 +44,7 @@ bool BattleScene::init()
     BattleManager::getInstance()->init(_battlefield);
 
     // 初始化圣水系统
-    ManaSystem::getInstance()->init(5.0f, 10.0f, 0.8f);
+    ManaSystem::getInstance()->init(5.0f, 10.0f, 0.3333f);
 
     // 初始化卡牌管理器
     CardManager::getInstance()->init();
@@ -65,8 +65,9 @@ void BattleScene::setupUI()
 
     // 创建圣水条
     _manaBar = ManaBar::create();
-    _manaBar->setPosition(visibleSize.width / 2, visibleSize.height - 50);
+    _manaBar->setPosition(visibleSize.width / 4, 0);
     addChild(_manaBar, 100);
+    //_manaBar->setManaValue(5, 10, false);
 
     // 创建倒计时标签
     auto countdownLabel = Label::create("Time Left :", "fonts/Clash_Regular.otf", 20);
@@ -107,6 +108,11 @@ void BattleScene::setupUI()
     closeLabe2->setPosition(visibleSize.width - 90, visibleSize.height - 120);
     addChild(closeLabe2, 100);
 
+    auto _manaMutiple = Label::createWithSystemFont("1", "Arial Bold", 48);
+    _manaMutiple->setTextColor(Color4B(128, 0, 128, 255));
+    _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
+    addChild(_manaMutiple, 100);
+    _manaMutiple->setTag(20);
     //// 调试按钮
     //auto debugButton = MenuItemLabel::create(
     //    Label::createWithSystemFont("Debug", "Arial", 24),
@@ -238,6 +244,7 @@ void BattleScene::startGame()
     _gameTime = 0.0f;
 
     CCLOG("Game started!");
+
 }
 
 void BattleScene::update(float delta)
@@ -258,19 +265,18 @@ void BattleScene::update(float delta)
     int minutes = remainingTime / 60;
     int seconds = remainingTime % 60;
 
-    if (minutes >= 1)
-    {
-        auto _manaMutiple = Label::createWithSystemFont("1", "Arial Bold", 48);
-        _manaMutiple->setTextColor(Color4B(128, 0, 128, 255));
-        _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
-        addChild(_manaMutiple, 100);
-    }
-    else if (minutes >= 0 && minutes < 1)
+    if (minutes >= 0 && minutes < 1)
     {
         auto _manaMutiple = Label::createWithSystemFont("2", "Arial Bold", 48);
         _manaMutiple->setTextColor(Color4B(128, 0, 128, 255));
         _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
         addChild(_manaMutiple, 100);
+
+        auto _mana = dynamic_cast<Label*>(this->getChildByTag(20));
+        if (_mana)
+        {
+            _mana->setString(StringUtils::format("%d", 2));
+        }
     }
     auto countdownLabel = dynamic_cast<Label*>(getChildByTag(1001));
     if (countdownLabel)

@@ -24,8 +24,8 @@ void ManaSystem::destroyInstance()
 }
 
 ManaSystem::ManaSystem()
-    : _currentMana(0.0f)
-    , _maxMana(10.0f)
+    : _currentMana(50.0f)
+    , _maxMana(100.0f)
     , _baseRegenRate(0.8f)
     , _currentRegenRate(0.8f)
     , _currentMode(ManaMode::NORMAL)
