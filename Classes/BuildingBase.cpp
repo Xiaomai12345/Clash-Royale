@@ -63,14 +63,12 @@ void BuildingBase::update(float dt)
     // 调用AI组件更新
     if (_ai)
     {
-        CCLOG("building AI");
         _ai->update(this, dt);
     }
 
     // 攻击组件更新
     if (_attack)  // ✅ 修正：去掉多余的C括号
     {
-        CCLOG("building Attack");
         _attack->update(this, dt);
     }
 
@@ -100,6 +98,7 @@ void BuildingBase::update(float dt)
                 Color4F::BLUE
             );
         }
+
     }
 
     updateHpBarInternal();  // 更新血条
@@ -197,4 +196,8 @@ void BuildingBase::initHpBar()  // 初始化血量条
     _hpBarNode->addChild(_hpBarFg);
 
     _hpBarNode->setPosition(Vec2(0, _bodyRadius + 15.0f));
+}
+void BuildingBase::applySlow(float ratio, float duration)
+{
+    // 建筑免疫减速
 }

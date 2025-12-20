@@ -40,9 +40,8 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
         return;
     }
 
-    // 获取双方碰撞半径
+    // 获取自身半径
     float ownerRadius = owner->getBodyRadius();
-    float targetRadius = _followTarget->getBodyRadius();
 
     // 计算实际表面距离（考虑碰撞体积）
     float surfaceDistance = centerDistance - ownerRadius;
@@ -82,6 +81,42 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
     Vec2 newPos = ownerPos + direction * actualMove;
     owner->setPosition(newPos);
 
+     Node * worldNode = owner->getParent();//世界中的节点
+
+     for (Node* node : worldNode->getChildren())//遍历
+     {
+         // 确保每个节点是可攻击的目标（例如 TroopBase 或 BuildingBase）
+         auto target = dynamic_cast<IAttackable*>(node);
+         if (!target)
+             continue; // 如果不是有效的攻击目标，跳过
+
+         // 忽略自己，或者是已经死亡的目标
+         if (target == owner || target->isDead())
+             continue;
+
+         // 计算目标与当前单位的距离
+         float dist = ownerPos.distance(target->getPosition());
+         float hitRange = ownerRadius + target->getBodyRadius();  // 碰撞检测范围：当前单位半径 + 目标单位半径
+
+         // 如果在碰撞范围内，进行碰撞判断
+         if (dist <= hitRange)
+         {
+             Vec2 pushDirection = ownerPos - target->getPosition();  // 从目标指向当前单位
+             pushDirection.normalize();  // 归一化，使得方向为单位向量
+
+             // 计算推动的力度（可以根据需要调整）
+             float pushStrength = 2.0f;  // 推动力度，可以根据实际情况调节
+             Vec2 ownerNewPos = ownerPos + pushDirection * pushStrength;
+             Vec2 targetNewPos = target->getPosition() - pushDirection * pushStrength;
+
+             // 更新单位的位置，确保它们不再相撞
+             owner->setPosition(ownerNewPos);
+             target->setPosition(targetNewPos);
+
+             CCLOG("Collision resolved: %s and %s pushed apart", owner->getName().c_str(), target->getName().c_str());
+         }
+     }
+
     // 调试信息：显示目标类型
     static float debugTimer = 0;
     debugTimer += dt;
@@ -111,3 +146,4 @@ float GroundMoveComponent::calculateMovement(TroopBase* owner, const cocos2d::Ve
 
     return adjustedDistance;
 }
+

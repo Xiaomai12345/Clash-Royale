@@ -10,7 +10,7 @@ class SimpleTroopAIComponent : public TroopAIComponent
 public:
     SimpleTroopAIComponent();
 
-
+    IAttackable* checkAlertRange(TroopBase* owner);
     virtual void update(TroopBase* owner, float dt) override;
 
 };

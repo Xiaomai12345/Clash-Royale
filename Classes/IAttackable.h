@@ -7,10 +7,24 @@ USING_NS_CC;
 
 enum class ECamp//定义阵营
 {
-    LEFT,
-    RIGHT
+    LEFT,//0
+    RIGHT//1
 };
-class IAttackable
+
+enum class State {//定义状态类型
+    IDLE,       // 闲置
+    ALERT,      // 警戒（发现目标）
+    FOLLOWING,  // 跟随目标
+    ATTACKING   // 攻击
+};
+
+enum class AttackType//定义攻击类型 
+{
+Both,
+Building,
+};
+
+class IAttackable:public Node
 {
 public:
     virtual ~IAttackable() = default;
@@ -26,6 +40,15 @@ public:
 
     // 受伤
     virtual void takeDamage(int damage) = 0;
-};
+    //减速BUFF
+    virtual void applySlow(float ratio, float duration) = 0;
+
+
+
+
+    //获取阵营,获取位置
+    virtual ECamp getCamp() const = 0;
+    virtual AttackType getAttackType() const = 0;
+}; 
 
 #endif

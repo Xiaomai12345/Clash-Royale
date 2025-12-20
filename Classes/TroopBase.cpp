@@ -8,8 +8,8 @@ USING_NS_CC;
 TroopBase::TroopBase()
     : _hp(0)
     , _maxHp(0)
-    , _moveSpeed(50.0f)
-    , _bodyRadius(20.0f)
+    , _moveSpeed(300.0f)
+    , _bodyRadius(15.0f)
     , _camp(ECamp::LEFT)
     , _ai(nullptr)
     , _move(nullptr)
@@ -51,7 +51,7 @@ bool TroopBase::init()
     // =========================
     initHpBar();
     _hpBarInited = true;
-
+    _currentSpeed = _moveSpeed;
     scheduleUpdate();
     return true;
 }
@@ -101,6 +101,14 @@ void TroopBase::update(float dt)
                 Color4F::BLUE
             );
         }
+        _debugDraw->drawCircle(
+            Vec2::ZERO,
+            _alertRange,
+            0,
+            32,
+            false,
+            Color4F::ORANGE
+        );
     }
     updateHpBarInternal();//更新血条
 }
@@ -202,4 +210,20 @@ void TroopBase::initHpBar()
     _hpBarNode->addChild(_hpBarFg);
 
     _hpBarNode->setPosition(Vec2(0, _bodyRadius + 15.0f));
+}
+void TroopBase::applySlow(float ratio, float duration)//减速
+{
+    ratio = clampf(ratio, 0.1f, 1.0f);
+
+    // 直接修改“当前速度”
+    _currentSpeed = _moveSpeed * ratio;
+
+    // 定时恢复
+    runAction(Sequence::create(
+        DelayTime::create(duration),
+        CallFunc::create([this]() {
+            _currentSpeed = _moveSpeed;
+            }),
+        nullptr
+    ));
 }

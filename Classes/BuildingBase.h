@@ -13,7 +13,7 @@ class MoveComponent;
 class AttackComponent;
 
 
-class BuildingBase : public Node, public IAttackable  // ✅ 修正：类名拼写
+class BuildingBase : public IAttackable  // ✅ 修正：类名拼写
 {
 public:
     BuildingBase();
@@ -48,6 +48,7 @@ public:
     // =========================
 
     // 当前生命值
+    virtual void applySlow(float ratio, float duration) override ;//免疫
     int getHp() const { return _hp; }
 
     // 碰撞半径（用于距离 / 攻击判断）
@@ -56,6 +57,8 @@ public:
     // 阵营
     void setCamp(ECamp camp) { _camp = camp; }
     ECamp getCamp() const { return _camp; }
+    void setAttackType(AttackType attacktype) {}//设置与获取攻击类型
+    AttackType getAttackType()const { return AttackType::Both; }
 
 public:
     // =========================

@@ -85,7 +85,19 @@
     <Filter Include="Classes\Entities\Attack\BuildingAttack">
       <UniqueIdentifier>{97144b42-2bbd-435d-9dc8-fdff325d2bee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Entities\BAttle">
+    <Filter Include="Classes\Entities\Spell">
+      <UniqueIdentifier>{d6b0ff5f-a45e-4091-b1e8-4a5d8777fcf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Spell\SpellBase">
+      <UniqueIdentifier>{6d4a25c5-543e-46f0-8cb5-7634abbbbc92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Spell\DamegeSpell">
+      <UniqueIdentifier>{0df033b4-20af-45c5-865b-758372560dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Spell\ControlSpell">
+      <UniqueIdentifier>{ec7087e4-d57d-4ea5-b277-fcf78665256c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Battle">
       <UniqueIdentifier>{06acead8-ef23-487c-8a7e-c0e9c1f82abd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -214,7 +226,19 @@
       <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Battlefield.cpp">
-      <Filter>Classes\Entities\BAttle</Filter>
+      <Filter>Classes\Entities\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SpellBase.cpp">
+      <Filter>Classes\Entities\Spell\SpellBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FireBallSpell.cpp">
+      <Filter>Classes\Entities\Spell\DamegeSpell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SlowDownSpell.cpp">
+      <Filter>Classes\Entities\Spell\ControlSpell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AreaAttack.cpp">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -354,7 +378,19 @@
       <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Battlefield.h">
-      <Filter>Classes\Entities\BAttle</Filter>
+      <Filter>Classes\Entities\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SpellBase.h">
+      <Filter>Classes\Entities\Spell\SpellBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FireBallSpell.h">
+      <Filter>Classes\Entities\Spell\DamegeSpell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SlowDownSpell.h">
+      <Filter>Classes\Entities\Spell\ControlSpell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AreaAttack.h">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

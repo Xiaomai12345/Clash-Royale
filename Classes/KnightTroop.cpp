@@ -22,9 +22,9 @@ bool KnightTroop::init()
 
     // 创建并绑定近战攻击组件（骑士的近战攻击）
     auto attack = new MeleeAttackComponent(
-        50.0f,   // 攻击范围
+        25.0f,   // 攻击范围
         1.0f,     // 攻击间隔
-        50      // 伤害值
+        100      // 伤害值
     );
     setAttackComponent(attack);
 
@@ -38,7 +38,7 @@ bool KnightTroop::init()
     {
 		CCLOG("KnightTroop: Sprite loaded successfully.");
         addChild(_sprite);  // 将图片添加到当前节点
-        _sprite->setScale(0.1f);  // 根据需要调整缩放
+        _sprite->setScale(0.05f);  // 根据需要调整缩放
     }
     else
     {

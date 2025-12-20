@@ -4,6 +4,8 @@
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
 #include"PrincessTower.h"
+#include"FireBallSpell.h"
+#include"SlowDownSpell.h"
 USING_NS_CC;
 
 bool Battlefield::init()//ch
@@ -18,27 +20,34 @@ bool Battlefield::init()//ch
     // 创建地图元素
     createBackground();
 
-    auto princessTower = PrincessTower::create();
-    princessTower->setPosition(Vec2(220, 1020));
-    princessTower->setCamp(ECamp::LEFT);
-    this->addChild(princessTower);
+    auto troop1 = KnightTroop::create();
+    troop1->setPosition(Vec2(300, 300));
+    this->addChild(troop1);
 
-    // ===== 左边士兵 =====
-    auto leftKnight = KnightTroop::create();
-    leftKnight->setPosition(Vec2(150, 200));
-    this->addChild(leftKnight);
+    auto troop2 = KnightTroop::create();
+    troop2->setPosition(Vec2(340, 300));
+    this->addChild(troop2);
 
-    // ===== 右边士兵 =====
-    auto rightKnight = ArcherTroop::create();
-    rightKnight->setPosition(Vec2(800, 400));
-    this->addChild(rightKnight);
+    auto troop3 = KnightTroop::create();
+    troop3->setPosition(Vec2(500, 300)); // 故意放远
+    this->addChild(troop3);
 
-    // ===== 给 AI 设置不同阵营 / 方向（关键）=====
-    leftKnight->setCamp(ECamp::RIGHT);
-    rightKnight->setCamp(ECamp::RIGHT);
-    leftKnight->getAIComponent()->setTarget(princessTower);
-    rightKnight->getAIComponent()->setTarget(princessTower);
-    // 驱动更新
+    auto building = PrincessTower::create();
+    building->setPosition(Vec2(300,1024));
+    building->setCamp(ECamp::RIGHT);
+    this->addChild(building);
+
+    auto building1 = PrincessTower::create();
+    building1->setPosition(Vec2(500, 1024));
+    building1->setCamp(ECamp::RIGHT);
+    this->addChild(building1);
+
+
+    auto fireball = SlowDownSpell::create();
+    this->addChild(fireball);
+    fireball->cast(Vec2(320, 300),ECamp::RIGHT); // 固定测试点
+    
+
 
     if (_debugEnabled)
     {
