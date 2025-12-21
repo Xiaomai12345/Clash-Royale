@@ -6,17 +6,21 @@
 USING_NS_CC;
 
 TroopBase::TroopBase()
-    : _hp(0)
-    , _maxHp(0)
+    :  _maxHp(100)
     , _moveSpeed(300.0f)
+    , _alertRange(100.f)
     , _bodyRadius(15.0f)
     , _camp(ECamp::LEFT)
+    , _attacktype(AttackType::Both)//默认攻击类型
+    , _moveAttack(MoveAttack::Both)//默认空地均可攻击
+    , _moveAttacked(MoveAttack::Both)//默认均可被攻击
+    , _moveType(MoveType::Ground)
     , _ai(nullptr)
     , _move(nullptr)
     , _attack(nullptr)
     , _sprite(nullptr)
     , _debugDraw(nullptr)
-    , _showDebugBounds(true)
+    , _showDebugBounds(0)
     , _hpBarNode(nullptr)
     , _hpBarBg(nullptr)
     , _hpBarFg(nullptr)
@@ -34,7 +38,6 @@ bool TroopBase::init()
     if (!Node::init())
         return false;
 
-    _maxHp = 100;
     _hp = _maxHp;
 
     // =========================
@@ -77,6 +80,7 @@ void TroopBase::update(float dt)
 
     if (_showDebugBounds && _debugDraw)
     {
+		CCLOG("绘制调试范围");
         _debugDraw->clear();
 
         // 碰撞半径
@@ -149,6 +153,24 @@ void TroopBase::takeDamage(int damage)
 
     if (_hp <= 0)
         die();
+
+    // 简单受伤效果
+    if (_sprite && damage > 0)
+    {
+        _sprite->stopActionByTag(1001);  // 防止叠加
+
+        auto tintRed = TintTo::create(0.1f, Color3B::RED);
+        auto tintBack = TintTo::create(0.1f, Color3B::WHITE);
+
+        auto seq = Sequence::create(tintRed, tintBack, nullptr);
+        seq->setTag(1001);
+
+        _sprite->runAction(seq);
+    }
+
+    showDamageNumber(damage);
+
+    CCLOG("受到 %d 伤害，剩余血量：%d/%d", damage, _hp, _maxHp);
 }
 
 void TroopBase::die()
@@ -224,6 +246,29 @@ void TroopBase::applySlow(float ratio, float duration)//减速
         CallFunc::create([this]() {
             _currentSpeed = _moveSpeed;
             }),
+        nullptr
+    ));
+}
+void TroopBase::showDamageNumber(int damage)
+{
+    auto label = Label::createWithTTF(
+        StringUtils::format("-%d", damage),
+        "fonts/arial.ttf",
+        18
+    );
+    if (!label) return;
+
+    label->setColor(Color3B::RED);
+    label->setPosition(Vec2(0, 100));
+    addChild(label, 100);
+
+    // 简单的上浮消失动画
+    auto move = MoveBy::create(0.6f, Vec2(0, 40));
+    auto fade = FadeOut::create(0.6f);
+    auto remove = RemoveSelf::create();
+    label->runAction(Sequence::create(
+        Spawn::create(move, fade, nullptr),
+        remove,
         nullptr
     ));
 }

@@ -1,8 +1,7 @@
-#include "GroundMoveComponent.h"
+ï»¿#include "GroundMoveComponent.h"
 #include "TroopBase.h"
 #include "BuildingBase.h"
 #include "IAttackable.h"
-#include "cocos2d.h"
 
 USING_NS_CC;
 
@@ -14,136 +13,105 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
 {
     if (!owner || !_followTarget || owner->isDead())
     {
-        this->stop();
+        stop();
         return;
     }
 
-    // ¼ì²éÄ¿±êÊÇ·ñËÀÍö
     if (_followTarget->isDead())
     {
-        this->stop();
+        stop();
         return;
     }
 
-    // »ñÈ¡µ±Ç°Î»ÖÃºÍÄ¿±êÎ»ÖÃ
     Vec2 ownerPos = owner->getPosition();
     Vec2 targetPos = _followTarget->getWorldPosition();
 
-    // ¼ÆËã¾àÀë
-    Vec2 direction = targetPos - ownerPos;
-    float centerDistance = direction.length();
+    Vec2 toTarget = targetPos - ownerPos;
+    float dist = toTarget.length();
+    if (dist < 0.001f)
+        return;
 
-    // Èç¹ûÒÑ¾­·Ç³£½Ó½ü£¬Í£Ö¹ÒÆ¶¯
-    if (centerDistance <= 1.0f)
+    float radius = owner->getBodyRadius();
+    float surfaceDist = dist - radius;
+
+    // å·²è¿›å…¥æ”»å‡»è·ç¦»
+    if (surfaceDist <= _desiredDistance)
     {
-        this->stop();
+        stop();
         return;
     }
 
-    // »ñÈ¡×ÔÉí°ë¾¶
-    float ownerRadius = owner->getBodyRadius();
+    float speed = owner->getMoveSpeed();
+    Vec2 desiredDir = toTarget.getNormalized();
+    Vec2 desiredMove = desiredDir * speed * dt;
 
-    // ¼ÆËãÊµ¼Ê±íÃæ¾àÀë£¨¿¼ÂÇÅö×²Ìå»ı£©
-    float surfaceDistance = centerDistance - ownerRadius;
+    Vec2 finalMove = desiredMove;
 
-    // Èç¹ûÒÑ¾­´ïµ½¹¥»÷¾àÀë£¬Í£Ö¹ÒÆ¶¯
-    if (surfaceDistance <= _desiredDistance)
-    {
-        this->stop();
+    Node* world = owner->getParent();
+    if (!world)
         return;
-    }
 
-    // ¼ÆËãĞèÒªÒÆ¶¯µÄ¾àÀë
-    float distanceToMove = surfaceDistance - _desiredDistance;
+    bool hasCollision = false;
+    Vec2 collisionNormal;
 
-    // »ñÈ¡ÒÆ¶¯ËÙ¶È
-    float moveSpeed = owner->getMoveSpeed();
-    if (moveSpeed <= 0.0f)
+    // =====================
+    // ç¢°æ’æ£€æµ‹ï¼ˆåªæ£€æµ‹éšœç¢ï¼Œä¸å«ç›®æ ‡ï¼‰
+    // =====================
+    for (Node* node : world->getChildren())
     {
-        moveSpeed = 100.0f; // Ä¬ÈÏËÙ¶È
+        auto other = dynamic_cast<IAttackable*>(node);
+        if (!other || other == owner || other == _followTarget || other->isDead())
+            continue;
+
+        if (owner->getMoveType() != other->getMoveType())
+            continue;
+
+        Vec2 diff = (ownerPos + finalMove) - node->getPosition();
+        float minDist = radius + other->getBodyRadius();
+        float d = diff.length();
+
+        if (d < minDist && d > 0.001f)
+        {
+            hasCollision = true;
+            collisionNormal = diff / d; // æ³•çº¿
+            break;
+        }
     }
 
-    // ¼ÆËã±¾Ö¡×î´óÒÆ¶¯¾àÀë
-    float maxMoveThisFrame = moveSpeed * dt;
-
-    // Êµ¼ÊÒÆ¶¯¾àÀë
-    float actualMove = std::min(maxMoveThisFrame, distanceToMove);
-
-    // °²È«¼ì²é
-    if (actualMove <= 0.0f || centerDistance <= 0.0f)
+    // =====================
+    // çŠ¶æ€åˆ‡æ¢
+    // =====================
+    if (hasCollision && !_isOrbiting)
     {
-        this->stop();
-        return;
+        // ç¬¬ä¸€æ¬¡è¿›å…¥ç»•è¡Œï¼šè®¡ç®—ä¸€æ¬¡åˆ‡çº¿æ–¹å‘å¹¶é”æ­»
+        Vec2 tangent(-collisionNormal.y, collisionNormal.x);
+
+        // å†³å®šå·¦ç»•è¿˜æ˜¯å³ç»•
+        float side = desiredMove.dot(tangent);
+        if (side < 0.f)
+            tangent = -tangent;
+
+        _orbitDir = tangent.getNormalized();
+        _isOrbiting = true;
+        _orbitTimer = _minOrbitTime;
     }
 
-    // ¼ÆËãÒÆ¶¯·½Ïò²¢¸üĞÂÎ»ÖÃ
-    direction.normalize();
-    Vec2 newPos = ownerPos + direction * actualMove;
-    owner->setPosition(newPos);
-
-     Node * worldNode = owner->getParent();//ÊÀ½çÖĞµÄ½Úµã
-
-     for (Node* node : worldNode->getChildren())//±éÀú
-     {
-         // È·±£Ã¿¸ö½ÚµãÊÇ¿É¹¥»÷µÄÄ¿±ê£¨ÀıÈç TroopBase »ò BuildingBase£©
-         auto target = dynamic_cast<IAttackable*>(node);
-         if (!target)
-             continue; // Èç¹û²»ÊÇÓĞĞ§µÄ¹¥»÷Ä¿±ê£¬Ìø¹ı
-
-         // ºöÂÔ×Ô¼º£¬»òÕßÊÇÒÑ¾­ËÀÍöµÄÄ¿±ê
-         if (target == owner || target->isDead())
-             continue;
-
-         // ¼ÆËãÄ¿±êÓëµ±Ç°µ¥Î»µÄ¾àÀë
-         float dist = ownerPos.distance(target->getPosition());
-         float hitRange = ownerRadius + target->getBodyRadius();  // Åö×²¼ì²â·¶Î§£ºµ±Ç°µ¥Î»°ë¾¶ + Ä¿±êµ¥Î»°ë¾¶
-
-         // Èç¹ûÔÚÅö×²·¶Î§ÄÚ£¬½øĞĞÅö×²ÅĞ¶Ï
-         if (dist <= hitRange)
-         {
-             Vec2 pushDirection = ownerPos - target->getPosition();  // ´ÓÄ¿±êÖ¸Ïòµ±Ç°µ¥Î»
-             pushDirection.normalize();  // ¹éÒ»»¯£¬Ê¹µÃ·½ÏòÎªµ¥Î»ÏòÁ¿
-
-             // ¼ÆËãÍÆ¶¯µÄÁ¦¶È£¨¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû£©
-             float pushStrength = 2.0f;  // ÍÆ¶¯Á¦¶È£¬¿ÉÒÔ¸ù¾İÊµ¼ÊÇé¿öµ÷½Ú
-             Vec2 ownerNewPos = ownerPos + pushDirection * pushStrength;
-             Vec2 targetNewPos = target->getPosition() - pushDirection * pushStrength;
-
-             // ¸üĞÂµ¥Î»µÄÎ»ÖÃ£¬È·±£ËüÃÇ²»ÔÙÏà×²
-             owner->setPosition(ownerNewPos);
-             target->setPosition(targetNewPos);
-
-             CCLOG("Collision resolved: %s and %s pushed apart", owner->getName().c_str(), target->getName().c_str());
-         }
-     }
-
-    // µ÷ÊÔĞÅÏ¢£ºÏÔÊ¾Ä¿±êÀàĞÍ
-    static float debugTimer = 0;
-    debugTimer += dt;
-    if (debugTimer > 1.5f)
+    // =====================
+    // ç»•è¡Œé€»è¾‘
+    // =====================
+    if (_isOrbiting)
     {
-        debugTimer = 0;
+        _orbitTimer -= dt;
 
-        // Ê¶±ğÄ¿±êÀàĞÍ
-        TroopBase* troopTarget = dynamic_cast<TroopBase*>(_followTarget);
-        BuildingBase* buildingTarget = dynamic_cast<BuildingBase*>(_followTarget);
+        // ğŸ”’ å®Œå…¨å¿½ç•¥ç›®æ ‡æ–¹å‘
+        finalMove = _orbitDir * speed * dt;
 
-        const char* targetType = troopTarget ? "Troop" : (buildingTarget ? "Building" : "Unknown");
-
-        CCLOG("GroundMove: %s following %s, Distance: %.1f/%.1f",
-            owner->getName().c_str(), targetType, surfaceDistance, _desiredDistance);
+        // æ¡ä»¶æ»¡è¶³æ‰é€€å‡ºç»•è¡Œ
+        if (!hasCollision && _orbitTimer <= 0.f)
+        {
+            _isOrbiting = false;
+        }
     }
+
+    owner->setPosition(ownerPos + finalMove);
 }
-
-float GroundMoveComponent::calculateMovement(TroopBase* owner, const cocos2d::Vec2& targetPos)
-{
-    // ¼ÆËãµ±Ç°Î»ÖÃµ½Ä¿±êµÄÏòÁ¿
-    Vec2 direction = targetPos - owner->getPosition();
-    float distance = direction.length();
-
-    // ¿¼ÂÇÅö×²°ë¾¶µÄµ÷Õû
-    float adjustedDistance = distance - owner->getBodyRadius();
-
-    return adjustedDistance;
-}
-

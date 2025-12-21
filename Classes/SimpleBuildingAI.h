@@ -35,7 +35,7 @@ private:
      * @param owner 建筑自身
      * @return 找到的敌人，未找到返回nullptr
      */
-    IAttackable* findEnemyInRange(BuildingBase* owner);
+    IAttackable* findEnemyInRange(IAttackable* owner);
 
     /**
      * 检查目标是否有效且在范围内

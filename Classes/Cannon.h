@@ -1,16 +1,16 @@
-#ifndef __PRINCESS_TOWER_H__
-#define __PRINCESS_TOWER_H__
+#ifndef __CANNON_H__
+#define __CANNON_H__
 
 #include "BuildingBase.h"
 
-class PrincessTower : public BuildingBase
+class Cannon : public BuildingBase
 {
 public:
     // 使用构造函数进行赋值初始化
-    PrincessTower(float maxHp = 1200, float attackRange = 300.0f, float attackInterval = 1.f, int attackDamage = 10);
+    Cannon(float maxHp = 1500, float attackRange = 350.0f, float attackInterval = 1.5f, int attackDamage = 30);
     virtual bool init() override;  // 初始化
 
-    CREATE_FUNC(PrincessTower);
+    CREATE_FUNC(Cannon);  // 使用宏来创建实例
 
 private:
     void setupComponents();  // 初始化组件
@@ -21,4 +21,4 @@ private:
     int _attackDamage;      // 单次伤害
 };
 
-#endif // __PRINCESS_TOWER_H__
+#endif // __CANNON_H__

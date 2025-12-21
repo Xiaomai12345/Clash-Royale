@@ -6,9 +6,11 @@
 USING_NS_CC;
 
 BuildingBase::BuildingBase()  // ✅ 修正：构造函数名拼写
-    : _hp(0)
-    , _maxHp(0)
+    : _maxHp(0)
     , _bodyRadius(20.0f)
+    , _camp(ECamp::LEFT)
+    , _moveAttack(MoveAttack::Both)//默认空地均可攻击
+    , _moveAttacked(MoveAttack::Both)//默认均可被攻击
     , _ai(nullptr)
     , _attack(nullptr)
     , _sprite(nullptr)
@@ -19,7 +21,6 @@ BuildingBase::BuildingBase()  // ✅ 修正：构造函数名拼写
     , _hpBarFg(nullptr)
     , _hpBarInited(false)
     , _isDying(false)
-    , _camp(ECamp::LEFT)
 {
 }
 
@@ -32,10 +33,6 @@ bool BuildingBase::init()  // ✅ 修正：函数名拼写
     if (!Node::init())
         return false;
 
-    // ✅ 修正：如果_maxHp为0，先设置默认值
-    if (_maxHp == 0) {
-        _maxHp = 1000;  // 默认血量
-    }
     _hp = _maxHp;  // 初始化血量
 
     // =========================
@@ -135,6 +132,22 @@ void BuildingBase::takeDamage(int damage)
 
     if (_hp <= 0)
         die();
+    if (_sprite && damage > 0)
+    {
+        _sprite->stopActionByTag(1001);  // 防止叠加
+
+        auto tintRed = TintTo::create(0.1f, Color3B::RED);
+        auto tintBack = TintTo::create(0.1f, Color3B::WHITE);
+
+        auto seq = Sequence::create(tintRed, tintBack, nullptr);
+        seq->setTag(1001);
+
+        _sprite->runAction(seq);
+    }
+
+    showDamageNumber(damage);
+
+    CCLOG("受到 %d 伤害，剩余血量：%d/%d", damage, _hp, _maxHp);
 }
 
 void BuildingBase::die()
@@ -200,4 +213,28 @@ void BuildingBase::initHpBar()  // 初始化血量条
 void BuildingBase::applySlow(float ratio, float duration)
 {
     // 建筑免疫减速
+}
+
+void BuildingBase::showDamageNumber(int damage)
+{
+    auto label = Label::createWithTTF(
+        StringUtils::format("-%d", damage),
+        "fonts/arial.ttf",
+        18
+    );
+    if (!label) return;
+
+    label->setColor(Color3B::RED);
+    label->setPosition(Vec2(0, 100));
+    addChild(label, 100);
+
+    // 简单的上浮消失动画
+    auto move = MoveBy::create(0.6f, Vec2(0, 40));
+    auto fade = FadeOut::create(0.6f);
+    auto remove = RemoveSelf::create();
+    label->runAction(Sequence::create(
+        Spawn::create(move, fade, nullptr),
+        remove,
+        nullptr
+    ));
 }

@@ -1,15 +1,9 @@
-#ifndef __GROUND_MOVE_COMPONENT_H__
+ï»¿#ifndef __GROUND_MOVE_COMPONENT_H__
 #define __GROUND_MOVE_COMPONENT_H__
 
 #include "MoveComponent.h"
+#include "cocos2d.h"
 
-// =========================
-// GroundMoveComponent
-// =========================
-//
-// µØÃæÒÆ¶¯×é¼ş£¨Ö±Ïß×·×Ù°æ±¾£©
-// Ö§³Ö×·×Ù£ºÊ¿±ø(TroopBase) ºÍ ½¨Öş(BuildingBase)
-//
 class GroundMoveComponent : public MoveComponent
 {
 public:
@@ -17,12 +11,18 @@ public:
     virtual ~GroundMoveComponent() = default;
 
 protected:
-    // ¾ßÌåµÄÒÆ¶¯Âß¼­ÊµÏÖ
     virtual void onUpdateMove(TroopBase* owner, float dt) override;
 
 private:
-    // ¸¨Öú·½·¨£º¼ÆËãÊµ¼ÊĞèÒªÒÆ¶¯µÄ¾àÀë
-    float calculateMovement(TroopBase* owner, const cocos2d::Vec2& targetPos);
+    // =====================
+    // ç»•è¡Œï¼ˆé¿éšœï¼‰çŠ¶æ€
+    // =====================
+    bool _isOrbiting = false;        // æ˜¯å¦æ­£åœ¨ç»•è¡Œ
+    cocos2d::Vec2 _orbitDir;         // ğŸ”’ é”æ­»çš„ç»•è¡Œæ–¹å‘
+    float _orbitTimer = 0.f;         // ç»•è¡Œæœ€å°æŒç»­æ—¶é—´
+
+    // å‚æ•°ï¼ˆå¯è°ƒï¼‰
+    float _minOrbitTime = 0.25f;     // æœ€çŸ­ç»•è¡Œæ—¶é—´
 };
 
 #endif // __GROUND_MOVE_COMPONENT_H__

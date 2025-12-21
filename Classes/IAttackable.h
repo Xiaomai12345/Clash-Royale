@@ -22,6 +22,20 @@ enum class AttackType//定义攻击类型
 {
 Both,
 Building,
+None
+};
+
+enum class MoveType//定义攻击类型 
+{
+    Ground,
+    Air,
+};
+
+enum class MoveAttack//定义因移动方式而造成的攻击不同 
+{
+    Both,//两者都行
+    Ground,
+    Air
 };
 
 class IAttackable:public Node
@@ -48,7 +62,11 @@ public:
 
     //获取阵营,获取位置
     virtual ECamp getCamp() const = 0;
+    virtual State getState() const = 0;
     virtual AttackType getAttackType() const = 0;
+    virtual MoveAttack getMoveAttack() const = 0;//获取我可以攻击类型
+    virtual MoveAttack getMoveAttacked() const = 0;//获取被攻击类型
+    virtual MoveType   getMoveType() const = 0;//h获取被攻击类型
 }; 
 
 #endif

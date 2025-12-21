@@ -1,11 +1,7 @@
-#include "Battlefield.h"
-#include"KnightTroop.h"
-#include"ArcherTroop.h"
+ï»¿#include "Battlefield.h"
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
-#include"PrincessTower.h"
-#include"FireBallSpell.h"
-#include"SlowDownSpell.h"
+#include"AllCards.h"
 USING_NS_CC;
 
 bool Battlefield::init()//ch
@@ -17,7 +13,7 @@ bool Battlefield::init()//ch
     _mapSize = Size(1308, 1732);
     _gridSize = Size(80, 80);
 
-    // ´´½¨µØÍ¼ÔªËØ
+    // åˆ›å»ºåœ°å›¾å…ƒç´ 
     createBackground();
 
 
@@ -30,23 +26,94 @@ bool Battlefield::init()//ch
     this->addChild(troop2);
 
     auto troop3 = KnightTroop::create();
-    troop3->setPosition(Vec2(500, 300)); // ¹ÊÒâ·ÅÔ¶
+    troop3->setPosition(Vec2(500, 300)); 
     this->addChild(troop3);
+
+
+    auto troop6 = Giant::create();
+    troop6->setPosition(Vec2(100, 300));
+    this->addChild(troop6);
+
+    auto troop7 = SkeletonTroop::create();
+    troop7->setPosition(Vec2(50, 300));
+    this->addChild(troop7);
+
+
+	CCLOG("creat skeleton legion");
+    auto legion = SkeletonLegion::create(6, 20.f);
+    this->addChild(legion);
+    legion->spawnAt(this, Vec2(400, 500));
+
+
+    auto tombstone = SkeletonTombstone::create();
+    tombstone->setPosition(Vec2(500, 600));  // è®¾ç½®å¢“ç¢‘ä½ç½®
+    this->addChild(tombstone);  // å°†å¢“ç¢‘åŠ å…¥åœºæ™¯
+   
+
 
     auto building = PrincessTower::create();
     building->setPosition(Vec2(300,1024));
     building->setCamp(ECamp::RIGHT);
     this->addChild(building);
 
+
     auto building1 = PrincessTower::create();
     building1->setPosition(Vec2(500, 1024));
     building1->setCamp(ECamp::RIGHT);
     this->addChild(building1);
 
+    auto building2 = KingdomTower::create();
+    building2->setPosition(Vec2(450, 1200));
+    building2->setCamp(ECamp::RIGHT);
+    this->addChild(building2);
+
+    auto troop4 = ArcherTroop::create();
+    troop4->setPosition(Vec2(400, 500));
+    troop4->setCamp(ECamp::RIGHT);
+    this->addChild(troop4);
+
+
+    auto troop5 = DragonBaby::create();
+    troop5->setPosition(Vec2(400, 800));
+    troop5->setCamp(ECamp::RIGHT);
+    this->addChild(troop5);
+
+    auto mini = Minions::create();
+    mini->setPosition(Vec2(400, 700));
+    mini->setCamp(ECamp::RIGHT);
+    this->addChild(mini);
+
+    auto Valkyrie = ValkyrieTroop::create();
+    Valkyrie->setPosition(Vec2(400, 600));
+    Valkyrie->setCamp(ECamp::RIGHT);
+    this->addChild(Valkyrie);
+
+    auto buildingleft = PrincessTower::create();
+    buildingleft->setPosition(Vec2(200, 500));
+    buildingleft->setCamp(ECamp::LEFT);
+    this->addChild(buildingleft);
+
+    auto building1left = PrincessTower::create();
+    building1left->setPosition(Vec2(650, 500));
+    building1left->setCamp(ECamp::LEFT);
+    this->addChild(building1left);
+
+    auto building2left = KingdomTower::create();
+    building2left->setPosition(Vec2(450, 300));
+    building2left->setCamp(ECamp::LEFT);
+    this->addChild(building2left);
+
+    auto building3left = Cannon::create();
+    building3left->setPosition(Vec2(450, 500));
+    building3left->setCamp(ECamp::LEFT);
+    this->addChild(building3left);
+
+
+
 
     auto fireball = SlowDownSpell::create();
     this->addChild(fireball);
-    fireball->cast(Vec2(320, 300),ECamp::RIGHT); // ¹Ì¶¨²âÊÔµã
+    fireball->cast(Vec2(320, 300),ECamp::RIGHT); // å›ºå®šæµ‹è¯•ç‚¹
     
 
 
@@ -69,10 +136,10 @@ void Battlefield::setupBattlefield(int level)
 
 void Battlefield::createBackground()
 {
-    // ³¢ÊÔ¼ÓÔØÍ¼Æ¬±³¾°
+    // å°è¯•åŠ è½½å›¾ç‰‡èƒŒæ™¯
     _background = Sprite::create("Images/background/battlefield.jpg");
 
-    // Èç¹ûÍ¼Æ¬¼ÓÔØÊ§°Ü£¬Ê¹ÓÃ´¿É«±³¾°×÷Îªfallback
+    // å¦‚æœå›¾ç‰‡åŠ è½½å¤±è´¥ï¼Œä½¿ç”¨çº¯è‰²èƒŒæ™¯ä½œä¸ºfallback
     if (!_background)
     {
         CCLOG("Warning: Failed to load Images/background/battlefield.jpg, using fallback color");
@@ -86,12 +153,12 @@ void Battlefield::createBackground()
     {
         CCLOG("Successfully loaded battlefield background image");
 
-        // »ñÈ¡Ô­Ê¼³ß´ç²¢¼ÆËãËõ·Å
+        // è·å–åŸå§‹å°ºå¯¸å¹¶è®¡ç®—ç¼©æ”¾
         Size originalSize = _background->getContentSize();
         float scaleX = 0.8 * 0.85;
         float scaleY = 0.8 * 0.8;
 
-        // ÉèÖÃËõ·Å
+        // è®¾ç½®ç¼©æ”¾
         _background->setScaleX(scaleX);
         _background->setScaleY(scaleY);
 
@@ -101,8 +168,8 @@ void Battlefield::createBackground()
             originalSize.height * scaleY);
     }
 
-    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // ÃªµãÔÚ¶¥²¿ÖĞ¼ä
-    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8-50);  // ·ÅÔÚ¶¥²¿
+    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // é”šç‚¹åœ¨é¡¶éƒ¨ä¸­é—´
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8-50);  // æ”¾åœ¨é¡¶éƒ¨
     addChild(_background, 0);
     auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
     lavenderRect->setPosition(0, _mapSize.height * 0.8-50);
@@ -118,7 +185,7 @@ void Battlefield::createDebugLayer()
     _debugDrawNode = DrawNode::create();
     addChild(_debugDrawNode, 100);
 
-    // »æÖÆÍø¸ñ
+    // ç»˜åˆ¶ç½‘æ ¼
     for (int x = 0; x < _mapSize.width; x += _gridSize.width)
     {
         _debugDrawNode->drawLine(Vec2(x, 0), Vec2(x, _mapSize.height), Color4F::WHITE);
@@ -129,7 +196,7 @@ void Battlefield::createDebugLayer()
         _debugDrawNode->drawLine(Vec2(0, y), Vec2(_mapSize.width, y), Color4F::WHITE);
     }
 
-    // »æÖÆ²¿ÊğÇøÓò
+    // ç»˜åˆ¶éƒ¨ç½²åŒºåŸŸ
     Rect player1Area(0, 0, _mapSize.width / 2, _mapSize.height);
     Rect player2Area(_mapSize.width / 2, 0, _mapSize.width / 2, _mapSize.height);
 
@@ -144,7 +211,7 @@ void Battlefield::createDebugLayer()
 
 bool Battlefield::isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const
 {
-    // ¼òµ¥¼ì²é£ºÍæ¼Ò1Ö»ÄÜ²¿ÊğÔÚ×ó°ë³¡£¬Íæ¼Ò2ÔÚÓÒ°ë³¡
+    // ç®€å•æ£€æŸ¥ï¼šç©å®¶1åªèƒ½éƒ¨ç½²åœ¨å·¦åŠåœºï¼Œç©å®¶2åœ¨å³åŠåœº
     if (playerId == 1)
     {
         return worldPos.x < _mapSize.width / 2;

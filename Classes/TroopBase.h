@@ -33,6 +33,7 @@ public:
 
     // 受伤并更新血量
     void takeDamage(int damage);
+    void showDamageNumber(int damage);
     void updateHpBar();
 
     // 检查是否死亡
@@ -68,13 +69,20 @@ public:
 
 
 
-    // 阵营
+    // 设置与获取一些必要的东西
     void setCamp(ECamp camp) { _camp = camp; }
     ECamp getCamp() const { return _camp; }
     void setAttackType(AttackType attacktype) { _attacktype = attacktype; }//设置与获取攻击类型
     AttackType getAttackType()const { return _attacktype; }
     void setState(State state) { _state = state;}//设置状态
     State getState() const { return _state; }//返回状态
+    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }//设置
+    MoveAttack getMoveAttack()const { return _moveAttack; }//用以返回
+    void setMoveAttacked(MoveAttack moveAttacked) { _moveAttacked = moveAttacked; }//设置
+    MoveAttack getMoveAttacked()const { return _moveAttacked; }//用以返回
+    void setMoveType(MoveType moveType) { _moveType = moveType; }//设置
+    MoveType getMoveType()const { return _moveType; }//用以移动类型
+
 
 public:
     // =========================
@@ -96,13 +104,16 @@ protected:
     int   _hp = 0;          // 当前生命
     int   _maxHp = 0;       // 最大生命
     float _moveSpeed = 0.f; // 移动速度
-    float _alertRange=50.0f;      // 警戒范围
+    float _alertRange=0.f;      // 警戒范围
     float _currentSpeed = 0.f; //当前的移动速度
     float _bodyRadius = 10.0f;
 
     State _state = State::IDLE;//一开始处于闲置状态
     ECamp _camp = ECamp::LEFT;//阵营
     AttackType _attacktype = AttackType::Both;//默认攻击类型
+    MoveAttack _moveAttack = MoveAttack::Both;//默认空地均可攻击
+    MoveAttack _moveAttacked = MoveAttack::Both;//默认均可被攻击
+    MoveType   _moveType = MoveType::Ground;
 
 protected:
     // =========================
@@ -124,7 +135,7 @@ protected:
     DrawNode* _debugDraw = nullptr;
 
     // 是否显示调试框
-    bool _showDebugBounds = true;
+    bool _showDebugBounds = 0;
 
     Node* _hpBarNode = nullptr;        // 血条根节点
     LayerColor* _hpBarBg = nullptr;    // 血条背景
