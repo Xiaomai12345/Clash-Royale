@@ -1,4 +1,5 @@
 #include "AppDelegate.h"
+#include "DataManager.h" 
 #include "BattleScene.h"
 
 // 如果使用预编译头，请包含它
@@ -29,7 +30,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
         _director->setOpenGLView(_glview);
     }
-
+    //加载卡牌Json配置
+    DataManager::getInstance()->loadCardConfig("data\\card_config.json");
     // 设置FPS显示
     _director->setDisplayStats(true);
 
@@ -51,4 +53,8 @@ void AppDelegate::applicationDidEnterBackground()
 void AppDelegate::applicationWillEnterForeground()
 {
     Director::getInstance()->startAnimation();
+}
+//退出时销毁实例
+void AppDelegate::applicationExit() {
+    DataManager::destroyInstance();
 }
