@@ -2,46 +2,73 @@
 #define BATTLEFIELD_H
 
 #include "cocos2d.h"
-
-
+#include "Grid.h"
+#include <vector>
+struct Coordinate
+{
+    int x;
+    int y;
+    Coordinate(int x, int y) :x(x), y(y) {}
+};
+struct Area
+{
+    Coordinate leftBottom;
+    Coordinate rightTop;
+    Area(Coordinate leftbottom, Coordinate righttop) :leftBottom(leftbottom), rightTop(righttop) {}
+    Area(int x1, int y1, int x2, int y2) :leftBottom(x1, y1), rightTop(x2, y2) {}
+    Area() : leftBottom(0, 0), rightTop(0, 0) {}
+};
 class Battlefield : public cocos2d::Node
 {
 public:
     CREATE_FUNC(Battlefield);
-
     virtual bool init() override;
 
-    // 地图初始化
+    // 初始化
     void setupBattlefield(int level = 1);
 
-    // 位置有效性检查
+    // 判定
     bool isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const;
+    bool isWalkable(const cocos2d::Vec2& worldPos) const;
 
-    // 获取地图尺寸
-    cocos2d::Size getMapSize() const { return _mapSize; }
-    cocos2d::Size getGridSize() const { return _gridSize; }
+    // 坐标转换
+    bool worldToGrid(const cocos2d::Vec2& worldPos, int& outRow, int& outCol) const;
+    cocos2d::Vec2 gridToWorld(int row, int col) const;
 
-    // 调试绘制
+    // 调试
     void enableDebugDraw(bool enable);
     bool isDebugDrawEnabled() const { return _debugEnabled; }
-
-
 
 private:
     void createBackground();
     void createDebugLayer();
+    void drawDebugGrids();
+
+    void createGrids();
+    void buildRegions();
+
+    Grid* getGrid(int row, int col);
+    const Grid* getGrid(int row, int col) const;
 
 private:
     cocos2d::Size _mapSize;
     cocos2d::Size _gridSize;
+    //32行，18列，世界坐标下左下角点(80,280)
+    const float gridHeight = 31.11;
+    const float gridWeight = 40.5;
+    int _rows = 32;
+    int _cols = 18;
+    Area myArea1, myArea2, myArea3, enemyArea1, enemyArea2, enemyArea3,
+        bridgeArea1, bridgeArea2, riverArea1, riverArea2, riverArea3, riverArea4;
+    std::vector<Grid> _grids;
+    std::vector<Area>myArea;
+    std::vector<Area>enemyArea;
+    std::vector<Area>bridgeArea;
+    std::vector<Area>riverArea;
+    cocos2d::Sprite* _background = nullptr;
+    cocos2d::DrawNode* _debugDrawNode = nullptr;
 
-    // 地图元素
-    cocos2d::Sprite* _background;
-    cocos2d::DrawNode* _debugDrawNode;
-
-
-    // 调试
-    bool _debugEnabled;
+    bool _debugEnabled = false;
 };
 
 #endif // BATTLEFIELD_H

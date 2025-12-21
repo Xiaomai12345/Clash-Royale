@@ -386,6 +386,9 @@
     <ClInclude Include="..\Classes\Card.h">
       <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Grid.h">
+      <Filter>Classes\Entities\Battle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
