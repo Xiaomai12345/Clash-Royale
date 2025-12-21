@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "火球术",
+    "manaCost": 4.0,
+    "imgPath": "cards/fireball.png"
+  },
+  {
+    "id": 2,
+    "name": "减速药水",
+    "manaCost": 2.0,
+    "imgPath": "cards/zap.png"
+  },
+  {
+    "id": 3,
+    "name": "弓箭手",
+    "manaCost": 3.0,
+    "imgPath": "cards/archer.png"
+  },
+  {
+    "id": 4,
+    "name": "骑士",
+    "manaCost": 3.0,
+    "imgPath": "cards/knight.png"
+  },
+  {
+    "id": 5,
+    "name": "飞龙宝宝",
+    "manaCost": 4.0,
+    "imgPath": "cards/baby_dragon.png"
+  },
+  {
+    "id": 6,
+    "name": "巨人",
+    "manaCost": 5.0,
+    "imgPath": "cards/giant.png"
+  }
+]
