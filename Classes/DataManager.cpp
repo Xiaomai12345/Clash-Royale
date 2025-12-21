@@ -2,7 +2,7 @@
 
 DataManager* DataManager::_instance = nullptr;
 
-//»ñÈ¡ÊµÀı
+//è·å–å®ä¾‹
 DataManager* DataManager::getInstance() {
     if (_instance == nullptr) {
         _instance = new DataManager();
@@ -10,7 +10,7 @@ DataManager* DataManager::getInstance() {
     }
     return _instance;
 }
-//É¾³ıÊµÀı
+//åˆ é™¤å®ä¾‹
 void DataManager::destroyInstance() {
     if (_instance != nullptr) {
         delete _instance;
@@ -18,47 +18,47 @@ void DataManager::destroyInstance() {
     }
 }
 
-// ¼ÓÔØJson
+// åŠ è½½Json
 bool DataManager::loadCardConfig(const std::string& jsonPath) {
-    // ±ÜÃâÖØ¸´½âÎö
+    // é¿å…é‡å¤è§£æ
     if (_isLoaded) {
-        log("DataManager£º¿¨ÅÆÊı¾İÒÑ¼ÓÔØ£¬ÎŞĞèÖØ¸´¼ÓÔØ£¡");
+        log("DataManagerï¼šå¡ç‰Œæ•°æ®å·²åŠ è½½ï¼Œæ— éœ€é‡å¤åŠ è½½ï¼");
         return true;
     }
 
     std::string filePath = FileUtils::getInstance()->fullPathForFilename(jsonPath);
     std::string jsonContent = FileUtils::getInstance()->getStringFromFile(filePath);
 
-    // ¼ì²éÎÄ¼şÊÇ·ñÎª¿Õ
+    // æ£€æŸ¥æ–‡ä»¶æ˜¯å¦ä¸ºç©º
     if (jsonContent.empty()) {
-        log("DataManager£ºJsonÎÄ¼şÎª¿Õ£¡Â·¾¶£º%s", filePath.c_str());
+        log("DataManagerï¼šJsonæ–‡ä»¶ä¸ºç©ºï¼è·¯å¾„ï¼š%s", filePath.c_str());
         return false;
     }
 
     rapidjson::Document jsonDoc;
     jsonDoc.Parse(jsonContent.c_str());
 
-    // ¼ì²é½âÎö´íÎó
+    // æ£€æŸ¥è§£æé”™è¯¯
     if (jsonDoc.HasParseError()) {
-        log("DataManager£ºJson½âÎöÊ§°Ü£¡´íÎóÂë£º%d£¬Â·¾¶£º%s", jsonDoc.GetParseError(), filePath.c_str());
+        log("DataManagerï¼šJsonè§£æå¤±è´¥ï¼é”™è¯¯ç ï¼š%dï¼Œè·¯å¾„ï¼š%s", jsonDoc.GetParseError(), filePath.c_str());
         return false;
     }
 
-    // ¼ì²éÊÇ·ñÎªÊı×é¸ñÊ½
+    // æ£€æŸ¥æ˜¯å¦ä¸ºæ•°ç»„æ ¼å¼
     if (!jsonDoc.IsArray()) {
-        log("DataManager£ºJson²»ÊÇÊı×é¸ñÊ½£¡Â·¾¶£º%s", filePath.c_str());
+        log("DataManagerï¼šJsonä¸æ˜¯æ•°ç»„æ ¼å¼ï¼è·¯å¾„ï¼š%s", filePath.c_str());
         return false;
     }
 
-    // ½âÎöËùÓĞ¿¨ÅÆÊı¾İ
+    // è§£ææ‰€æœ‰å¡ç‰Œæ•°æ®
     _allCardData.clear();
     for (int i = 0; i < jsonDoc.Size(); i++) {
         rapidjson::Value& card = jsonDoc[i];
         ValueMap cardMap;
 
-        // Èİ´í´¦Àí£ºÈç¹ûJsonÀïÃ»ÓĞÄ³¸ö×Ö¶Î£¬ÉèÖÃÄ¬ÈÏÖµ£¨±ÜÃâ±ÀÀ££©
+        // å®¹é”™å¤„ç†ï¼šå¦‚æœJsoné‡Œæ²¡æœ‰æŸä¸ªå­—æ®µï¼Œè®¾ç½®é»˜è®¤å€¼ï¼ˆé¿å…å´©æºƒï¼‰
         cardMap["id"] = card.HasMember("id") ? card["id"].GetInt() : -1;
-        cardMap["name"] = card.HasMember("name") ? card["name"].GetString() : "Î´Öª¿¨ÅÆ";
+        cardMap["name"] = card.HasMember("name") ? card["name"].GetString() : "æœªçŸ¥å¡ç‰Œ";
         cardMap["manaCost"] = card.HasMember("manaCost") ? card["manaCost"].GetFloat() : 0.0f;
         cardMap["imgPath"] = card.HasMember("imgPath") ? card["imgPath"].GetString() : "";
 
@@ -66,11 +66,11 @@ bool DataManager::loadCardConfig(const std::string& jsonPath) {
     }
 
     _isLoaded = true;
-    log("DataManager£º³É¹¦¼ÓÔØ%dÕÅ¿¨ÅÆÊı¾İ£¡", _allCardData.size());
+    log("DataManagerï¼šæˆåŠŸåŠ è½½%då¼ å¡ç‰Œæ•°æ®ï¼", _allCardData.size());
     return true;
 }
 
-// ¸ù¾İID»ñÈ¡¿¨ÅÆÊı¾İ
+// æ ¹æ®IDè·å–å¡ç‰Œæ•°æ®
 ValueMap DataManager::getCardDataById(int cardId) {
     for (auto& cardValue : _allCardData) {
         ValueMap cardMap = cardValue.asValueMap();
@@ -78,16 +78,16 @@ ValueMap DataManager::getCardDataById(int cardId) {
             return cardMap;
         }
     }
-    log("DataManager£ºÎ´ÕÒµ½IDÎª%dµÄ¿¨ÅÆ£¡", cardId);
+    log("DataManagerï¼šæœªæ‰¾åˆ°IDä¸º%dçš„å¡ç‰Œï¼", cardId);
     return ValueMap();
 }
 
-// ĞÂÔö£º»ñÈ¡ËùÓĞ¿¨ÅÆÊı¾İ
+// æ–°å¢ï¼šè·å–æ‰€æœ‰å¡ç‰Œæ•°æ®
 ValueVector DataManager::getAllCardData() {
     return _allCardData;
 }
 
-// ĞÂÔö£º¸ù¾İÃû³Æ»ñÈ¡¿¨ÅÆÊı¾İ£¨±¸ÓÃ£©
+// æ–°å¢ï¼šæ ¹æ®åç§°è·å–å¡ç‰Œæ•°æ®ï¼ˆå¤‡ç”¨ï¼‰
 ValueMap DataManager::getCardDataByName(const std::string& name) {
     for (auto& cardValue : _allCardData) {
         ValueMap cardMap = cardValue.asValueMap();
@@ -95,11 +95,11 @@ ValueMap DataManager::getCardDataByName(const std::string& name) {
             return cardMap;
         }
     }
-    log("DataManager£ºÎ´ÕÒµ½Ãû³ÆÎª%sµÄ¿¨ÅÆ£¡", name.c_str());
+    log("DataManagerï¼šæœªæ‰¾åˆ°åç§°ä¸º%sçš„å¡ç‰Œï¼", name.c_str());
     return ValueMap();
 }
 
-// ĞÂÔö£º»ñÈ¡¿¨ÅÆ×ÜÊı
+// æ–°å¢ï¼šè·å–å¡ç‰Œæ€»æ•°
 int DataManager::getCardCount() {
     return _allCardData.size();
 }

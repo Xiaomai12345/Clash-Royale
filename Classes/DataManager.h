@@ -12,23 +12,23 @@ private:
     ~DataManager() {}
     static DataManager* _instance;
 
-    ValueVector _allCardData; // ´æ´¢ËùÓĞ¿¨ÅÆÊı¾İ
-    bool _isLoaded = false; // ±ê¼ÇÊÇ·ñÒÑ¼ÓÔØ
+    ValueVector _allCardData; // å­˜å‚¨æ‰€æœ‰å¡ç‰Œæ•°æ®
+    bool _isLoaded = false; // æ ‡è®°æ˜¯å¦å·²åŠ è½½
 
 public:
-    // »ñÈ¡µ¥Àı
+    // è·å–å•ä¾‹
     static DataManager* getInstance();
-    // ÊÍ·Åµ¥Àı
+    // é‡Šæ”¾å•ä¾‹
     static void destroyInstance();
-    //¼ÓÔØ¿¨ÅÆJson
+    //åŠ è½½å¡ç‰ŒJson
     bool loadCardConfig(const std::string& jsonPath);
-    //¸ù¾İID»ñÈ¡¿¨ÅÆÊı¾İ
+    //æ ¹æ®IDè·å–å¡ç‰Œæ•°æ®
     ValueMap getCardDataById(int cardId);
-    //»ñÈ¡ËùÓĞ¿¨ÅÆÊı¾İ
+    //è·å–æ‰€æœ‰å¡ç‰Œæ•°æ®
     ValueVector getAllCardData();
-    //¸ù¾İÃû³Æ»ñÈ¡¿¨ÅÆÊı¾İ
+    //æ ¹æ®åç§°è·å–å¡ç‰Œæ•°æ®
     ValueMap getCardDataByName(const std::string& name);
-    //»ñÈ¡¿¨ÅÆ×ÜÊı
+    //è·å–å¡ç‰Œæ€»æ•°
     int getCardCount();
 
 private:
