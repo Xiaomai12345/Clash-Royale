@@ -219,6 +219,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\FireBallSpell.h" />
     <ClInclude Include="..\Classes\GameManager.h" />
     <ClInclude Include="..\Classes\GlobalDefines.h" />
+    <ClInclude Include="..\Classes\Grid.h" />
     <ClInclude Include="..\Classes\GroundMoveComponent.h" />
     <ClInclude Include="..\Classes\HandCardUI.h" />
     <ClInclude Include="..\Classes\IAttackable.h" />
