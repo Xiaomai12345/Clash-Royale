@@ -25,6 +25,9 @@ public:
     void setSelected(bool selected);
     bool isSelected() const { return _isSelected; }
 
+    // ===== ÃüÖĞ¼ì²â£¨ÓÃÓÚÍÏ×§£©=====
+    bool hitTest(const cocos2d::Vec2& worldPos) const;
+
 protected:
     int _cardId;
     std::string _name;

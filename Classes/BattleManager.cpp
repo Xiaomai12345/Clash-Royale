@@ -30,6 +30,8 @@ BattleManager::BattleManager()
     , _gameEnded(false)
     , _gameTime(0.0f)
     , _currentGameMode("normal")
+    ,myCrown(0),myKingAlive(true),myLeftPrincessAlive(true),myRightPrincessAlive(true)
+    ,enemyCrown(0),enemyKingAlive(true),enemyLeftPrincessAlive(false),enemyRightPrincessAlive(true)
 {
     _manaSystem = ManaSystem::getInstance();
 
