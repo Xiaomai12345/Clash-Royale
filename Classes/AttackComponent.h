@@ -44,9 +44,9 @@ protected:
 protected:
     IAttackable* _target = nullptr;
 
-    float _attackRange = 0.f;
-    float _attackInterval = 1.f;
-    float _cooldown = 0.f;
+	float _attackRange = 0.f;// ¹¥»÷·¶Î§
+	float _attackInterval = 1.f;// ¹¥»÷¼ä¸ô£¨Ãë£©
+	float _cooldown = 0.f;// ¹¥»÷ÀäÈ´¼ÆÊ±Æ÷
 };
 
 #endif // __ATTACK_COMPONENT_H__

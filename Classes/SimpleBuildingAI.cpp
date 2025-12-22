@@ -76,7 +76,7 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
     }
 }
 
-IAttackable* SimpleBuildingAI::findEnemyInRange(BuildingBase* owner)
+IAttackable* SimpleBuildingAI::findEnemyInRange(IAttackable* owner)//寻找范围内的敌人
 {
     if (!owner->getParent())
         return nullptr;
@@ -86,27 +86,33 @@ IAttackable* SimpleBuildingAI::findEnemyInRange(BuildingBase* owner)
     float closestDistance = FLT_MAX;
 
     // 遍历所有子节点
-    auto children = owner->getParent()->getChildren();
-    for (auto child : children)
+    Node* parent = owner->getParent();
+    if (!parent)
+        return nullptr;
+    for (Node* node : parent->getChildren())
     {
         // 跳过自己
-        if (child == owner)
+        if (node == owner)
             continue;
 
-        // 只查找TroopBase（士兵）
-        TroopBase* troop = dynamic_cast<TroopBase*>(child);
-        if (!troop || troop->isDead())
+        auto* target = dynamic_cast<IAttackable*>(node);
+        if (!target || target->isDead())
+            continue;
+
+        if (owner->getState() == State::ATTACKING && target != _target)//如果当前处于攻击状态，并且目标不是当前目标，则跳过
             continue;
 
         // 检查是否是敌人（不同阵营）
-        if (troop->getCamp() != owner->getCamp())
+        if (target->getCamp() != owner->getCamp())
         {
-            float distance = towerPos.distance(troop->getPosition());
+            if (target->getMoveAttacked() != MoveAttack::Both && owner->getMoveAttack() != MoveAttack::Both && target->getMoveAttacked() != owner->getMoveAttack())//表明攻击类型与被攻击类型不匹配
+                continue;
+            float distance = towerPos.distance(target->getPosition());
 
             if (distance <= _detectionRange && distance < closestDistance)
             {
                 closestDistance = distance;
-                closestEnemy = troop;
+                closestEnemy = target;
             }
         }
     }
@@ -131,7 +137,7 @@ bool SimpleBuildingAI::isValidTarget(BuildingBase* owner, IAttackable* target) c
 
         // 考虑目标半径的有效距离
         float effectiveRange = attackRange + targetRadius;
-        return distance <= effectiveRange;
+		return distance - effectiveRange <= 0.1f;//允许一点误差
     }
 
     return false;

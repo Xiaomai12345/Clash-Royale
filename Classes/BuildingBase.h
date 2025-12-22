@@ -28,6 +28,7 @@ public:
     // 受伤并更新血量
     void takeDamage(int damage);
     void updateHpBar();
+    void showDamageNumber(int damage);
 
     // 检查是否死亡
     bool isDead() const { return _hp <= 0; }
@@ -59,7 +60,13 @@ public:
     ECamp getCamp() const { return _camp; }
     void setAttackType(AttackType attacktype) {}//设置与获取攻击类型
     AttackType getAttackType()const { return AttackType::Both; }
-
+    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }//设置
+    MoveAttack getMoveAttack()const { return _moveAttack; }//用以返回
+    void setMoveAttacked(MoveAttack moveAttacked) { _moveAttacked = moveAttacked; }//设置
+    MoveAttack getMoveAttacked()const { return _moveAttacked; }//用以返回
+    MoveType getMoveType()const { return MoveType::Ground; }//用不到，但需要定义
+	void setState(State state) { _state = state; }//设置当前状态
+	State getState()const override { return _state; }//获取当前状态
 public:
     // =========================
     // 组件绑定接口
@@ -80,7 +87,9 @@ protected:
     float _bodyRadius = 10.0f;
 
     ECamp _camp = ECamp::LEFT;
-
+    MoveAttack _moveAttack = MoveAttack::Both;//默认空地均可攻击
+    MoveAttack _moveAttacked = MoveAttack::Both;//默认均可被攻击
+	State _state = State::IDLE; // 当前状态
 protected:
     // =========================
     // 组件指针（不拥有生命周期）

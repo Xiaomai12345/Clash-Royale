@@ -150,10 +150,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Classes\AirMoveComponent.cpp" />
     <ClCompile Include="..\Classes\AISystem.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\ArcherTroop.cpp" />
-    <ClCompile Include="..\Classes\AreaAttack.cpp" />
+    <ClCompile Include="..\Classes\AreaAttackComponent.cpp" />
     <ClCompile Include="..\Classes\AttackComponent.cpp" />
     <ClCompile Include="..\Classes\AudioManager.cpp" />
     <ClCompile Include="..\Classes\Battlefield.cpp" />
@@ -164,21 +165,27 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\BuildingBase.cpp" />
     <ClCompile Include="..\Classes\BuildingCard.cpp" />
     <ClCompile Include="..\Classes\Button.cpp" />
+    <ClCompile Include="..\Classes\Cannon.cpp" />
     <ClCompile Include="..\Classes\Card.cpp" />
     <ClCompile Include="..\Classes\CardManager.cpp" />
     <ClCompile Include="..\Classes\CollisionSystem.cpp" />
     <ClCompile Include="..\Classes\ConfigLoader.cpp" />
     <ClCompile Include="..\Classes\CountdownLabel.cpp" />
     <ClCompile Include="..\Classes\FireBallSpell.cpp" />
+    <ClCompile Include="..\Classes\DragonBaby.cpp" />
     <ClCompile Include="..\Classes\GameManager.cpp" />
+    <ClCompile Include="..\Classes\Giant.cpp" />
     <ClCompile Include="..\Classes\GroundMoveComponent.cpp" />
     <ClCompile Include="..\Classes\HandCardUI.cpp" />
+    <ClCompile Include="..\Classes\KingdomTower.cpp" />
     <ClCompile Include="..\Classes\KnightTroop.cpp" />
     <ClCompile Include="..\Classes\LevelManager.cpp" />
     <ClCompile Include="..\Classes\MainMenuScene.cpp" />
     <ClCompile Include="..\Classes\ManaBar.cpp" />
     <ClCompile Include="..\Classes\ManaSystem.cpp" />
+    <ClCompile Include="..\Classes\MeleeAreaAttackComponent.cpp" />
     <ClCompile Include="..\Classes\MeleeAttackComponent.cpp" />
+    <ClCompile Include="..\Classes\Minions.cpp" />
     <ClCompile Include="..\Classes\MoveComponent.cpp" />
     <ClCompile Include="..\Classes\PathfindingSystem.cpp" />
     <ClCompile Include="..\Classes\PrincessTower.cpp" />
@@ -186,6 +193,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\RangedAttackComponent.cpp" />
     <ClCompile Include="..\Classes\SimpleBuildingAI.cpp" />
     <ClCompile Include="..\Classes\SimpleTroopAIComponent.cpp" />
+    <ClCompile Include="..\Classes\SkeletonLegion.cpp" />
+    <ClCompile Include="..\Classes\SkeletonTroop.cpp" />
+    <ClCompile Include="..\Classes\SkeletonTombstone.cpp" />
     <ClCompile Include="..\Classes\SlowDownSpell.cpp" />
     <ClCompile Include="..\Classes\SpellBase.cpp" />
     <ClCompile Include="..\Classes\SpellCard.cpp" />
@@ -194,13 +204,16 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\TroopBase.cpp" />
     <ClCompile Include="..\Classes\UnitBase.cpp" />
     <ClCompile Include="..\Classes\UnitCard.cpp" />
+    <ClCompile Include="..\Classes\ValkyrieTroop.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Classes\AirMoveComponent.h" />
     <ClInclude Include="..\Classes\AISystem.h" />
+    <ClInclude Include="..\Classes\AllCards.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\ArcherTroop.h" />
-    <ClInclude Include="..\Classes\AreaAttack.h" />
+    <ClInclude Include="..\Classes\AreaAttackComponent.h" />
     <ClInclude Include="..\Classes\AttackComponent.h" />
     <ClInclude Include="..\Classes\AudioManager.h" />
     <ClInclude Include="..\Classes\Battlefield.h" />
@@ -211,25 +224,31 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\BuildingBase.h" />
     <ClInclude Include="..\Classes\BuildingCard.h" />
     <ClInclude Include="..\Classes\Button.h" />
+    <ClInclude Include="..\Classes\Cannon.h" />
     <ClInclude Include="..\Classes\Card.h" />
     <ClInclude Include="..\Classes\CardManager.h" />
     <ClInclude Include="..\Classes\CollisionSystem.h" />
     <ClInclude Include="..\Classes\ConfigLoader.h" />
     <ClInclude Include="..\Classes\CountdownLabel.h" />
     <ClInclude Include="..\Classes\FireBallSpell.h" />
+    <ClInclude Include="..\Classes\DragonBaby.h" />
     <ClInclude Include="..\Classes\GameManager.h" />
+    <ClInclude Include="..\Classes\Giant.h" />
     <ClInclude Include="..\Classes\GlobalDefines.h" />
     <ClInclude Include="..\Classes\Grid.h" />
     <ClInclude Include="..\Classes\GroundMoveComponent.h" />
     <ClInclude Include="..\Classes\HandCardUI.h" />
     <ClInclude Include="..\Classes\IAttackable.h" />
+    <ClInclude Include="..\Classes\KingdomTower.h" />
     <ClInclude Include="..\Classes\KnightTroop.h" />
     <ClInclude Include="..\Classes\LevelManager.h" />
     <ClInclude Include="..\Classes\MainMenuScene.h" />
     <ClInclude Include="..\Classes\ManaBar.h" />
     <ClInclude Include="..\Classes\ManaSystem.h" />
     <ClInclude Include="..\Classes\MathUtils.h" />
+    <ClInclude Include="..\Classes\MeleeAreaAttackComponent.h" />
     <ClInclude Include="..\Classes\MeleeAttackComponent.h" />
+    <ClInclude Include="..\Classes\Minions.h" />
     <ClInclude Include="..\Classes\MoveComponent.h" />
     <ClInclude Include="..\Classes\PathfindingSystem.h" />
     <ClInclude Include="..\Classes\PrincessTower.h" />
@@ -238,6 +257,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\SimpleBuildingAI.h" />
     <ClInclude Include="..\Classes\SimpleTroopAIComponent.h" />
     <ClInclude Include="..\Classes\Singleton.h" />
+    <ClInclude Include="..\Classes\SkeletonLegion.h" />
+    <ClInclude Include="..\Classes\SkeletonTroop.h" />
+    <ClInclude Include="..\Classes\SkeletonTombstone.h" />
     <ClInclude Include="..\Classes\SlowDownSpell.h" />
     <ClInclude Include="..\Classes\SpellBase.h" />
     <ClInclude Include="..\Classes\SpellCard.h" />
@@ -246,6 +268,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\TroopBase.h" />
     <ClInclude Include="..\Classes\UnitBase.h" />
     <ClInclude Include="..\Classes\UnitCard.h" />
+    <ClInclude Include="..\Classes\ValkyrieTroop.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

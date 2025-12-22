@@ -3,6 +3,7 @@
 #include "MoveComponent.h"
 #include "AttackComponent.h"
 #include"PrincessTower.h"
+#include"KingdomTower.h"
 SimpleTroopAIComponent::SimpleTroopAIComponent()
 {
 }
@@ -10,14 +11,16 @@ void SimpleTroopAIComponent::update(TroopBase* owner, float dt)
 {
     auto move = owner->getMoveComponent();
     auto attack = owner->getAttackComponent();
+
+    if (!_target) {
+        CCLOG("???0");
+		owner->setState(State::IDLE);//设置状态为闲置
+    }
+
     _target = checkAlertRange(owner);
+
     if (!_target) {
         CCLOG("No target found in alert range.");
-        return;
-    }
-    if (!_target)
-    {
-        attack->setTarget(NULL);
         return;
     }
 
@@ -33,6 +36,7 @@ void SimpleTroopAIComponent::update(TroopBase* owner, float dt)
     // 2️⃣ 判断是否在攻击范围
     if (attack->isTargetInRange(owner))
     {
+		owner->setState(State::ATTACKING);//设置状态为攻击
         // 在范围内 → 停止移动
         move->stop();
     }
@@ -63,10 +67,12 @@ IAttackable* SimpleTroopAIComponent::checkAlertRange(TroopBase* owner)
         if (!target || target->getCamp() == owner->getCamp())
             continue;
 
+		if (owner->getState()== State::ATTACKING && target != _target)//如果当前处于攻击状态，并且目标不是当前目标，则跳过
+            continue;
+
         // 判断是否是公主塔
-        if (target == dynamic_cast<PrincessTower*>(node))
+        if (target == dynamic_cast<PrincessTower*>(node)|| target == dynamic_cast<KingdomTower*>(node))
         {
-            CCLOG("is Princess");
             float temp = ownerPos.distance(target->getPosition());
             if (temp < distancetoBaseTarget)
             {
@@ -81,6 +87,9 @@ IAttackable* SimpleTroopAIComponent::checkAlertRange(TroopBase* owner)
         if (dist - _alertRange <= 0.1f)
         {
             if (target == dynamic_cast<TroopBase*>(node) && owner->getAttackType() == AttackType::Building)
+                continue;
+            
+            if (target->getMoveAttacked() != MoveAttack::Both && owner->getMoveAttack() != MoveAttack::Both && target->getMoveAttacked() != owner->getMoveAttack())//表明攻击类型与被攻击类型不匹配
                 continue;
 
             if (dist < InRangeDistance)

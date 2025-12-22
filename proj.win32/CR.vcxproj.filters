@@ -100,6 +100,18 @@
     <Filter Include="Classes\Entities\Battle">
       <UniqueIdentifier>{06acead8-ef23-487c-8a7e-c0e9c1f82abd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Entities\AllCards\Troops\Air">
+      <UniqueIdentifier>{b40cf9d7-1de7-444c-a5f0-f3841ffb6397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\AllCards\Troops\Ground">
+      <UniqueIdentifier>{88e5f5f3-6afb-4fb4-bf08-53c62afb7d55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\AllCards\Troops\Ground\AttackBuilding">
+      <UniqueIdentifier>{f5c82044-2b60-4f64-b494-921832d82d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\AllCards\Troops\Ground\Else">
+      <UniqueIdentifier>{eb31bccc-eeaa-4594-a7e5-76661cb2dfec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -186,9 +198,6 @@
     <ClCompile Include="..\Classes\AttackComponent.cpp">
       <Filter>Classes\Entities\Attack\AttackBase</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\KnightTroop.cpp">
-      <Filter>Classes\Entities\AllCards\Troops</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\BuildingBase.cpp">
       <Filter>Classes\Entities\Building\BuildingBase</Filter>
     </ClCompile>
@@ -210,16 +219,10 @@
     <ClCompile Include="..\Classes\TroopAIComponent.cpp">
       <Filter>Classes\Entities\Troop\TroopAIComponent</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ArcherTroop.cpp">
-      <Filter>Classes\Entities\AllCards\Troops</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\PrincessTower.cpp">
       <Filter>Classes\Entities\AllCards\Buildings</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\BuildingAttackComponent.cpp">
-      <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SimpleBuildingAI.cpp">
       <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Battlefield.cpp">
@@ -234,8 +237,50 @@
     <ClCompile Include="..\Classes\SlowDownSpell.cpp">
       <Filter>Classes\Entities\Spell\ControlSpell</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\AreaAttack.cpp">
+    <ClCompile Include="..\Classes\AreaAttackComponent.cpp">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\KingdomTower.cpp">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AirMoveComponent.cpp">
+      <Filter>Classes\Entities\Troop\MoveComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DragonBaby.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Air</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ArcherTroop.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\KnightTroop.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Giant.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\AttackBuilding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SimpleBuildingAI.cpp">
+      <Filter>Classes\Entities\Building\BuildingAI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Cannon.cpp">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SkeletonTombstone.cpp">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SkeletonTroop.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SkeletonLegion.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Minions.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Air</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MeleeAreaAttackComponent.cpp">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ValkyrieTroop.cpp">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +377,6 @@
     <ClInclude Include="..\Classes\IAttackable.h">
       <Filter>Classes\Entities\Attack\AttackBase</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\KnightTroop.h">
-      <Filter>Classes\Entities\AllCards\Troops</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\BuildingBase.h">
       <Filter>Classes\Entities\Building\BuildingBase</Filter>
     </ClInclude>
@@ -356,16 +398,10 @@
     <ClInclude Include="..\Classes\TroopAIComponent.h">
       <Filter>Classes\Entities\Troop\TroopAIComponent</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ArcherTroop.h">
-      <Filter>Classes\Entities\AllCards\Troops</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\PrincessTower.h">
       <Filter>Classes\Entities\AllCards\Buildings</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\BuildingAttackComponent.h">
-      <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SimpleBuildingAI.h">
       <Filter>Classes\Entities\Attack\BuildingAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Battlefield.h">
@@ -380,14 +416,56 @@
     <ClInclude Include="..\Classes\SlowDownSpell.h">
       <Filter>Classes\Entities\Spell\ControlSpell</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\AreaAttack.h">
+    <ClInclude Include="..\Classes\AreaAttackComponent.h">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Card.h">
       <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Grid.h">
-      <Filter>Classes\Entities\Battle</Filter>
+    <ClInclude Include="..\Classes\KingdomTower.h">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AllCards.h">
+      <Filter>Classes\Entities\AllCards</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AirMoveComponent.h">
+      <Filter>Classes\Entities\Troop\MoveComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DragonBaby.h">
+      <Filter>Classes\Entities\AllCards\Troops\Air</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ArcherTroop.h">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\KnightTroop.h">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Giant.h">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\AttackBuilding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SimpleBuildingAI.h">
+      <Filter>Classes\Entities\Building\BuildingAI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Cannon.h">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SkeletonTombstone.h">
+      <Filter>Classes\Entities\AllCards\Buildings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SkeletonTroop.h">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SkeletonLegion.h">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Minions.h">
+      <Filter>Classes\Entities\AllCards\Troops\Air</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MeleeAreaAttackComponent.h">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ValkyrieTroop.h">
+      <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

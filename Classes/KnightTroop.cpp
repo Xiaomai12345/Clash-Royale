@@ -3,6 +3,31 @@
 #include "GroundMoveComponent.h"
 #include "MeleeAttackComponent.h"
 
+KnightTroop::KnightTroop()
+{
+    // 在构造函数中给基类和成员变量赋值
+    _moveSpeed = 100.0f;  // 设定骑士的基础移动速度
+    _maxHp = 100;         // 设定骑士的最大血量
+    _alertRange = 200.f;   // 设置警戒范围
+    _bodyRadius = 15.f;    // 设置碰撞半径
+    _camp = ECamp::LEFT;   // 设置阵营为左侧
+
+    _attacktype = AttackType::Both; // 
+    _moveAttack = MoveAttack::Ground;  // 设置可攻击地面和空中的目标
+    _moveAttacked = MoveAttack::Both; // 设置可被攻击地面和空中的目标
+    _moveType = MoveType::Ground;    // 设置为地面移动
+
+    _isDying = false;  // 初始化死亡状态
+}
+
+KnightTroop::~KnightTroop()
+{
+    // 如果有创建的组件，手动清理（这里使用了 new 创建组件，所以要 delete）
+    if (_ai) delete _ai;
+    if (_move) delete _move;
+    if (_attack) delete _attack;
+}
+
 bool KnightTroop::init()
 {
     if (!TroopBase::init())  // 初始化基类 (TroopBase)

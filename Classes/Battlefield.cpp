@@ -1,11 +1,7 @@
-#include "Battlefield.h"
-#include"KnightTroop.h"
-#include"ArcherTroop.h"
+é”˜ï¿½#include "Battlefield.h"
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
-#include"PrincessTower.h"
-#include"FireBallSpell.h"
-#include"SlowDownSpell.h"
+#include"AllCards.h"
 USING_NS_CC;
 
 bool Battlefield::init()//ch
@@ -16,7 +12,7 @@ bool Battlefield::init()//ch
     _debugEnabled = false;
     _debugDrawNode = nullptr;
 
-    myArea1=Area(0, 11, 8, 14);
+    myArea1 = Area(0, 11, 8, 14);
     myArea2 = Area(9, 11, 17, 14);
     myArea3 = Area(0, 0, 17, 10);
 
@@ -72,7 +68,7 @@ void Battlefield::setupBattlefield(int level)
     this->addChild(troop2);
 
     auto troop3 = KnightTroop::create();
-    troop3->setPosition(Vec2(500, 300)); // ¹ÊÒâ·ÅÔ¶
+    troop3->setPosition(Vec2(500, 300)); // éå‘®å‰°é€æç¹™
     this->addChild(troop3);
 
     auto building = PrincessTower::create();
@@ -80,15 +76,82 @@ void Battlefield::setupBattlefield(int level)
     building->setCamp(ECamp::RIGHT);
     this->addChild(building);
 
+ 
+
+
+    auto troop6 = Giant::create();
+    troop6->setPosition(Vec2(100, 300));
+    this->addChild(troop6);
+
+    auto troop7 = SkeletonTroop::create();
+    troop7->setPosition(Vec2(50, 300));
+    this->addChild(troop7);
+
+
+    CCLOG("creat skeleton legion");
+    auto legion = SkeletonLegion::create(6, 20.f);
+    this->addChild(legion);
+    legion->spawnAt(this, Vec2(400, 500));
+
+
+    auto tombstone = SkeletonTombstone::create();
+    tombstone->setPosition(Vec2(500, 600));  // ç’å‰§ç–†æ¾§æ’¶î•¶æµ£å¶‡ç–†
+    this->addChild(tombstone);  // çå——î•¸çº°æˆå§žéãƒ¥æº€é…ï¿½
+
+
+
+
     auto building1 = PrincessTower::create();
     building1->setPosition(Vec2(500, 1024));
     building1->setCamp(ECamp::RIGHT);
     this->addChild(building1);
 
+    auto building2 = KingdomTower::create();
+    building2->setPosition(Vec2(450, 1200));
+    building2->setCamp(ECamp::RIGHT);
+    this->addChild(building2);
 
-    auto fireball = SlowDownSpell::create();
-    this->addChild(fireball);
-    fireball->cast(Vec2(320, 300), ECamp::RIGHT); // ¹Ì¶¨²âÊÔµã
+    auto troop4 = ArcherTroop::create();
+    troop4->setPosition(Vec2(400, 500));
+    troop4->setCamp(ECamp::RIGHT);
+    this->addChild(troop4);
+
+
+    auto troop5 = DragonBaby::create();
+    troop5->setPosition(Vec2(400, 800));
+    troop5->setCamp(ECamp::RIGHT);
+    this->addChild(troop5);
+
+    auto mini = Minions::create();
+    mini->setPosition(Vec2(400, 700));
+    mini->setCamp(ECamp::RIGHT);
+    this->addChild(mini);
+
+    auto Valkyrie = ValkyrieTroop::create();
+    Valkyrie->setPosition(Vec2(400, 600));
+    Valkyrie->setCamp(ECamp::RIGHT);
+    this->addChild(Valkyrie);
+
+    auto buildingleft = PrincessTower::create();
+    buildingleft->setPosition(Vec2(200, 500));
+    buildingleft->setCamp(ECamp::LEFT);
+    this->addChild(buildingleft);
+
+    auto building1left = PrincessTower::create();
+    building1left->setPosition(Vec2(650, 500));
+    building1left->setCamp(ECamp::LEFT);
+    this->addChild(building1left);
+
+    auto building2left = KingdomTower::create();
+    building2left->setPosition(Vec2(450, 300));
+    building2left->setCamp(ECamp::LEFT);
+    this->addChild(building2left);
+
+    auto building3left = Cannon::create();
+    building3left->setPosition(Vec2(450, 500));
+    building3left->setCamp(ECamp::LEFT);
+    this->addChild(building3left);
+
 
     if (_debugEnabled)
         createDebugLayer();
@@ -98,41 +161,41 @@ void Battlefield::setupBattlefield(int level)
 
 void Battlefield::createBackground()
 {
-    // ³¢ÊÔ¼ÓÔØÍ¼Æ¬±³¾°
+    // çæ¿Šç˜¯é”çŠºæµ‡é¥å‰§å¢–é‘³å±¾æ«™
     _background = Sprite::create("Images/background/battlefield.jpg");
-     CCLOG("Successfully loaded battlefield background image");
-     // »ñÈ¡Ô­Ê¼³ß´ç²¢¼ÆËãËõ·Å
-     Size originalSize = _background->getContentSize();
-     float scaleX = 0.8 * 0.85;
-     float scaleY = 0.8 * 0.8;
+    CCLOG("Successfully loaded battlefield background image");
+    // é‘¾å³°å½‡é˜ç†·îçå“„î‡­éªžæƒ°î…¸ç» æ¥ƒç¼‰é€ï¿½
+    Size originalSize = _background->getContentSize();
+    float scaleX = 0.8 * 0.85;
+    float scaleY = 0.8 * 0.8;
 
-     // ÉèÖÃËõ·Å
-     _background->setScaleX(scaleX);
-     _background->setScaleY(scaleY);
+    // ç’å‰§ç–†ç¼‚â•‚æ–
+    _background->setScaleX(scaleX);
+    _background->setScaleY(scaleY);
 
 
-     CCLOG("Scaled size: %.0f x %.0f",
-         originalSize.width * scaleX,
-         originalSize.height * scaleY);
+    CCLOG("Scaled size: %.0f x %.0f",
+        originalSize.width * scaleX,
+        originalSize.height * scaleY);
 
-    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // ÃªµãÔÚ¶¥²¿ÖÐ¼ä
-    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8-50);  // ·ÅÔÚ¶¥²¿
+    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // é–¿æ°±å£é¦ã„©ã€Šé–®ã„¤è…‘é—‚ï¿½
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);  // é€æƒ§æ¹ªæ¤¤å •å„´
     addChild(_background, 0);
     auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
-    lavenderRect->setPosition(0, _mapSize.height * 0.8-50);
+    lavenderRect->setPosition(0, _mapSize.height * 0.8 - 50);
     this->addChild(lavenderRect);
 
     auto drawNode = cocos2d::DrawNode::create();
-    this->addChild(drawNode,2000);
+    this->addChild(drawNode, 2000);
 
-    // »æÖÆ¾ØÐÎ£¬Î»ÖÃÊÇÊÀ½ç×ø±ê£¬¿íºÍ¸ßÊÇ¾ØÐÎµÄ³ß´ç
-    drawNode->drawRect(Vec2(80, 280) , Vec2(20*gridWeight, 1732 * 0.8 - 110), Color4F::RED);
+    // ç¼æ¨ºåŸ—é­â•èˆ°é”›å±¼ç¶…ç¼ƒî†½æ§¸æ¶“æ «æ™«é§æ„­çˆ£é”›å±½î†”éœå²„ç®é„îˆœç…©è¤°ãˆ¢æ®‘çå“„î‡­
+    drawNode->drawRect(Vec2(80, 280), Vec2(20 * gridWeight, 1732 * 0.8 - 110), Color4F::RED);
 }
 
 bool Battlefield::worldToGrid(const Vec2& worldPos, int& outRow, int& outCol) const
 {
-    outCol = static_cast<int>((worldPos.x-80) / _gridSize.width);
-    outRow = static_cast<int>((worldPos.y-280) / _gridSize.height);
+    outCol = static_cast<int>((worldPos.x - 80) / _gridSize.width);
+    outRow = static_cast<int>((worldPos.y - 280) / _gridSize.height);
 
     if (outRow < 0 || outRow >= _rows || outCol < 0 || outCol >= _cols)
         return false;

@@ -11,6 +11,8 @@
 class KnightTroop : public TroopBase
 {
 public:
+    KnightTroop();  // 声明构造函数
+    ~KnightTroop();
     virtual bool init() override;
 
     CREATE_FUNC(KnightTroop);

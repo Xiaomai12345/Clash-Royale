@@ -2,41 +2,23 @@
 #define __PRINCESS_TOWER_H__
 
 #include "BuildingBase.h"
-// 公主塔 - 简化版本，只包含基本功能用于测试
+
 class PrincessTower : public BuildingBase
 {
 public:
-    /**
-     * 重写父类初始化
-     */
-    virtual bool init() override;
-
-    /**
-     * 重写父类更新方法
-     */
-    virtual void update(float dt) override;
-
-    /**
-     * 重写 IAttackable 接口 - 受到伤害
-     */
-    virtual void takeDamage(int damage) override;
+    // 使用构造函数进行赋值初始化
+    PrincessTower(float maxHp = 1200, float attackRange = 300.0f, float attackInterval = 1.f, int attackDamage = 10);
+    virtual bool init() override;  // 初始化
 
     CREATE_FUNC(PrincessTower);
 
 private:
-    // 初始化攻击组件
-    void setupAttack();
-
-    // 初始化外观
-    void setupAppearance();
-
-    // 显示伤害数字
-    void showDamageNumber(int damage);
+    void setupComponents();  // 初始化组件
 
 private:
-    float _attackRange = 300.0f;    // 攻击范围
-    float _attackInterval = 1.f;   // 攻击间隔
-    int _attackDamage = 10;         // 单次伤害
+    float _attackRange;     // 攻击范围
+    float _attackInterval;  // 攻击间隔
+    int _attackDamage;      // 单次伤害
 };
 
 #endif // __PRINCESS_TOWER_H__
