@@ -3,7 +3,7 @@
 
 #include "MoveComponent.h"
 #include "cocos2d.h"
-
+class IWalkableWorld;
 class GroundMoveComponent : public MoveComponent
 {
 public:
@@ -14,15 +14,28 @@ protected:
     virtual void onUpdateMove(TroopBase* owner, float dt) override;
 
 private:
-    // =====================
-    // 绕行（避障）状态
-    // =====================
-    bool _isOrbiting = false;        // 是否正在绕行
-    cocos2d::Vec2 _orbitDir;         // 🔒 锁死的绕行方向
-    float _orbitTimer = 0.f;         // 绕行最小持续时间
+    // ===== 河岸滑行 =====
+    bool _isSlidingRiver = false;
+    float _riverLockTimer = 0.f;
+    float _riverLockTime = 0.4f;
+    cocos2d::Vec2 _riverDir;
+    cocos2d::Vec2 _lastValidPos;
 
-    // 参数（可调）
-    float _minOrbitTime = 0.25f;     // 最短绕行时间
+    // ===== 桥状态 =====
+    bool _isOnBridge = false;
+
+    // ===== 单位碰撞绕行 =====
+    bool _isOrbiting = false;
+    cocos2d::Vec2 _orbitDir;
+    float _orbitTimer = 0.f;
+    float _minOrbitTime = 0.2f;
+
+private:
+    bool findRiverExit(
+        const cocos2d::Vec2& start,
+        float dirX,
+        IWalkableWorld* world,
+        cocos2d::Vec2& outExit);
 };
 
-#endif // __GROUND_MOVE_COMPONENT_H__
+#endif

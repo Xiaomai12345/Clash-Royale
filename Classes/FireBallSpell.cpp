@@ -1,8 +1,7 @@
-﻿// FireballSpell.cpp
-#include "FireballSpell.h"
+﻿#include "FireballSpell.h"
 #include "IAttackable.h"
-#include"TroopBase.h"
-#include"BuildingBase.h"
+#include "TroopBase.h"
+#include "BuildingBase.h"
 #include "cocos2d.h"
 
 USING_NS_CC;
@@ -29,7 +28,7 @@ void FireballSpell::cast(const Vec2& worldPos, ECamp casterCamp)
         return;
 
     _hasCast = true;
-    _casterCamp = casterCamp;
+    _casterCamp = casterCamp; // 保存施法者阵营信息
 
     // Spell 本身是 Node，用 Node 的方式
     setPosition(worldPos);
@@ -49,12 +48,12 @@ void FireballSpell::cast(const Vec2& worldPos, ECamp casterCamp)
 
 void FireballSpell::applyDamage()
 {
-    CCLOG("FireBall has benn applyed");
+    CCLOG("FireBall has been applied");
     Node* parent = getParent();
     if (!parent)
         return;
-    CCLOG("FireBall has benn applyedd");
-    // Spell 的世界坐标（⚠️ 正确方式）
+
+    // Fireball 的世界坐标
     Vec2 center = this->convertToWorldSpaceAR(Vec2::ZERO);
 
     for (Node* node : parent->getChildren())
@@ -66,7 +65,8 @@ void FireballSpell::applyDamage()
         if (target->isDead())
             continue;
 
-        if (target->getCamp() == _casterCamp)//目标与法术同阵营
+        // 判断目标阵营是否与施法阵营不同
+        if (target->getCamp() == _casterCamp)  // 目标与法术同阵营
             continue;
 
         float dist = center.distance(target->getWorldPosition());
@@ -74,16 +74,16 @@ void FireballSpell::applyDamage()
 
         if (dist <= hitRange)
         {
-            //对建筑还有士兵进行分别讨论
+            // 对建筑和士兵分别处理
             if (target == dynamic_cast<TroopBase*>(node))
             {
                 target->takeDamage(_damage);
                 CCLOG("Fireball hit %p Troop for %d damage", target, _damage);
             }
-            else if(target == dynamic_cast<BuildingBase*>(node))
+            else if (target == dynamic_cast<BuildingBase*>(node))
             {
-                target->takeDamage(0.3*_damage);
-                CCLOG("Fireball hit %p Troop for %d damage", target, _damage);
+                target->takeDamage(0.3 * _damage);  // 对建筑造成30%伤害
+                CCLOG("Fireball hit %p Building for %d damage", target, 0.3 * _damage);
             }
         }
     }
@@ -93,7 +93,7 @@ void FireballSpell::drawDebugRange()
 {
     if (!_debugDraw)
         return;
-    CCLOG("FireBall has benn debuged");
+
     _debugDraw->clear();
     _debugDraw->drawCircle(
         Vec2::ZERO,

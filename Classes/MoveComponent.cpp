@@ -26,11 +26,6 @@ void MoveComponent::followTarget(IAttackable* target, float desiredDistance)
     _followTarget = target;
     _desiredDistance = desiredDistance;
     _moving = (target != nullptr);
-
-    if (target)
-    {
-        CCLOG("MoveComponent: Started following target");
-    }
 }
 
 /*

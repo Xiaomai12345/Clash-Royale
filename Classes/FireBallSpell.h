@@ -1,9 +1,11 @@
-// FireballSpell.h
 #ifndef __FIREBALL_SPELL_H__
 #define __FIREBALL_SPELL_H__
 
 #include "SpellBase.h"
 #include "IAttackable.h"
+#include "cocos2d.h"
+
+USING_NS_CC;
 
 class FireballSpell : public SpellBase
 {
@@ -26,6 +28,7 @@ protected:
 protected:
     float _radius = 100.0f;   // 爆炸半径
     int   _damage = 150;      // 伤害值
+    ECamp _casterCamp = ECamp::LEFT; // 记录施法者的阵营
 
     DrawNode* _debugDraw = nullptr;
 };

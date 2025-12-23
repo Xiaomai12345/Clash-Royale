@@ -1,7 +1,9 @@
 ﻿#include "Battlefield.h"
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
+#include"BattleManager.h"
 #include"AllCards.h"
+#include"CardFactory.h"
 USING_NS_CC;
 
 bool Battlefield::init()//ch
@@ -59,47 +61,60 @@ void Battlefield::setupBattlefield(int level)
     createGrids();
     buildRegions();
 
-    auto troop1 = KnightTroop::create();
-    troop1->setPosition(Vec2(300, 300));
-    this->addChild(troop1);
 
-    auto troop2 = KnightTroop::create();
-    troop2->setPosition(Vec2(340, 300));
-    this->addChild(troop2);
 
-    auto troop3 = KnightTroop::create();
-    troop3->setPosition(Vec2(500, 300)); // 故意放远
-    this->addChild(troop3);
+
+    BattleManager::getInstance()->init(/* battlefield 指针 */ this);
+
+    // 2️⃣ 创建一张 Knight 卡
+    auto card = CardFactory::createKnightCard();
+    card->setPosition(Vec2(100, 80));
+    this->addChild(card); // 只是为了看见卡，不影响逻辑
+
+    auto card1 = CardFactory::createArcherCard();
+    card1->setPosition(Vec2(200, 80));
+    this->addChild(card1);
+
+    auto card2 = CardFactory::createGiantCard();
+    card2->setPosition(Vec2(300, 80));
+    this->addChild(card2);
+
+    auto card3 = CardFactory::createValkyrieCard();
+    card3->setPosition(Vec2(400, 80));
+    this->addChild(card3);
+
+    auto card4 = CardFactory::createDragonBabyCard();
+    card4->setPosition(Vec2(500, 80));
+    this->addChild(card4);
+
+    auto card5 = CardFactory::createCannonCard();
+    card5->setPosition(Vec2(600, 80)); // 设置位置
+    this->addChild(card5);
+
+    auto card6 = CardFactory::createSkeletonCard();
+    card6->setPosition(Vec2(700, 80)); // 设置位置
+    this->addChild(card6);
+
+    auto card7 = CardFactory::createSkeletonLegionCard();
+    card7->setPosition(Vec2(800, 80)); // 设置位置
+    this->addChild(card7);
+
+    auto card8 = CardFactory::createSkeletonTombstoneCard();
+    this->addChild(card8);
+
+
+    Vec2 testPos(300, 900);   // 你想让士兵出现的位置
+    int playerId = 0;         // 测试用阵营
+
+
+    card2->use(Vec2(600, 500), !playerId);
+
+
 
     auto building = PrincessTower::create();
     building->setPosition(Vec2(300, 1024));
     building->setCamp(ECamp::RIGHT);
     this->addChild(building);
-
- 
-
-
-    auto troop6 = Giant::create();
-    troop6->setPosition(Vec2(100, 300));
-    this->addChild(troop6);
-
-    auto troop7 = SkeletonTroop::create();
-    troop7->setPosition(Vec2(50, 300));
-    this->addChild(troop7);
-
-
-    CCLOG("creat skeleton legion");
-    auto legion = SkeletonLegion::create(6, 20.f);
-    this->addChild(legion);
-    legion->spawnAt(this, Vec2(400, 500));
-
-
-    auto tombstone = SkeletonTombstone::create();
-    tombstone->setPosition(Vec2(500, 600));  // 设置墓碑位置
-    this->addChild(tombstone);  // 将墓碑加入场景
-
-
-
 
     auto building1 = PrincessTower::create();
     building1->setPosition(Vec2(500, 1024));
@@ -111,26 +126,6 @@ void Battlefield::setupBattlefield(int level)
     building2->setCamp(ECamp::RIGHT);
     this->addChild(building2);
 
-    auto troop4 = ArcherTroop::create();
-    troop4->setPosition(Vec2(400, 500));
-    troop4->setCamp(ECamp::RIGHT);
-    this->addChild(troop4);
-
-
-    auto troop5 = DragonBaby::create();
-    troop5->setPosition(Vec2(400, 800));
-    troop5->setCamp(ECamp::RIGHT);
-    this->addChild(troop5);
-
-    auto mini = Minions::create();
-    mini->setPosition(Vec2(400, 700));
-    mini->setCamp(ECamp::RIGHT);
-    this->addChild(mini);
-
-    auto Valkyrie = ValkyrieTroop::create();
-    Valkyrie->setPosition(Vec2(400, 600));
-    Valkyrie->setCamp(ECamp::RIGHT);
-    this->addChild(Valkyrie);
 
     auto buildingleft = PrincessTower::create();
     buildingleft->setPosition(Vec2(200, 500));
@@ -206,8 +201,8 @@ bool Battlefield::worldToGrid(const Vec2& worldPos, int& outRow, int& outCol) co
 Vec2 Battlefield::gridToWorld(int row, int col) const
 {
     return Vec2(
-        col * _gridSize.width + _gridSize.width * 0.5f,
-        row * _gridSize.height + _gridSize.height * 0.5f
+        col * _gridSize.width + _gridSize.width * 0.5f + 80,
+        row * _gridSize.height + _gridSize.height * 0.5f + 280
     );
 }
 
@@ -284,8 +279,8 @@ void Battlefield::createGrids()
         for (int c = 0; c < _cols; ++c)
         {
             Vec2 worldPos(
-                c * _gridSize.width + _gridSize.width * 0.5f,
-                r * _gridSize.height + _gridSize.height * 0.5f
+                c * _gridSize.width + _gridSize.width * 0.5f + 80,
+                r * _gridSize.height + _gridSize.height * 0.5f + 280
             );
             _grids.emplace_back(r, c, worldPos);
         }
@@ -360,4 +355,116 @@ void Battlefield::drawDebugGrids()
 
         _debugDrawNode->drawRect(center - half, center + half, color);
     }
+}
+void Battlefield::addUnit(cocos2d::Node* unit)
+{
+    if (unit)
+    {
+        this->addChild(unit); // 将单位添加到场景中
+        CCLOG("Unit added to battlefield");
+    }
+}
+bool Battlefield::canWalk(const Vec2& worldPos) const
+{
+    int r, c;
+    if (!worldToGrid(worldPos, r, c))
+        return false;
+
+    return getGrid(r, c)->isWalkable();
+}
+bool Battlefield::isBridge(const cocos2d::Vec2& worldPos) const
+{
+    int r, c;
+    if (!worldToGrid(worldPos, r, c))
+        return false;
+
+    const Grid* grid = getGrid(r, c);
+    if (!grid)
+        return false;
+
+    return grid->getRegionType() == Grid::RegionType::BRIDGE;
+}
+Vec2 Battlefield::constrainPosition(const Vec2& desired, const Vec2& current) const
+{
+    // 1. 完全不可走（比如河）
+    if (!canWalk(desired))
+    {
+        // 不允许进入，直接退回
+        return current;
+    }
+
+    // 2. 在桥上 → 通道投影
+    if (isBridge(desired))
+    {
+        return projectToBridge(desired);
+    }
+
+    // 3. 普通地面
+    return desired;
+}
+Vec2 Battlefield::projectToBridge(const Vec2& desiredPos) const
+{
+    const Area* bridge = findBridgeArea(desiredPos);
+    if (!bridge)
+        return desiredPos;
+
+    // 1. 计算桥的中心列（Grid）
+    float centerCol = (bridge->leftBottom.x + bridge->rightTop.x) * 0.5f;
+
+    // 2. 转成世界坐标
+    Vec2 centerWorld = gridToWorld(0, centerCol);
+    float bridgeCenterX = centerWorld.x;
+
+    // 3. 计算桥宽（用 grid 宽度）
+    float bridgeGridWidth =
+        bridge->rightTop.x - bridge->leftBottom.x + 1;
+
+    float halfWidth = (bridgeGridWidth * gridWeight) * 0.5f;
+
+    // 4. Clamp X（投影）
+    float clampedX = clampf(
+        desiredPos.x,
+        bridgeCenterX - halfWidth,
+        bridgeCenterX + halfWidth
+    );
+
+    return Vec2(clampedX, desiredPos.y);
+}
+const Area* Battlefield::findBridgeArea(const Vec2& worldPos) const
+{
+    int row, col;
+    if (!worldToGrid(worldPos, row, col))
+        return nullptr;
+
+    for (const Area& area : bridgeArea)
+    {
+        if (col >= area.leftBottom.x && col <= area.rightTop.x &&
+            row >= area.leftBottom.y && row <= area.rightTop.y)
+        {
+            return &area;
+        }
+    }
+    return nullptr;
+}
+
+float Battlefield::getNearestBridgeX(const cocos2d::Vec2& currentPos) const
+{
+    float minDist = FLT_MAX;
+    float targetX = currentPos.x;
+
+    for (const auto& area : bridgeArea)
+    {
+        // 计算桥中心X
+        float centerCol = (area.leftBottom.x + area.rightTop.x) * 0.5f;
+        Vec2 centerWorld = gridToWorld(0, centerCol); // row无关，取X
+        float bridgeX = centerWorld.x;
+
+        float dist = std::abs(currentPos.x - bridgeX);
+        if (dist < minDist)
+        {
+            minDist = dist;
+            targetX = bridgeX;
+        }
+    }
+    return targetX;
 }

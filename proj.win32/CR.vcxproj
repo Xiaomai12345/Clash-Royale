@@ -167,6 +167,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Button.cpp" />
     <ClCompile Include="..\Classes\Cannon.cpp" />
     <ClCompile Include="..\Classes\Card.cpp" />
+    <ClCompile Include="..\Classes\CardFactory.cpp" />
     <ClCompile Include="..\Classes\CardManager.cpp" />
     <ClCompile Include="..\Classes\CollisionSystem.cpp" />
     <ClCompile Include="..\Classes\ConfigLoader.cpp" />
@@ -226,6 +227,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Button.h" />
     <ClInclude Include="..\Classes\Cannon.h" />
     <ClInclude Include="..\Classes\Card.h" />
+    <ClInclude Include="..\Classes\CardFactory.h" />
     <ClInclude Include="..\Classes\CardManager.h" />
     <ClInclude Include="..\Classes\CollisionSystem.h" />
     <ClInclude Include="..\Classes\ConfigLoader.h" />
@@ -235,9 +237,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\GameManager.h" />
     <ClInclude Include="..\Classes\Giant.h" />
     <ClInclude Include="..\Classes\GlobalDefines.h" />
+    <ClInclude Include="..\Classes\Grid.h" />
     <ClInclude Include="..\Classes\GroundMoveComponent.h" />
     <ClInclude Include="..\Classes\HandCardUI.h" />
     <ClInclude Include="..\Classes\IAttackable.h" />
+    <ClInclude Include="..\Classes\IWalkableWorld.h" />
     <ClInclude Include="..\Classes\KingdomTower.h" />
     <ClInclude Include="..\Classes\KnightTroop.h" />
     <ClInclude Include="..\Classes\LevelManager.h" />
@@ -267,6 +271,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\TroopBase.h" />
     <ClInclude Include="..\Classes\UnitBase.h" />
     <ClInclude Include="..\Classes\UnitCard.h" />
+    <ClInclude Include="..\Classes\UnitType.h" />
     <ClInclude Include="..\Classes\ValkyrieTroop.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

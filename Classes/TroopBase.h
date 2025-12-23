@@ -3,16 +3,18 @@
 
 #include "cocos2d.h"
 #include "base/CCRef.h"
+#include "IWalkableWorld.h"
 #include "IAttackable.h"
+#include <algorithm>
 USING_NS_CC;
 
-// Ç°ÏòÉùÃ÷£¨¼õÉÙÍ·ÎÄ¼þñîºÏ£©
+// Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½ï¿½ï¿½Ï£ï¿½
 class TroopAIComponent;
 class MoveComponent;
 class AttackComponent;
-
+class Battlefield;
 // =========================
-// ÕóÓªÃ¶¾Ù
+// ï¿½ï¿½ÓªÃ¶ï¿½ï¿½
 // =========================
 
 // =========================
@@ -28,19 +30,19 @@ public:
     virtual bool init() override;
     CREATE_FUNC(TroopBase);
 
-    // Ã¿Ö¡¸üÐÂ£¨ºËÐÄµ÷¶È£©
+    // Ã¿Ö¡ï¿½ï¿½ï¿½Â£ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½È£ï¿½
     virtual void update(float dt) override;
 
-    // ÊÜÉË²¢¸üÐÂÑªÁ¿
+    // ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½
     void takeDamage(int damage);
     void showDamageNumber(int damage);
     void updateHpBar();
 
-    // ¼ì²éÊÇ·ñËÀÍö
+    // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
     bool isDead() const { return _hp <= 0; }
     bool isAlive() const { return _hp > 0; }
 
-    // ËÀÍö´¦Àí
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     void die();
 
     DrawNode* getDebugDraw()
@@ -51,42 +53,43 @@ public:
 
 public:
     // =========================
-    // ¶ÔÍâÄÜÁ¦½Ó¿Ú£¨¹©×é¼þÊ¹ÓÃ£©
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã£ï¿½
     // =========================
 
-    // ÒÆ¶¯ËÙ¶È£¨ÏñËØ / Ãë£©
-    float getMoveSpeed() const { return _currentSpeed; } //»ñÈ¡ËÙ¶È
-    void  setCurrentSpeed(float speed) {  _currentSpeed = std::max(0.0f, speed);};//ÉèÖÃµ±Ç°ËÙ¶È
-    void  resetMoveSpeed() { _currentSpeed = _moveSpeed;};//ÖØÖÃËÙ¶È
-    virtual void applySlow(float ratio, float duration) override;//µ±Ç°Ê¿±øÊÜµ½¼õËÙ
-    // µ±Ç°ÉúÃüÖµ
+    // ï¿½Æ¶ï¿½ï¿½Ù¶È£ï¿½ï¿½ï¿½ï¿½ï¿½ / ï¿½ë£©
+    float getMoveSpeed() const { return _currentSpeed; } //ï¿½ï¿½È¡ï¿½Ù¶ï¿½
+    void  setCurrentSpeed(float speed) {  _currentSpeed = std::max(0.0f, speed);};//ï¿½ï¿½ï¿½Ãµï¿½Ç°ï¿½Ù¶ï¿½
+    void  resetMoveSpeed() { _currentSpeed = _moveSpeed;};//ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+    virtual void applySlow(float ratio, float duration) override;//ï¿½ï¿½Ç°Ê¿ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Öµ
     int getHp() const { return _hp; }
 
-    // Åö×²°ë¾¶£¨ÓÃÓÚ¾àÀë / ¹¥»÷ÅÐ¶Ï£©
+    // ï¿½ï¿½×²ï¿½ë¾¶ï¿½ï¿½ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½ / ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½
     float getBodyRadius() const { return _bodyRadius; }
-    void setAlertRange(float range) { _alertRange = range;}//ÉèÖÃ¾¯½ä·¶Î§
-    float getAlertRange() const {return _alertRange;}      //»ñÈ¡¾¯½ä·¶Î§
+    void setAlertRange(float range) { _alertRange = range;}//ï¿½ï¿½ï¿½Ã¾ï¿½ï¿½ä·¶Î§
+    float getAlertRange() const {return _alertRange;}      //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ä·¶Î§
 
 
 
-    // ÉèÖÃÓë»ñÈ¡Ò»Ð©±ØÒªµÄ¶«Î÷
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡Ò»Ð©ï¿½ï¿½Òªï¿½Ä¶ï¿½ï¿½ï¿½
     void setCamp(ECamp camp) { _camp = camp; }
     ECamp getCamp() const { return _camp; }
-    void setAttackType(AttackType attacktype) { _attacktype = attacktype; }//ÉèÖÃÓë»ñÈ¡¹¥»÷ÀàÐÍ
+    void setAttackType(AttackType attacktype) { _attacktype = attacktype; }//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     AttackType getAttackType()const { return _attacktype; }
-    void setState(State state) { _state = state;}//ÉèÖÃ×´Ì¬
-    State getState() const { return _state; }//·µ»Ø×´Ì¬
-    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }//ÉèÖÃ
-    MoveAttack getMoveAttack()const { return _moveAttack; }//ÓÃÒÔ·µ»Ø
-    void setMoveAttacked(MoveAttack moveAttacked) { _moveAttacked = moveAttacked; }//ÉèÖÃ
-    MoveAttack getMoveAttacked()const { return _moveAttacked; }//ÓÃÒÔ·µ»Ø
-    void setMoveType(MoveType moveType) { _moveType = moveType; }//ÉèÖÃ
-    MoveType getMoveType()const { return _moveType; }//ÓÃÒÔÒÆ¶¯ÀàÐÍ
-
+    void setState(State state) { _state = state;}//ï¿½ï¿½ï¿½ï¿½×´Ì¬
+    State getState() const { return _state; }//ï¿½ï¿½ï¿½ï¿½×´Ì¬
+    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }//ï¿½ï¿½ï¿½ï¿½
+    MoveAttack getMoveAttack()const { return _moveAttack; }//ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½
+    void setMoveAttacked(MoveAttack moveAttacked) { _moveAttacked = moveAttacked; }//ï¿½ï¿½ï¿½ï¿½
+    MoveAttack getMoveAttacked()const { return _moveAttacked; }//ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½
+    void setMoveType(MoveType moveType) { _moveType = moveType; }//ï¿½ï¿½ï¿½ï¿½
+    MoveType getMoveType()const { return _moveType; }//ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
+    void setWorld(IWalkableWorld* world){ _world = world; }
+    IWalkableWorld* getWorld() const{ return _world;}
 
 public:
     // =========================
-    // ×é¼þ°ó¶¨½Ó¿Ú
+    // ï¿½ï¿½ï¿½ï¿½ó¶¨½Ó¿ï¿½
     // =========================
 
     void setAIComponent(TroopAIComponent* ai);
@@ -99,25 +102,26 @@ public:
 
 protected:
     // =========================
-    // »ù´¡ÊôÐÔ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     // =========================
-    int   _hp = 0;          // µ±Ç°ÉúÃü
-    int   _maxHp = 0;       // ×î´óÉúÃü
-    float _moveSpeed = 0.f; // ÒÆ¶¯ËÙ¶È
-    float _alertRange=0.f;      // ¾¯½ä·¶Î§
-    float _currentSpeed = 0.f; //µ±Ç°µÄÒÆ¶¯ËÙ¶È
+    int   _hp = 0;          // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
+    int   _maxHp = 0;       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    float _moveSpeed = 0.f; // ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
+    float _alertRange=0.f;      // ï¿½ï¿½ï¿½ä·¶Î§
+    float _currentSpeed = 0.f; //ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
     float _bodyRadius = 10.0f;
 
-    State _state = State::IDLE;//Ò»¿ªÊ¼´¦ÓÚÏÐÖÃ×´Ì¬
-    ECamp _camp = ECamp::LEFT;//ÕóÓª
-    AttackType _attacktype = AttackType::Both;//Ä¬ÈÏ¹¥»÷ÀàÐÍ
-    MoveAttack _moveAttack = MoveAttack::Both;//Ä¬ÈÏ¿ÕµØ¾ù¿É¹¥»÷
-    MoveAttack _moveAttacked = MoveAttack::Both;//Ä¬ÈÏ¾ù¿É±»¹¥»÷
+    State _state = State::IDLE;//Ò»ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
+    ECamp _camp = ECamp::LEFT;//ï¿½ï¿½Óª
+    AttackType _attacktype = AttackType::Both;//Ä¬ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    MoveAttack _moveAttack = MoveAttack::Both;//Ä¬ï¿½Ï¿ÕµØ¾ï¿½ï¿½É¹ï¿½ï¿½ï¿½
+    MoveAttack _moveAttacked = MoveAttack::Both;//Ä¬ï¿½Ï¾ï¿½ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½
     MoveType   _moveType = MoveType::Ground;
+    IWalkableWorld* _world = nullptr;
 
 protected:
     // =========================
-    // ×é¼þÖ¸Õë£¨²»ÓµÓÐÉúÃüÖÜÆÚ£©
+    // ï¿½ï¿½ï¿½Ö¸ï¿½ë£¨ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½
     // =========================
     TroopAIComponent* _ai = nullptr;
     MoveComponent* _move = nullptr;
@@ -125,32 +129,32 @@ protected:
 
 protected:
     // =========================
-    // Debug Only£¨²âÊÔ½×¶ÎÊ¹ÓÃ£©
+    // Debug Onlyï¿½ï¿½ï¿½ï¿½ï¿½Ô½×¶ï¿½Ê¹ï¿½Ã£ï¿½
     // =========================
 
-    // Ê¿±øÏÔÊ¾ÓÃÍ¼Æ¬
+    // Ê¿ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Í¼Æ¬
     Sprite* _sprite = nullptr;
 
-    // µ÷ÊÔ»æÖÆ½Úµã£¨Í¼Æ¬·¶Î§ / Åö×²·¶Î§£©
+    // ï¿½ï¿½ï¿½Ô»ï¿½ï¿½Æ½Úµã£¨Í¼Æ¬ï¿½ï¿½Î§ / ï¿½ï¿½×²ï¿½ï¿½Î§ï¿½ï¿½
     DrawNode* _debugDraw = nullptr;
 
-    // ÊÇ·ñÏÔÊ¾µ÷ÊÔ¿ò
+    // ï¿½Ç·ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ô¿ï¿½
     bool _showDebugBounds = 0;
 
-    Node* _hpBarNode = nullptr;        // ÑªÌõ¸ù½Úµã
-    LayerColor* _hpBarBg = nullptr;    // ÑªÌõ±³¾°
-    LayerColor* _hpBarFg = nullptr;    // ÑªÌõÇ°¾°
+    Node* _hpBarNode = nullptr;        // Ñªï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
+    LayerColor* _hpBarBg = nullptr;    // Ñªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    LayerColor* _hpBarFg = nullptr;    // Ñªï¿½ï¿½Ç°ï¿½ï¿½
 
 protected:
     // =========================
-    // ÑªÌõ³õÊ¼»¯
+    // Ñªï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
     // =========================
-    void initHpBar();  // ÉùÃ÷ÑªÌõ³õÊ¼»¯º¯Êý
+    void initHpBar();  // ï¿½ï¿½ï¿½ï¿½Ñªï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    // ÑªÌõ¸üÐÂº¯Êý£¨ÄÚ²¿µ÷ÓÃ£©
+    // Ñªï¿½ï¿½ï¿½ï¿½ï¿½Âºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½Ã£ï¿½
     void updateHpBarInternal();
-    bool _hpBarInited;  // ÑªÌõÊÇ·ñÒÑ³õÊ¼»¯
-    bool _isDying;      // ÊÇ·ñÒÑ¾­ËÀÍö
+    bool _hpBarInited;  // Ñªï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ³ï¿½Ê¼ï¿½ï¿½
+    bool _isDying;      // ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
 public:
     virtual Vec2 getWorldPosition() const override
     {

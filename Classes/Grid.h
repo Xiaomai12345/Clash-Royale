@@ -16,7 +16,7 @@ public:
     };
 
 public:
-    Grid();
+    Grid() : _row(0), _col(0), _worldPos(0, 0), _walkable(true) {};
     Grid(int row, int col, const cocos2d::Vec2& worldPos)
         : _row(row), _col(col), _worldPos(worldPos), _regionType(RegionType::NONE), _walkable(true), _deployable(true)
     {

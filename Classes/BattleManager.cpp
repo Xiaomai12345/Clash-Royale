@@ -1,9 +1,10 @@
-#include "BattleManager.h"
+﻿#include "BattleManager.h"
 #include "Battlefield.h"
-
+#include"UnitType.h"
+#include"AllCards.h"
 USING_NS_CC;
 
-// ��̬��Ա��ʼ��
+// 静态成员初始化
 BattleManager* BattleManager::_instance = nullptr;
 
 BattleManager* BattleManager::getInstance()
@@ -33,7 +34,7 @@ BattleManager::BattleManager()
 {
     _manaSystem = ManaSystem::getInstance();
 
-    // ��ʼ���������
+    // 初始化玩家数据
     _playerCrowns[1] = 0;
     _playerCrowns[2] = 0;
 }
@@ -59,7 +60,7 @@ void BattleManager::update(float delta)
 
     _gameTime += delta;
 
-    // �����Ϸģʽ�л�
+    // 检查游戏模式切换
     if (_gameTime >= 60.0f && _currentGameMode == "normal")
     {
         setGameMode("double_elixir");
@@ -70,12 +71,130 @@ void BattleManager::update(float delta)
     }
 }
 
-void BattleManager::deployUnit(int unitType, const cocos2d::Vec2& position, int playerId)
+void BattleManager::deployUnit(int unitType,
+    const Vec2& position,
+    int playerId)
 {
-    // �򻯰汾��ʵ��Ӧ�ô�������ĵ�λ
-    CCLOG("Deploying unit type %d at (%.1f, %.1f) for player %d",
-        unitType, position.x, position.y, playerId);
+    if (!_battlefield)
+        return;
+
+    Node* unit = nullptr;
+    ECamp camp = (playerId == 1) ? ECamp::LEFT : ECamp::RIGHT;
+
+    switch (unitType)
+    {
+    case UNIT_KNIGHT:
+    {
+        auto knight = KnightTroop::create();
+        unit = knight;
+        break;
+    }
+    case UNIT_ARCHER:
+    {
+        auto archer = ArcherTroop::create();
+        unit = archer;
+        break;
+    }
+    case UNIT_GIANT:
+    {
+        auto giant = Giant::create();
+        unit = giant;
+        break;
+    }
+    case UNIT_VALKYRIE:
+    {
+        auto valkyrie = ValkyrieTroop::create();
+        unit = valkyrie;
+        break;
+    }
+    case UNIT_DRAGONBABY:
+    {
+        auto dragonbaby = DragonBaby::create();
+        unit = dragonbaby;
+        break;
+    }
+    case UNIT_CANNON:
+    {
+        auto cannon = Cannon::create();
+        unit = cannon;
+        break;
+    }
+    case UNIT_SKELETON:
+    {
+        auto skeleton = SkeletonTroop::create();
+        unit = skeleton;
+        break;
+    }
+    case UNIT_MINIONS:
+    {
+        auto minions = Minions::create();
+        unit = minions;
+        break;
+    }
+    case UNIT_SKELETON_TOMBSTONE:
+    {
+        auto tombstone = SkeletonTombstone::create();
+        tombstone->setWorld(_battlefield);
+        unit = tombstone;
+        break;
+    }
+
+    // =========================
+    // 特殊单位：骷髅军团（自己管理生成）
+    // =========================
+    case UNIT_SKELETON_LEGION:
+    {
+        auto legion = SkeletonLegion::create(6, 20.f, camp);
+        legion->setPosition(position);
+        _battlefield->addChild(legion);
+        legion->setWorld(_battlefield);
+        legion->spawnAt(_battlefield, position);
+        return; // 
+    }
+
+    // =========================
+    // 法术类（不属于 Unit）
+    // =========================
+    case UNIT_FIREBALL:
+    {
+        auto fireball = FireballSpell::create();
+        fireball->cast(position, camp);
+        return;
+    }
+    case UNIT_SLWOWSPELL:
+    {
+        auto slowDownSpell = SlowDownSpell::create();
+        slowDownSpell->cast(position, camp);
+        return;
+    }
+
+    default:
+        return;
+    }
+
+    // =========================
+    // 通用单位初始化（唯一入口）
+    // =========================
+    if (unit)
+    {
+        unit->setPosition(position);
+
+        // === 如果是可战斗单位 ===
+        if (auto troop = dynamic_cast<TroopBase*>(unit))
+        {
+            troop->setCamp(camp);
+            troop->setWorld(_battlefield); // 
+        }
+
+        if (auto building = dynamic_cast<BuildingBase*>(unit))
+        {
+            building->setCamp(camp);
+        }
+
+        _battlefield->addUnit(unit);
+    }
 }
+
 
 void BattleManager::addCrown(int playerId, int crowns)
 {

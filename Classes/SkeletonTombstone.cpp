@@ -59,7 +59,8 @@ void SkeletonTombstone::spawnSkeletons(float dt)
     }
 
     // 调用 spawnAt 生成骷髅
-    SkeletonLegion* legion = SkeletonLegion::create(_skeletonCount, _spawnRadius);
+    SkeletonLegion* legion = SkeletonLegion::create(_skeletonCount, _spawnRadius, _camp);
+    legion->setWorld(_world);
     parent->addChild(legion);
     legion->spawnAt(parent, getPosition());  // 将骷髅生成在墓碑的位置
 
@@ -71,4 +72,8 @@ void SkeletonTombstone::takeDamageOverTime(float dt)
     // 每隔一定时间扣除血量
     takeDamage(_damagePerTick);
     CCLOG("Tombstone taking %d damage. Remaining HP: %d/%d", _damagePerTick, _hp, _maxHp);
+}
+void SkeletonTombstone::setWorld(IWalkableWorld* world)
+{
+    _world = world;
 }
