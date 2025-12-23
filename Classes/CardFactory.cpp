@@ -8,14 +8,15 @@ USING_NS_CC;
 Card* CardFactory::createKnightCard()//1
 {
     auto card = Card::create();
+    card->retain();
 
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Knight",   // name
-        2           // mana
+        2       ,    // mana
+        "Images/CardsUI/KnightApply.png"
     );
-    card->setCardArt("Images/CardsUI/KnightApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -33,14 +34,15 @@ Card* CardFactory::createKnightCard()//1
 Card* CardFactory::createArcherCard()//2
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Archer",   // name
-        2           // mana
+        2       ,    // mana
+        "Images/CardsUI/ArcherApply.png"
     );
-    card->setCardArt("Images/CardsUI/ArcherApply.png");
+
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -58,14 +60,14 @@ Card* CardFactory::createArcherCard()//2
 Card* CardFactory::createGiantCard()//3
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Giant",   // name
-        4            // mana
+        4       ,     // mana
+        "Images/CardsUI/GiantApply.png"
     );
-    card->setCardArt("Images/CardsUI/GiantApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -83,14 +85,14 @@ Card* CardFactory::createGiantCard()//3
 Card* CardFactory::createValkyrieCard()//4
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Valkyrie",   // name
-        4            // mana
+        4         ,   // mana
+        "Images/CardsUI/ValkyrieApply.png"
     );
-    card->setCardArt("Images/CardsUI/ValkyrieApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -108,14 +110,14 @@ Card* CardFactory::createValkyrieCard()//4
 Card* CardFactory::createDragonBabyCard()//5
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "DragonBaby",   // name
-        4            // mana
+        4          ,  // mana
+        "Images/CardsUI/DragonBabyApply.png"
     );
-    card->setCardArt("Images/CardsUI/DragonBabyApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -133,14 +135,14 @@ Card* CardFactory::createDragonBabyCard()//5
 Card* CardFactory::createCannonCard()//6 
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Cannon",   // name
-        4            // mana
+        4       ,     // mana
+        "Images/CardsUI/CannonApply.png"
     );
-    card->setCardArt("Images/CardsUI/CannonApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -158,14 +160,14 @@ Card* CardFactory::createCannonCard()//6
 Card* CardFactory::createSkeletonCard()//7 
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Skeleton",   // name
-        4            // mana
+        4         ,   // mana
+        "Images/CardsUI/SkeletonApply.png"
     );
-    card->setCardArt("Images/CardsUI/SkeletonApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -183,14 +185,14 @@ Card* CardFactory::createSkeletonCard()//7
 Card* CardFactory::createSkeletonLegionCard()//8 
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Skeleton",   // name
-        4            // mana
+        4         ,   // mana
+        "Images/CardsUI/SkeletonLegionApply.png"
     );
-    card->setCardArt("Images/CardsUI/SkeletonLegionApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -208,14 +210,14 @@ Card* CardFactory::createSkeletonLegionCard()//8
 Card* CardFactory::createSkeletonTombstoneCard()//9 
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "SkeletonTombstone",   // name
-        4            // mana
+        4          ,  // mana
+        "Images/CardsUI/SkeletonTombstoneApply.png"
     );
-    card->setCardArt("Images/CardsUI/SkeletonTombstoneApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -233,14 +235,14 @@ Card* CardFactory::createSkeletonTombstoneCard()//9
 Card* CardFactory::createMinionsCard()//10
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         1,          // cardId
         "Minons",   // name
-        4            // mana
+        4       ,     // mana
+        "Images/CardsUI/MinionsApply.png"
     );
-    card->setCardArt("Images/CardsUI/MinonsApply.png");
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -257,14 +259,15 @@ Card* CardFactory::createMinionsCard()//10
 Card* CardFactory::createFireBallCard() // 11
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         11,          // cardId
         "Fireball",  // name
-        5            // mana
+        5         ,   // mana
+        "Images/CardsUI/FireballApply.png"
     );
-    card->setCardArt("Images/CardsUI/FireballApply.png");
+
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(
@@ -281,14 +284,15 @@ Card* CardFactory::createFireBallCard() // 11
 Card* CardFactory::createSlowDownCard() // 12
 {
     auto card = Card::create();
-
+    card->retain();
     // 1️。信息
     card->setCardInfo(
         12,          // cardId
         "SlowDown",  // name
-        3            // mana
+        3          ,  // mana
+        "Images/CardsUI/SlowDownApply.png"
     );
-    card->setCardArt("Images/CardsUI/SlowDownApply.png");
+
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
             BattleManager::getInstance()->deployUnit(

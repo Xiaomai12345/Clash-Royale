@@ -1,4 +1,4 @@
-锘�#ifndef CARD_H
+#ifndef CARD_H
 #define CARD_H
 
 #include "cocos2d.h"
@@ -12,46 +12,47 @@ public:
     virtual bool init() override;
 
     /* =========================
-     * 鍗＄墝鍩虹淇℃伅锛堝彧鎻忚堪锛�
+     * 卡牌基础信息（只描述）
      * ========================= */
     void setCardInfo(int cardId,
         const std::string& name,
-        int manaCost);
+        int manaCost, const std::string& drawPath);
 
     int getCardId() const { return _cardId; }
     const std::string& getName() const { return _name; }
     int getManaCost() const { return _manaCost; }
 
     /* =========================
-     * 閲婃斁琛屼负锛堝叧閿級
-     * 鐢� CardManager / Factory 娉ㄥ叆
+     *  释放行为（关键）
+     * 由 CardManager / Factory 注入
      * ========================= */
     using PlayFunc = std::function<bool(const cocos2d::Vec2&, int)>;
 
     void setPlayFunc(const PlayFunc& func);
+    void refreshView();
 
-    // 浣跨敤鍗＄墝锛圲I 鈫� 閫昏緫鐨勫敮涓�鍏ュ彛锛�
+    // 使用卡牌（UI → 逻辑的唯一入口）
     bool use(const cocos2d::Vec2& worldPos, int playerId);
 
     /* =========================
-     * UI 鐩稿叧
+     * UI 相关
      * ========================= */
     void setSelected(bool selected);
     bool isSelected() const { return _isSelected; }
     void setCardArt(const std::string& imagePath);
-
+    bool hitTest(const cocos2d::Vec2& worldPos) const;
 private:
     /* =========================
-     * 鏁版嵁
+     * 数据
      * ========================= */
     int _cardId = 0;
     std::string _name;
     int _manaCost = 0;
-
-    PlayFunc _playFunc;   // 馃敟 鐪熸鐨勨�滃崱鐗屾晥鏋溾��
+    std::string _drawPath;
+    PlayFunc _playFunc;   // 真正的“卡牌效果”
 
     /* =========================
-     * UI 鐘舵��
+     * UI 状态
      * ========================= */
     bool _isSelected = false;
 

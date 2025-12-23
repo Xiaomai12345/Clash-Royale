@@ -1,4 +1,4 @@
-﻿#include "Battlefield.h"
+#include "Battlefield.h"
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
 #include"BattleManager.h"
@@ -66,48 +66,48 @@ void Battlefield::setupBattlefield(int level)
 
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
 
-    // 2️⃣ 创建一张 Knight 卡
-    auto card = CardFactory::createKnightCard();
-    card->setPosition(Vec2(100, 80));
-    this->addChild(card); // 只是为了看见卡，不影响逻辑
+    //// 2️⃣ 创建一张 Knight 卡
+    //auto card = CardFactory::createKnightCard();
+    //card->setPosition(Vec2(100, 80));
+    //this->addChild(card); // 只是为了看见卡，不影响逻辑
 
-    auto card1 = CardFactory::createArcherCard();
-    card1->setPosition(Vec2(200, 80));
-    this->addChild(card1);
+    //auto card1 = CardFactory::createArcherCard();
+    //card1->setPosition(Vec2(200, 80));
+    //this->addChild(card1);
 
-    auto card2 = CardFactory::createGiantCard();
-    card2->setPosition(Vec2(300, 80));
-    this->addChild(card2);
+    //auto card2 = CardFactory::createGiantCard();
+    //card2->setPosition(Vec2(300, 80));
+    //this->addChild(card2);
 
-    auto card3 = CardFactory::createValkyrieCard();
-    card3->setPosition(Vec2(400, 80));
-    this->addChild(card3);
+    //auto card3 = CardFactory::createValkyrieCard();
+    //card3->setPosition(Vec2(400, 80));
+    //this->addChild(card3);
 
-    auto card4 = CardFactory::createDragonBabyCard();
-    card4->setPosition(Vec2(500, 80));
-    this->addChild(card4);
+    //auto card4 = CardFactory::createDragonBabyCard();
+    //card4->setPosition(Vec2(500, 80));
+    //this->addChild(card4);
 
-    auto card5 = CardFactory::createCannonCard();
-    card5->setPosition(Vec2(600, 80)); // 设置位置
-    this->addChild(card5);
+    //auto card5 = CardFactory::createCannonCard();
+    //card5->setPosition(Vec2(600, 80)); // 设置位置
+    //this->addChild(card5);
 
-    auto card6 = CardFactory::createSkeletonCard();
-    card6->setPosition(Vec2(700, 80)); // 设置位置
-    this->addChild(card6);
+    //auto card6 = CardFactory::createSkeletonCard();
+    //card6->setPosition(Vec2(700, 80)); // 设置位置
+    //this->addChild(card6);
 
-    auto card7 = CardFactory::createSkeletonLegionCard();
-    card7->setPosition(Vec2(800, 80)); // 设置位置
-    this->addChild(card7);
+    //auto card7 = CardFactory::createSkeletonLegionCard();
+    //card7->setPosition(Vec2(800, 80)); // 设置位置
+    //this->addChild(card7);
 
-    auto card8 = CardFactory::createSkeletonTombstoneCard();
-    this->addChild(card8);
-
-
-    Vec2 testPos(300, 900);   // 你想让士兵出现的位置
-    int playerId = 0;         // 测试用阵营
+    //auto card8 = CardFactory::createSkeletonTombstoneCard();
+    //this->addChild(card8);
 
 
-    card2->use(Vec2(600, 500), !playerId);
+    //Vec2 testPos(300, 900);   // 你想让士兵出现的位置
+    //int playerId = 0;         // 测试用阵营
+
+
+    //card2->use(Vec2(600, 500), !playerId);
 
 
 
@@ -129,7 +129,7 @@ void Battlefield::setupBattlefield(int level)
 
 
     CCLOG("creat skeleton legion");
-    auto legion = SkeletonLegion::create(6, 20.f);
+    auto legion = SkeletonLegion::create(6, 20.0f);
     this->addChild(legion);
     legion->spawnAt(this, Vec2(400, 500));
 
@@ -491,4 +491,24 @@ float Battlefield::getNearestBridgeX(const cocos2d::Vec2& currentPos) const
         }
     }
     return targetX;
+}
+std::vector<Area>Battlefield::getDeployarea()
+{
+
+    std::vector<Area>t{ enemyArea3 };
+    if (BattleManager::getInstance()->getEnemyLeftPrincessAlive())
+    {
+        t.push_back(enemyArea1);
+        t.push_back(bridgeArea1);
+        t.push_back(riverArea1);
+        t.push_back(riverArea2);
+    }
+    if (BattleManager::getInstance()->getEnemyRightPrincessAlive())
+    {
+        t.push_back(enemyArea2);
+        t.push_back(bridgeArea2);
+        t.push_back(riverArea3);
+        t.push_back(riverArea4);
+    }
+    return t;
 }

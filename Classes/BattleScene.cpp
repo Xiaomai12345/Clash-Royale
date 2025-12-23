@@ -60,7 +60,8 @@ bool BattleScene::init()
 
     // 初始化手牌显示
     initHandCards();
-
+    //初始化next卡牌显示
+    initNextCard();
     // 开始游戏
     startGame();
 
@@ -68,6 +69,39 @@ bool BattleScene::init()
     scheduleUpdate();
 
     return true;
+}
+
+void BattleScene::initNextCard()
+{
+
+    auto slot = LayerColor::create(Color4B(0, 0, 155, 255), 90, 120);
+
+    slot->setPosition(Vec2(50, 40));
+    addChild(slot, 50);
+
+    refreshNextCard();
+}
+
+
+void BattleScene::refreshNextCard()
+{
+    Card* nextCard = CardManager::getInstance()->getNextCard();
+
+    if (!nextCard)
+        return;
+
+    // 1️⃣ 如果还没加到场景
+    if (!nextCard->getParent())
+    {
+        addChild(nextCard, 100); // 比手牌略低
+    }
+    nextCard->setScale(0.75);
+    // 2️⃣ Next 卡固定位置（例子）
+    nextCard->setPosition(Vec2(50, 40));
+    nextCard->setVisible(true);
+
+    // 4️⃣ 刷新 UI（图片、名字、圣水）
+    nextCard->refreshView();
 }
 
 
@@ -80,27 +114,69 @@ void BattleScene::initHandCards()
         card->setVisible(false);   // 先全部隐藏
     }
 
+    // 只画 4 个槽位框
+    for (int i = 0; i < 4; i++)
+    {
+        auto slot = LayerColor::create(Color4B(0, 0, 155, 255),120,160);
+
+        slot->setPosition(Vec2(250 + 150 * i, 60));
+        addChild(slot, 50);
+
+    }
+    
     refreshHandLayout();
 }
 
 void BattleScene::refreshHandLayout()
 {
     auto handCards = CardManager::getInstance()->getHandCards();
-
     for (int i = 0; i < handCards.size(); i++)
     {
-        auto card = handCards[i];
 
-        if (i < 4)
+        auto card = handCards[i];
+        if (!card)
         {
-            card->setVisible(true);
-            card->setPosition(Vec2(250+150*i,60));
+            continue;
         }
-        else
+        if (!card->getParent())
         {
-            card->setVisible(false);
+            addChild(card, 100);
         }
+
+        card->setPosition(250 + 150 * i, 60);
+        card->setVisible(true);
+
+        card->refreshView();
     }
+}
+
+//滑动补牌动画
+void BattleScene::onCardUsed(Card* card)
+{
+  
+    _handLocked = true;
+    Card* nextCard = CardManager::getInstance()->getNextCard();
+    if (!nextCard) return;
+
+    Vec2 fromPos = nextCard->getPosition(); // next 卡槽
+    Vec2 toPos = card->getPosition();     // 空槽位
+    CCLOG("===onCardUsed===");
+    nextCard->setPosition(fromPos);
+    nextCard->setVisible(true);
+
+    nextCard->runAction(Sequence::create(
+        Spawn::create(
+            MoveTo::create(0.5f, toPos),
+            ScaleTo::create(0.5f, 1.0f),
+            nullptr
+        ),
+        CallFunc::create([this]() {
+            refreshHandLayout();
+            refreshNextCard();
+            _handLocked = false;
+            }),
+        nullptr
+    ));
 }
 
 
@@ -189,6 +265,9 @@ void BattleScene::setupInput()
 
 bool BattleScene::onTouchBegan(Touch* touch, Event* event)
 {
+    if (_handLocked)
+        return false;
+
     if (!_gameStarted || _gameEnded)
         return false;
 
@@ -221,7 +300,6 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
 
     return true; // 吃掉这次触摸
 }
-
 
 void BattleScene::onTouchMoved(Touch* touch, Event* event)
 {
@@ -274,8 +352,8 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
                     {
                         // 从手牌中移除该卡牌
                         auto cardManager = CardManager::getInstance();
-                        cardManager->useCard(_selectedCard, touchPos, _isPlayer1 ? 1 : 2);
-
+                        cardManager->useCard(_selectedCard);
+                        onCardUsed(_selectedCard);
                         CCLOG("Deployed card at (%.1f, %.1f)", touchPos.x, touchPos.y);
                     }
                 }
@@ -287,6 +365,7 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
         _selectedCard = nullptr;
         _cardGhost->setVisible(false);
     }
+    refreshHandLayout();
 }
 
 void BattleScene::showDeployPosition()
@@ -375,14 +454,17 @@ void BattleScene::update(float delta)
 
     // 更新卡牌管理器
     CardManager::getInstance()->update(delta);
+    //refreshHandLayout();
+    //refreshNextCard();
 
-    static int lastHandSize = 8;
+
+    static int lastHandSize = 4;
     int currentSize = CardManager::getInstance()->getHandCards().size();
-
+    CCLOG("dddddddd %d", currentSize);
     if (currentSize != lastHandSize)
     {
-        initHandCards();      // 确保新卡进 Scene
-        refreshHandLayout();  // 重排
+        //initHandCards();      // 确保新卡进 Scene
+        //refreshHandLayout();  // 重排
         lastHandSize = currentSize;
     }
 
