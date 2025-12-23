@@ -152,8 +152,7 @@ Card* CardManager::getCardAtWorldPos(const cocos2d::Vec2& pos)
 {
     for (auto it = _handCards.rbegin(); it != _handCards.rend(); ++it)
     {
-        if ((*it)->isVisible() && (*it)->hitTest(pos))
-            return *it;
+
     }
     return nullptr;
 }

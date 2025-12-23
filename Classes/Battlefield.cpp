@@ -110,8 +110,9 @@ void Battlefield::setupBattlefield(int level)
 
 
     card2->use(Vec2(600, 500), !playerId);
-
-
+    card3->use(Vec2(300, 500), !playerId);
+    card2->use(Vec2(700, 500), !playerId);
+	card8->use(Vec2(400, 900), playerId);
 
     auto building = PrincessTower::create();
     building->setPosition(Vec2(300, 1024));
@@ -129,6 +130,7 @@ void Battlefield::setupBattlefield(int level)
     troop7->setPosition(Vec2(50, 300));
     this->addChild(troop7);
 
+<<<<<<< Updated upstream
 
  
 
@@ -138,6 +140,8 @@ void Battlefield::setupBattlefield(int level)
 
 
 
+=======
+>>>>>>> Stashed changes
     auto building1 = PrincessTower::create();
     building1->setPosition(Vec2(500, 1024));
     building1->setCamp(ECamp::RIGHT);
@@ -164,10 +168,6 @@ void Battlefield::setupBattlefield(int level)
     building2left->setCamp(ECamp::LEFT);
     this->addChild(building2left);
 
-    auto building3left = Cannon::create();
-    building3left->setPosition(Vec2(450, 500));
-    building3left->setCamp(ECamp::LEFT);
-    this->addChild(building3left);
 
 
     if (_debugEnabled)
@@ -488,4 +488,40 @@ float Battlefield::getNearestBridgeX(const cocos2d::Vec2& currentPos) const
         }
     }
     return targetX;
+}
+
+float Battlefield::getNearestBridgeY(const cocos2d::Vec2& currentPos) const
+{
+    float minDist = FLT_MAX;
+    float targetY = currentPos.y;
+
+    for (const auto& area : bridgeArea)
+    {
+        // 1. 桥的下边界 Y（grid → world）
+        Vec2 bottomWorld = gridToWorld(area.leftBottom.y, 0);
+        float bottomY = bottomWorld.y;
+
+        // 2. 桥的上边界 Y（grid → world）
+        Vec2 topWorld = gridToWorld(area.rightTop.y, 0);
+        float topY = topWorld.y;
+
+        // 3. 比较当前位置离上下边界哪个更近
+        float distToBottom = std::abs(currentPos.y - bottomY);
+        float distToTop = std::abs(currentPos.y - topY);
+
+        // 4. 选择更近的那个
+        if (distToBottom < minDist)
+        {
+            minDist = distToBottom;
+            targetY = bottomY;
+        }
+
+        if (distToTop < minDist)
+        {
+            minDist = distToTop;
+            targetY = topY;
+        }
+    }
+
+    return targetY;
 }
