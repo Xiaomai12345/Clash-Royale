@@ -1,4 +1,4 @@
-锘�#ifndef CARD_H
+#ifndef CARD_H
 #define CARD_H
 
 #include "cocos2d.h"
