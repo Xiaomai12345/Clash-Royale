@@ -1,4 +1,4 @@
-﻿#include "Card.h"
+锘�#include "Card.h"
 #include <algorithm>
 
 USING_NS_CC;
@@ -9,22 +9,27 @@ bool Card::init()
         return false;
 
     /* =========================
-     * 卡牌尺寸（唯一尺寸源）
+     * 鍗＄墝灏哄锛堝敮涓�灏哄婧愶級
      * ========================= */
     Size cardSize(100, 140);
 
     /* =========================
-     * 卡牌容器
+     * 鍗＄墝瀹瑰櫒
      * ========================= */
     _cardSprite = Sprite::create();
-    _cardSprite->setContentSize(cardSize);      // ⭐ 关键：给尺寸
+    _cardSprite->setContentSize(cardSize);      // 猸� 鍏抽敭锛氱粰灏哄
     _cardSprite->setAnchorPoint(Vec2::ZERO);
-    addChild(_cardSprite);
+    addChild(_cardSprite,200);
+    if (_cardSprite)
+    {
+        CCLOG("bbbbbbbbbbbbb");
+    }
+
 
     setContentSize(cardSize);
 
     /* =========================
-     * 卡牌背景
+     * 鍗＄墝鑳屾櫙
      * ========================= */
     auto bg = LayerColor::create(Color4B(80, 80, 80, 255),
         cardSize.width,
@@ -34,7 +39,7 @@ bool Card::init()
     _cardSprite->addChild(bg, 0);
 
     /* =========================
-     * 圣水消耗
+     * 鍦ｆ按娑堣��
      * ========================= */
     _manaLabel = Label::createWithSystemFont("0", "Arial", 20);
     _manaLabel->setPosition(Vec2(cardSize.width * 0.2f,
@@ -43,7 +48,7 @@ bool Card::init()
     _cardSprite->addChild(_manaLabel, 2);
 
     /* =========================
-     * 卡牌名称
+     * 鍗＄墝鍚嶇О
      * ========================= */
     _nameLabel = Label::createWithSystemFont("Card", "Arial", 16);
     _nameLabel->setPosition(Vec2(cardSize.width * 0.5f,
@@ -105,7 +110,7 @@ void Card::setSelected(bool selected)
 }
 
 /* =========================
- * 设置卡牌插画（铺满背景）
+ * 璁剧疆鍗＄墝鎻掔敾锛堥摵婊¤儗鏅級
  * ========================= */
 void Card::setCardArt(const std::string& imagePath)
 {
@@ -118,7 +123,7 @@ void Card::setCardArt(const std::string& imagePath)
     _artSprite = Sprite::create(imagePath);
     if (!_artSprite) return;
 
-    // ⭐ 用 cardSprite 的尺寸（现在一定不是 0）
+    // 猸� 鐢� cardSprite 鐨勫昂瀵革紙鐜板湪涓�瀹氫笉鏄� 0锛�
     Size bgSize = _cardSprite->getContentSize();
     Size imgSize = _artSprite->getContentSize();
 
@@ -126,13 +131,13 @@ void Card::setCardArt(const std::string& imagePath)
     float scaleY = bgSize.height / imgSize.height;
     CCLOG("%f %f",scaleX,scaleY);
 
-    // cover：铺满
+    // cover锛氶摵婊�
     float scale = std::max(scaleX, scaleY);
 
     _artSprite->setScale(scale);
     _artSprite->setPosition(bgSize.width * 0.5f,
         bgSize.height * 0.5f);
 
-    // 插画在背景之上、UI 之下
+    // 鎻掔敾鍦ㄨ儗鏅箣涓娿�乁I 涔嬩笅
     _cardSprite->addChild(_artSprite, 1);
 }

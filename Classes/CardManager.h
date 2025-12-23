@@ -32,6 +32,8 @@ public:
     // ÖØÖÃ
     void reset();
 
+    Card* getCardAtWorldPos(const cocos2d::Vec2& pos);
+
 private:
     CardManager();
     ~CardManager();

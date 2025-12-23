@@ -1,4 +1,4 @@
-锘�#include "Battlefield.h"
+﻿#include "Battlefield.h"
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
 #include"BattleManager.h"
@@ -181,15 +181,14 @@ void Battlefield::setupBattlefield(int level)
 
 void Battlefield::createBackground()
 {
-    // 灏濊瘯鍔犺浇鍥剧墖鑳屾櫙
+    // 创建背景图片
     _background = Sprite::create("Images/background/battlefield.jpg");
     CCLOG("Successfully loaded battlefield background image");
-    // 鑾峰彇鍘熷灏哄骞惰绠楃缉鏀�
+    // 设置缩放
     Size originalSize = _background->getContentSize();
     float scaleX = 0.8 * 0.85;
     float scaleY = 0.8 * 0.8;
 
-    // 璁剧疆缂╂斁
     _background->setScaleX(scaleX);
     _background->setScaleY(scaleY);
 
@@ -198,18 +197,18 @@ void Battlefield::createBackground()
         originalSize.width * scaleX,
         originalSize.height * scaleY);
 
-    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // 閿氱偣鍦ㄩ《閮ㄤ腑闂�
-    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);  // 鏀惧湪椤堕儴
+    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // 设置锚点在顶部中间
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);  
     addChild(_background, 0);
     auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
     lavenderRect->setPosition(0, _mapSize.height * 0.8 - 50);
     this->addChild(lavenderRect);
 
-    auto drawNode = cocos2d::DrawNode::create();
-    this->addChild(drawNode, 2000);
+    //auto drawNode = cocos2d::DrawNode::create();
+    //this->addChild(drawNode, 2000);
 
-    // 缁樺埗鐭╁舰锛屼綅缃槸涓栫晫鍧愭爣锛屽鍜岄珮鏄煩褰㈢殑灏哄
-    drawNode->drawRect(Vec2(80, 280), Vec2(20 * gridWeight, 1732 * 0.8 - 110), Color4F::RED);
+    //// 生成矩形
+    //drawNode->drawRect(Vec2(80, 280), Vec2(20 * gridWeight, 1732 * 0.8 - 110), Color4F::RED);
 }
 
 bool Battlefield::worldToGrid(const Vec2& worldPos, int& outRow, int& outCol) const
@@ -333,10 +332,10 @@ bool Battlefield::isValidDeployPosition(const Vec2& worldPos, int playerId) cons
     if (!grid->isDeployable())
         return false;
 
-    if (playerId == 0)
+    if (playerId == 1)
         return grid->getRegionType() == Grid::RegionType::PLAYER;
 
-    if (playerId == 1)
+    if (playerId == 2)
         return grid->getRegionType() == Grid::RegionType::ENEMY;
 
     return false;

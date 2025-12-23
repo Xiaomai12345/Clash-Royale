@@ -22,7 +22,7 @@ void DataManager::destroyInstance() {
 bool DataManager::loadCardConfig(const std::string& jsonPath) {
     // 避免重复解析
     if (_isLoaded) {
-        log("DataManager：卡牌数据已加载，无需重复加载！");
+        /*log("DataManager：卡牌数据已加载，无需重复加载！");*/
         return true;
     }
 

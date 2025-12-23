@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "Grid.h"
+#include "BattleManager.h"
 #include <vector>
 #include"IWalkableWorld.h"
 struct Coordinate
@@ -42,6 +43,10 @@ public:
     bool isDebugDrawEnabled() const { return _debugEnabled; }
 	void addUnit(cocos2d::Node* unit);
 
+    std::vector<Area>getMyarea() { return myArea; }
+    std::vector<Area>getEnemyarea() { return enemyArea; }
+    std::vector<Area>getDeployarea();
+    cocos2d::Size getGridSize() { return _gridSize; }
 private:
     void createBackground();
     void createDebugLayer();
@@ -52,7 +57,7 @@ private:
 
     Grid* getGrid(int row, int col);
     const Grid* getGrid(int row, int col) const;
-
+    
 private:
     cocos2d::Size _mapSize;
     cocos2d::Size _gridSize;

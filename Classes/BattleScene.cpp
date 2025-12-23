@@ -37,7 +37,7 @@ bool BattleScene::init()
     _isPlayer1 = true;
     _selectedCard = nullptr;
     _cardGhost = nullptr;
-
+    _deployDrawNode = nullptr;
     // 创建战场
     _battlefield = Battlefield::create();
     _battlefield->setupBattlefield(1);
@@ -58,6 +58,9 @@ bool BattleScene::init()
     // 初始化卡牌管理器
     CardManager::getInstance()->init();
 
+    // 初始化手牌显示
+    initHandCards();
+
     // 开始游戏
     startGame();
 
@@ -66,6 +69,41 @@ bool BattleScene::init()
 
     return true;
 }
+
+
+void BattleScene::initHandCards()
+{
+    auto cards = CardManager::getInstance()->getHandCards();
+    for (auto card : cards)
+    {
+        this->addChild(card,200);
+        card->setVisible(false);   // 先全部隐藏
+    }
+
+    refreshHandLayout();
+}
+
+void BattleScene::refreshHandLayout()
+{
+    auto handCards = CardManager::getInstance()->getHandCards();
+
+    for (int i = 0; i < handCards.size(); i++)
+    {
+        auto card = handCards[i];
+
+        if (i < 4)
+        {
+            card->setVisible(true);
+            card->setPosition(Vec2(250+150*i,60));
+        }
+        else
+        {
+            card->setVisible(false);
+        }
+    }
+}
+
+
 
 void BattleScene::setupUI()
 {
@@ -156,36 +194,40 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
 
     Vec2 touchPos = touch->getLocation();
 
-    // 检查是否点击了卡牌（简化版本）
-    auto cardManager = CardManager::getInstance();
-    auto handCards = cardManager->getHandCards();
+    // 1️ 通过 CardManager，判断是否点中了某张手牌
+    _selectedCard = CardManager::getInstance()->getCardAtWorldPos(touchPos);
 
-    // 如果手牌区域有卡牌，可以选择（简化逻辑）
-    if (!handCards.empty())
-    {
-        _selectedCard = handCards[0]; // 选择第一张卡牌作为示例
-        _selectedCard->setSelected(true);
-    }
+    // 没点中卡牌，直接返回，不吃触摸
+    if (!_selectedCard)
+        return false;
 
-    // 创建拖拽虚影
+    // 2️⃣设置选中状态（放大 + 高亮）
+    _selectedCard->setSelected(true);
+
+    // 3️⃣提升层级，保证拖拽时在最上面
+    _selectedCard->setLocalZOrder(1000);
+
+    // 4️⃣创建拖拽虚影（只创建一次）
     if (!_cardGhost)
     {
         _cardGhost = Sprite::create();
-        auto color = LayerColor::create(Color4B(255, 255, 255, 100), 100, 140);
+        auto color = LayerColor::create(Color4B(255, 255, 255, 120), 120, 160);
         _cardGhost->addChild(color);
-        addChild(_cardGhost, 150);
+        addChild(_cardGhost, 1500); // 比卡牌还高
     }
 
     _cardGhost->setPosition(touchPos);
     _cardGhost->setVisible(true);
 
-    return true;
+    return true; // 吃掉这次触摸
 }
+
 
 void BattleScene::onTouchMoved(Touch* touch, Event* event)
 {
     if (_cardGhost)
     {
+        showDeployPosition();
         Vec2 touchPos = touch->getLocation();
         _cardGhost->setPosition(touchPos);
 
@@ -246,6 +288,31 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
         _cardGhost->setVisible(false);
     }
 }
+
+void BattleScene::showDeployPosition()
+{
+    std::vector<Area>unDeployarea = _battlefield->getDeployarea();
+    // 检查是否已经创建了 DrawNode，如果没有则创建
+    if (!_deployDrawNode)
+    {
+        _deployDrawNode = cocos2d::DrawNode::create();
+        this->addChild(_deployDrawNode, 2000); // 只创建一次
+    }
+
+    // 清空之前的绘制内容
+    _deployDrawNode->clear();
+
+    for (auto& area : unDeployarea)
+    {
+        // 绘制透明填充矩形（浅红色）
+        _deployDrawNode->drawSolidRect(
+            Vec2(80 + area.leftBottom.x * _battlefield->getGridSize().width, 280 + area.leftBottom.y * _battlefield->getGridSize().height),
+            Vec2(80 + (area.rightTop.x+1) * _battlefield->getGridSize().width, 280 + (area.rightTop.y+1) * _battlefield->getGridSize().height),
+            Color4F(1.0f, 0.0f, 0.0f, 0.4f)  // 40%透明红色
+        );
+    }
+}
+
 
 void BattleScene::startGame()
 {
@@ -308,6 +375,17 @@ void BattleScene::update(float delta)
 
     // 更新卡牌管理器
     CardManager::getInstance()->update(delta);
+
+    static int lastHandSize = 8;
+    int currentSize = CardManager::getInstance()->getHandCards().size();
+
+    if (currentSize != lastHandSize)
+    {
+        initHandCards();      // 确保新卡进 Scene
+        refreshHandLayout();  // 重排
+        lastHandSize = currentSize;
+    }
+
 
     // 更新皇冠显示
     for (int i = 0; i < 2; i++)
@@ -421,10 +499,10 @@ void BattleScene::testDataManager() {
     if (logFile.is_open()) {
         logFile.write(logContent.c_str(), logContent.size());
         logFile.close();
-        log("✅ 日志已写入本地文件：test_log.txt");
+        log("日志已写入本地文件：test_log.txt");
     }
     else {
-        log("❌ 无法创建日志文件！");
+        log("无法创建日志文件！");
     }
 }
 */
