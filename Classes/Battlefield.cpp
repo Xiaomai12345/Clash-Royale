@@ -1,4 +1,6 @@
-﻿#include "Battlefield.h"
+#include "Battlefield.h"
+#include"KnightTroop.h"
+#include"ArcherTroop.h"
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
 #include"BattleManager.h"
@@ -128,16 +130,11 @@ void Battlefield::setupBattlefield(int level)
     this->addChild(troop7);
 
 
-    CCLOG("creat skeleton legion");
-    auto legion = SkeletonLegion::create(6, 20.f);
-    this->addChild(legion);
-    legion->spawnAt(this, Vec2(400, 500));
-
+ 
 
     auto tombstone = SkeletonTombstone::create();
-    tombstone->setPosition(Vec2(500, 600));  // 璁剧疆澧撶浣嶇疆
+    tombstone->setPosition(Vec2(500, 600));  // 
     this->addChild(tombstone);  //
-
 
 
 

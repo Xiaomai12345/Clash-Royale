@@ -1,4 +1,4 @@
-锘�#include "Card.h"
+#include "Card.h"
 #include <algorithm>
 
 USING_NS_CC;
