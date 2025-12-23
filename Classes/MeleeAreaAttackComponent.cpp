@@ -29,12 +29,12 @@ void MeleeAreaAttackComponent::doAttack(IAttackable* owner)
     float attackRange = getAttackRange();
 
     // =========================
-    // 1?? ÏÔÊ¾¹¥»÷·¶Î§ÉÁË¸
+    // 1?? æ˜¾ç¤ºæ”»å‡»èŒƒå›´é—ªçƒ
     // =========================
     showAttackRange(ownerNode);
 
     // =========================
-    // 2?? ¶Ô·¶Î§ÄÚµÐÈËÔì³ÉÉËº¦
+    // 2?? å¯¹èŒƒå›´å†…æ•Œäººé€ æˆä¼¤å®³
     // =========================
     for (Node* node : parent->getChildren())
     {
@@ -73,20 +73,20 @@ void MeleeAreaAttackComponent::showAttackRange(Node* ownerNode)
 
     float r = getAttackRange();
 
-    // »­¹¥»÷·¶Î§Ô²£¨±¾µØ×ø±ê£¬Ô²ÐÄÔÚ×Ô¼º½ÅÏÂ£©
+    // ç”»æ”»å‡»èŒƒå›´åœ†ï¼ˆæœ¬åœ°åæ ‡ï¼Œåœ†å¿ƒåœ¨è‡ªå·±è„šä¸‹ï¼‰
     _rangeDraw->drawCircle(
         Vec2::ZERO,
         r,
         0,
         32,
         false,
-        Color4F(1.f, 0.5f, 0.2f, 0.8f) // Å®ÎäÉñ³ÈºìÉ«
+        Color4F(1.f, 0.5f, 0.2f, 0.8f) // å¥³æ­¦ç¥žæ©™çº¢è‰²
     );
 
     _rangeDraw->setOpacity(255);
     _rangeDraw->setScale(0.8f);
 
-    // ÉÁË¸¶¯»­£º·Å´ó + µ­³ö
+    // é—ªçƒåŠ¨ç”»ï¼šæ”¾å¤§ + æ·¡å‡º
     _rangeDraw->runAction(Sequence::create(
         Spawn::create(
             ScaleTo::create(0.15f, 1.0f),

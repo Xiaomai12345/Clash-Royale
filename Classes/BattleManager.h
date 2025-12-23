@@ -10,27 +10,27 @@ class UnitBase;
 class BattleManager
 {
 public:
-    // »ñÈ¡µ¥Àı
+    // è·å–å•ä¾‹
     static BattleManager* getInstance();
     static void destroyInstance();
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     void init(Battlefield* battlefield);
 
-    // ¸üĞÂ
+    // æ›´æ–°
     void update(float delta);
 
-    // µ¥Î»¹ÜÀí
+    // å•ä½ç®¡ç†
     void deployUnit(int unitType, const cocos2d::Vec2& position, int playerId);
 
-    // ÓÎÏ·×´Ì¬
+    // æ¸¸æˆçŠ¶æ€
     void addCrown(int playerId, int crowns = 1);
     int getPlayerCrowns(int playerId) const;
 
-    // ÖØÖÃ
+    // é‡ç½®
     void reset();
 
-    // ÓÎÏ·Ä£Ê½
+    // æ¸¸æˆæ¨¡å¼
     void setGameMode(const std::string& mode);
     std::string getCurrentGameMode() const { return _currentGameMode; }
 
@@ -49,7 +49,7 @@ private:
     Battlefield* _battlefield;
     ManaSystem* _manaSystem;
 
-    // ÓÎÏ·×´Ì¬
+    // æ¸¸æˆçŠ¶æ€
     bool _gameActive;
     bool _gameEnded;
     float _gameTime;
@@ -63,7 +63,7 @@ private:
     bool enemyKingAlive;
     std::string _currentGameMode;
 
-    // Íæ¼ÒÊı¾İ
+    // ç©å®¶æ•°æ®
     std::unordered_map<int, int> _playerCrowns;
 };
 

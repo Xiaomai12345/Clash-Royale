@@ -12,10 +12,10 @@ public:
 
     virtual bool init() override;
 
-    // ³õÊ¼»¯µ¥Î»
+    // åˆå§‹åŒ–å•ä½
     virtual void initUnit(int playerId, int level, const cocos2d::Vec2& position);
 
-    // ÊôĞÔ·ÃÎÊ
+    // å±æ€§è®¿é—®
     int getPlayerId() const { return _playerId; }
     int getUnitType() const { return _unitType; }
     int getLevel() const { return _level; }
@@ -29,7 +29,7 @@ public:
     bool isFlying() const { return _isFlying; }
     bool isGround() const { return !_isFlying; }
 
-    // Ä¿±ê¹ÜÀí
+    // ç›®æ ‡ç®¡ç†
     bool hasTarget() const { return _currentTarget != nullptr || _currentTargetTower != nullptr; }
     UnitBase* getTarget() const { return _currentTarget; }
     TowerBase* getTargetTower() const { return _currentTargetTower; }
@@ -37,64 +37,64 @@ public:
     void setTargetTower(TowerBase* tower);
     void clearTarget();
 
-    // Õ½¶·×´Ì¬
+    // æˆ˜æ–—çŠ¶æ€
     bool isAttacking() const { return _isAttacking; }
     bool canAttack(UnitBase* target) const;
     bool canAttackTower() const;
 
-    // ÒÆ¶¯
+    // ç§»åŠ¨
     void moveTo(const cocos2d::Vec2& position, float delta);
     bool hasReachedTarget() const;
 
-    // Õ½¶··½·¨
+    // æˆ˜æ–—æ–¹æ³•
     virtual void takeDamage(float damage);
     virtual void attack(UnitBase* target);
     virtual void attackTower(TowerBase* tower);
     virtual void update(float delta) override;
 
-    // ÌØĞ§
+    // ç‰¹æ•ˆ
     void playAttackEffect();
     void playDamageEffect();
     void playDeathEffect();
 
-    // Ñ°Â·
+    // å¯»è·¯
     void setLane(int lane) { _lane = lane; }
     int getLane() const { return _lane; }
 
 protected:
-    int _playerId;          // ËùÊôÍæ¼Ò
-    int _unitType;          // µ¥Î»ÀàĞÍID
-    int _level;             // µÈ¼¶
-    int _lane;              // ËùÔÚ³µµÀ
+    int _playerId;          // æ‰€å±ç©å®¶
+    int _unitType;          // å•ä½ç±»å‹ID
+    int _level;             // ç­‰çº§
+    int _lane;              // æ‰€åœ¨è½¦é“
 
-    // »ù±¾ÊôĞÔ
+    // åŸºæœ¬å±æ€§
     float _currentHealth;
     float _maxHealth;
     float _attackDamage;
     float _attackRange;
     float _attackSpeed;
     float _moveSpeed;
-    bool _isFlying;         // ÊÇ·ñÎª·ÉĞĞµ¥Î»
+    bool _isFlying;         // æ˜¯å¦ä¸ºé£è¡Œå•ä½
 
-    // ¹¥»÷Ä¿±ê
+    // æ”»å‡»ç›®æ ‡
     UnitBase* _currentTarget;
     TowerBase* _currentTargetTower;
     float _attackTimer;
     bool _isAttacking;
 
-    // ÒÆ¶¯Ä¿±ê
+    // ç§»åŠ¨ç›®æ ‡
     cocos2d::Vec2 _moveTarget;
     bool _hasMoveTarget;
 
-    // ÊÓ¾õÔªËØ
+    // è§†è§‰å…ƒç´ 
     cocos2d::Sprite* _unitSprite;
     cocos2d::ProgressTimer* _healthBar;
 
-    // ´´½¨UI
+    // åˆ›å»ºUI
     void createHealthBar();
     void updateHealthBar();
 
-    // ¹¥»÷¼ì²é
+    // æ”»å‡»æ£€æŸ¥
     bool isTargetInRange() const;
     bool isTowerInRange() const;
 };

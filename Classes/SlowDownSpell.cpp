@@ -13,7 +13,7 @@ bool SlowDownSpell::init()
     if (!SpellBase::init())
         return false;
 
-    // µ÷ÊÔ»æÖÆ
+    // è°ƒè¯•ç»˜åˆ¶
     _debugDraw = DrawNode::create();
     addChild(_debugDraw, 10);
 
@@ -35,7 +35,7 @@ void SlowDownSpell::cast(const Vec2& worldPos, ECamp casterCamp)
     drawDebugRange();
     applySlow();
 
-    // ¶ÌÔÝ´æÔÚºóÒÆ³ý
+    // çŸ­æš‚å­˜åœ¨åŽç§»é™¤
     runAction(Sequence::create(
         DelayTime::create(0.2f),
         RemoveSelf::create(),
@@ -49,7 +49,7 @@ void SlowDownSpell::applySlow()
     if (!parent)
         return;
 
-    // ·¨ÊõÖÐÐÄµÄÊÀ½ç×ø±ê
+    // æ³•æœ¯ä¸­å¿ƒçš„ä¸–ç•Œåæ ‡
     Vec2 center = this->convertToWorldSpaceAR(Vec2::ZERO);
 
     for (Node* node : parent->getChildren())
@@ -61,7 +61,7 @@ void SlowDownSpell::applySlow()
         if (target->isDead())
             continue;
 
-        // Í¬ÕóÓª²»ÊÜÓ°Ïì
+        // åŒé˜µè¥ä¸å—å½±å“
         if (target->getCamp() == _casterCamp)
             continue;
 
@@ -84,7 +84,7 @@ void SlowDownSpell::drawDebugRange()
 
     _debugDraw->clear();
 
-    // ÓÃÀ¶É«±íÊ¾¼õËÙÇøÓò£¬ºÍ»ðÇòÇø·Ö
+    // ç”¨è“è‰²è¡¨ç¤ºå‡é€ŸåŒºåŸŸï¼Œå’Œç«çƒåŒºåˆ†
     _debugDraw->drawCircle(
         Vec2::ZERO,
         _radius,

@@ -1,4 +1,4 @@
-﻿#include "SkeletonLegion.h"
+#include "SkeletonLegion.h"
 
 USING_NS_CC;
 

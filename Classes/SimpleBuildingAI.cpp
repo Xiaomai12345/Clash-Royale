@@ -6,7 +6,7 @@
 
 USING_NS_CC;
 
-// ËÑË÷¼ä¸ô£ºÃ¿0.5ÃëËÑË÷Ò»´ÎµĞÈË
+// æœç´¢é—´éš”ï¼šæ¯0.5ç§’æœç´¢ä¸€æ¬¡æ•Œäºº
 const float SimpleBuildingAI::SEARCH_INTERVAL = 0.5f;
 
 SimpleBuildingAI::SimpleBuildingAI(float detectionRange)
@@ -20,23 +20,23 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
     if (!owner || owner->isDead())
         return;
 
-    // »ñÈ¡¹¥»÷×é¼ş
+    // è·å–æ”»å‡»ç»„ä»¶
     AttackComponent* attackComponent = owner->getAttackComponent();
     if (!attackComponent)
     {
         return;
     }
 
-    // ¸üĞÂËÑË÷ÀäÈ´
+    // æ›´æ–°æœç´¢å†·å´
     _searchCooldown -= dt;
 
-    // ¼ì²éµ±Ç°Ä¿±êÊÇ·ñÓĞĞ§
+    // æ£€æŸ¥å½“å‰ç›®æ ‡æ˜¯å¦æœ‰æ•ˆ
     if (_target && !_target->isDead())
     {
-        // ¼ì²éÄ¿±êÊÇ·ñÔÚ¹¥»÷·¶Î§ÄÚ
+        // æ£€æŸ¥ç›®æ ‡æ˜¯å¦åœ¨æ”»å‡»èŒƒå›´å†…
         if (isValidTarget(owner, _target))
         {
-            // Ä¿±êÓĞĞ§ÇÒ¿É¹¥»÷£¬ÎŞĞèÖØĞÂËÑË÷
+            // ç›®æ ‡æœ‰æ•ˆä¸”å¯æ”»å‡»ï¼Œæ— éœ€é‡æ–°æœç´¢
             attackComponent->setTarget(_target);
             return;
         }
@@ -48,12 +48,12 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
     }
     else
     {
-        // Ä¿±êÎŞĞ§£¬Çå³ı
+        // ç›®æ ‡æ— æ•ˆï¼Œæ¸…é™¤
         clearTarget();
         attackComponent->clearTarget();
     }
 
-    // ĞèÒªÑ°ÕÒĞÂÄ¿±ê
+    // éœ€è¦å¯»æ‰¾æ–°ç›®æ ‡
     if (_searchCooldown <= 0.0f)
     {
         IAttackable* newTarget = findEnemyInRange(owner);
@@ -70,7 +70,7 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
     }
 }
 
-IAttackable* SimpleBuildingAI::findEnemyInRange(IAttackable* owner)//Ñ°ÕÒ·¶Î§ÄÚµÄµĞÈË
+IAttackable* SimpleBuildingAI::findEnemyInRange(IAttackable* owner)//å¯»æ‰¾èŒƒå›´å†…çš„æ•Œäºº
 {
     if (!owner->getParent())
         return nullptr;
@@ -79,13 +79,13 @@ IAttackable* SimpleBuildingAI::findEnemyInRange(IAttackable* owner)//Ñ°ÕÒ·¶Î§ÄÚµ
     IAttackable* closestEnemy = nullptr;
     float closestDistance = FLT_MAX;
 
-    // ±éÀúËùÓĞ×Ó½Úµã
+    // éå†æ‰€æœ‰å­èŠ‚ç‚¹
     Node* parent = owner->getParent();
     if (!parent)
         return nullptr;
     for (Node* node : parent->getChildren())
     {
-        // Ìø¹ı×Ô¼º
+        // è·³è¿‡è‡ªå·±
         if (node == owner)
             continue;
 
@@ -93,13 +93,13 @@ IAttackable* SimpleBuildingAI::findEnemyInRange(IAttackable* owner)//Ñ°ÕÒ·¶Î§ÄÚµ
         if (!target || target->isDead())
             continue;
 
-        if (owner->getState() == State::ATTACKING && target != _target)//Èç¹ûµ±Ç°´¦ÓÚ¹¥»÷×´Ì¬£¬²¢ÇÒÄ¿±ê²»ÊÇµ±Ç°Ä¿±ê£¬ÔòÌø¹ı
+        if (owner->getState() == State::ATTACKING && target != _target)//å¦‚æœå½“å‰å¤„äºæ”»å‡»çŠ¶æ€ï¼Œå¹¶ä¸”ç›®æ ‡ä¸æ˜¯å½“å‰ç›®æ ‡ï¼Œåˆ™è·³è¿‡
             continue;
 
-        // ¼ì²éÊÇ·ñÊÇµĞÈË£¨²»Í¬ÕóÓª£©
+        // æ£€æŸ¥æ˜¯å¦æ˜¯æ•Œäººï¼ˆä¸åŒé˜µè¥ï¼‰
         if (target->getCamp() != owner->getCamp())
         {
-            if (target->getMoveAttacked() != MoveAttack::Both && owner->getMoveAttack() != MoveAttack::Both && target->getMoveAttacked() != owner->getMoveAttack())//±íÃ÷¹¥»÷ÀàĞÍÓë±»¹¥»÷ÀàĞÍ²»Æ¥Åä
+            if (target->getMoveAttacked() != MoveAttack::Both && owner->getMoveAttack() != MoveAttack::Both && target->getMoveAttacked() != owner->getMoveAttack())//è¡¨æ˜æ”»å‡»ç±»å‹ä¸è¢«æ”»å‡»ç±»å‹ä¸åŒ¹é…
                 continue;
             float distance = towerPos.distance(target->getPosition());
 
@@ -119,19 +119,19 @@ bool SimpleBuildingAI::isValidTarget(BuildingBase* owner, IAttackable* target) c
     if (!owner || !target || target->isDead())
         return false;
 
-    // ¼ì²é¾àÀë
+    // æ£€æŸ¥è·ç¦»
     float distance = calculateDistance(owner, target);
     auto attackComponent = owner->getAttackComponent();
 
     if (attackComponent)
     {
-        // Ê¹ÓÃ¹¥»÷×é¼şµÄ¹¥»÷·¶Î§
+        // ä½¿ç”¨æ”»å‡»ç»„ä»¶çš„æ”»å‡»èŒƒå›´
         float attackRange = attackComponent->getAttackRange();
         float targetRadius = target->getBodyRadius();
 
-        // ¿¼ÂÇÄ¿±ê°ë¾¶µÄÓĞĞ§¾àÀë
+        // è€ƒè™‘ç›®æ ‡åŠå¾„çš„æœ‰æ•ˆè·ç¦»
         float effectiveRange = attackRange + targetRadius;
-		return distance - effectiveRange <= 0.1f;//ÔÊĞíÒ»µãÎó²î
+		return distance - effectiveRange <= 0.1f;//å…è®¸ä¸€ç‚¹è¯¯å·®
     }
 
     return false;

@@ -5,35 +5,35 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
-enum class ECamp//¶¨ÒåÕóÓª
+enum class ECamp//å®šä¹‰é˜µè¥
 {
     LEFT,//0
     RIGHT//1
 };
 
-enum class State {//¶¨Òå×´Ì¬ÀàĞÍ
-    IDLE,       // ÏĞÖÃ
-    ALERT,      // ¾¯½ä£¨·¢ÏÖÄ¿±ê£©
-    FOLLOWING,  // ¸úËæÄ¿±ê
-    ATTACKING   // ¹¥»÷
+enum class State {//å®šä¹‰çŠ¶æ€ç±»å‹
+    IDLE,       // é—²ç½®
+    ALERT,      // è­¦æˆ’ï¼ˆå‘ç°ç›®æ ‡ï¼‰
+    FOLLOWING,  // è·Ÿéšç›®æ ‡
+    ATTACKING   // æ”»å‡»
 };
 
-enum class AttackType//¶¨Òå¹¥»÷ÀàĞÍ 
+enum class AttackType//å®šä¹‰æ”»å‡»ç±»å‹ 
 {
 Both,
 Building,
 None
 };
 
-enum class MoveType//¶¨Òå¹¥»÷ÀàĞÍ 
+enum class MoveType//å®šä¹‰æ”»å‡»ç±»å‹ 
 {
     Ground,
     Air,
 };
 
-enum class MoveAttack//¶¨ÒåÒòÒÆ¶¯·½Ê½¶øÔì³ÉµÄ¹¥»÷²»Í¬ 
+enum class MoveAttack//å®šä¹‰å› ç§»åŠ¨æ–¹å¼è€Œé€ æˆçš„æ”»å‡»ä¸åŒ 
 {
-    Both,//Á½Õß¶¼ĞĞ
+    Both,//ä¸¤è€…éƒ½è¡Œ
     Ground,
     Air
 };
@@ -43,30 +43,30 @@ class IAttackable:public Node
 public:
     virtual ~IAttackable() = default;
 
-    // ÊÇ·ñËÀÍö
+    // æ˜¯å¦æ­»äº¡
     virtual bool isDead() const = 0;
 
-    // ÊÀ½ç×ø±ê
+    // ä¸–ç•Œåæ ‡
     virtual Vec2 getWorldPosition() const = 0;
 
-    // Åö×² / ÅĞ¶¨°ë¾¶
+    // ç¢°æ’ / åˆ¤å®šåŠå¾„
     virtual float getBodyRadius() const = 0;
 
-    // ÊÜÉË
+    // å—ä¼¤
     virtual void takeDamage(int damage) = 0;
-    //¼õËÙBUFF
+    //å‡é€ŸBUFF
     virtual void applySlow(float ratio, float duration) = 0;
 
 
 
 
-    //»ñÈ¡ÕóÓª,»ñÈ¡Î»ÖÃ
+    //è·å–é˜µè¥,è·å–ä½ç½®
     virtual ECamp getCamp() const = 0;
     virtual State getState() const = 0;
     virtual AttackType getAttackType() const = 0;
-    virtual MoveAttack getMoveAttack() const = 0;//»ñÈ¡ÎÒ¿ÉÒÔ¹¥»÷ÀàĞÍ
-    virtual MoveAttack getMoveAttacked() const = 0;//»ñÈ¡±»¹¥»÷ÀàĞÍ
-    virtual MoveType   getMoveType() const = 0;//h»ñÈ¡±»¹¥»÷ÀàĞÍ
+    virtual MoveAttack getMoveAttack() const = 0;//è·å–æˆ‘å¯ä»¥æ”»å‡»ç±»å‹
+    virtual MoveAttack getMoveAttacked() const = 0;//è·å–è¢«æ”»å‡»ç±»å‹
+    virtual MoveType   getMoveType() const = 0;//hè·å–è¢«æ”»å‡»ç±»å‹
 }; 
 
 #endif

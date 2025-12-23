@@ -9,42 +9,42 @@ PrincessTower::PrincessTower(float maxHp, float attackRange, float attackInterva
     , _attackInterval(attackInterval)
     , _attackDamage(attackDamage)
 {
-    _maxHp = maxHp;  // ÉèÖÃ×î´óÑªÁ¿
-    _hp = _maxHp;    // µ±Ç°ÑªÁ¿Óë×î´óÑªÁ¿Ò»ÖÂ
-    _bodyRadius = 25.0f;  // ÉèÖÃÅö×²°ë¾¶
-    _camp = ECamp::LEFT;  // ÉèÖÃÕóÓª
+    _maxHp = maxHp;  // è®¾ç½®æœ€å¤§è¡€é‡
+    _hp = _maxHp;    // å½“å‰è¡€é‡ä¸æœ€å¤§è¡€é‡ä¸€è‡´
+    _bodyRadius = 25.0f;  // è®¾ç½®ç¢°æ’åŠå¾„
+    _camp = ECamp::LEFT;  // è®¾ç½®é˜µè¥
     _moveAttack = MoveAttack::Both;
     _moveAttacked = MoveAttack::Both;
-    _isDying = false;  // ³õÊ¼»¯ËÀÍö×´Ì¬
+    _isDying = false;  // åˆå§‹åŒ–æ­»äº¡çŠ¶æ€
 }
 
 bool PrincessTower::init()
 {
-    if (!BuildingBase::init())  // ³õÊ¼»¯¸¸Àà
+    if (!BuildingBase::init())  // åˆå§‹åŒ–çˆ¶ç±»
         return false;
 
-    setupComponents();  // ³õÊ¼»¯×é¼ş
+    setupComponents();  // åˆå§‹åŒ–ç»„ä»¶
 
-    CCLOG("¹«Ö÷Ëş³õÊ¼»¯Íê³É£¬Î»ÖÃ£º(%.0f, %.0f)", getPositionX(), getPositionY());
+    CCLOG("å…¬ä¸»å¡”åˆå§‹åŒ–å®Œæˆï¼Œä½ç½®ï¼š(%.0f, %.0f)", getPositionX(), getPositionY());
 
     return true;
 }
 
 void PrincessTower::setupComponents()
 {
-    // ÉèÖÃAI×é¼ş
+    // è®¾ç½®AIç»„ä»¶
     auto ai = new SimpleBuildingAI();
     setAIComponent(ai);
 
-    // ÉèÖÃ¹¥»÷×é¼ş
+    // è®¾ç½®æ”»å‡»ç»„ä»¶
     auto attack = new BuildingAttackComponent(
-        _attackRange,    // ¹¥»÷·¶Î§
-        _attackInterval, // ¹¥»÷¼ä¸ô
-        _attackDamage    // µ¥´ÎÉËº¦
+        _attackRange,    // æ”»å‡»èŒƒå›´
+        _attackInterval, // æ”»å‡»é—´éš”
+        _attackDamage    // å•æ¬¡ä¼¤å®³
     );
     setAttackComponent(attack);
 
-    // ÉèÖÃÍâ¹Û£¨¾«Áé£©
+    // è®¾ç½®å¤–è§‚ï¼ˆç²¾çµï¼‰
     _sprite = Sprite::create("Images/towers/princess_tower_red.png");
     if (_sprite)
     {
@@ -53,6 +53,6 @@ void PrincessTower::setupComponents()
     }
     else
     {
-        CCLOG("¹«Ö÷ËşÍ¼Æ¬¼ÓÔØÊ§°Ü");
+        CCLOG("å…¬ä¸»å¡”å›¾ç‰‡åŠ è½½å¤±è´¥");
     }
 }

@@ -7,13 +7,13 @@
 
 // UndeadTroop
 // -----------
-// ÍöÁé
-// ·ÉĞĞµ¥Î»£¬½üÕ½¹¥»÷
+// äº¡çµ
+// é£è¡Œå•ä½ï¼Œè¿‘æˆ˜æ”»å‡»
 //
 class Minions : public TroopBase
 {
 public:
-    Minions();   // ¹¹Ôìº¯Êı
+    Minions();   // æ„é€ å‡½æ•°
     ~Minions();
 
     virtual bool init() override;

@@ -7,14 +7,14 @@
 USING_NS_CC;
 
 // =========================
-// AttackComponent£¨Í¨ÓÃ¹¥»÷×é¼ş£©
+// AttackComponentï¼ˆé€šç”¨æ”»å‡»ç»„ä»¶ï¼‰
 // =========================
 //
-// Ö°Ôğ£º
-// 1. ¹ÜÀí¹¥»÷Ä¿±ê
-// 2. ÅĞ¶Ï¹¥»÷·¶Î§
-// 3. ¿ØÖÆ¹¥»÷ÀäÈ´
-// 4. ´¥·¢¾ßÌå¹¥»÷ĞĞÎª
+// èŒè´£ï¼š
+// 1. ç®¡ç†æ”»å‡»ç›®æ ‡
+// 2. åˆ¤æ–­æ”»å‡»èŒƒå›´
+// 3. æ§åˆ¶æ”»å‡»å†·å´
+// 4. è§¦å‘å…·ä½“æ”»å‡»è¡Œä¸º
 //
 class AttackComponent
 {
@@ -22,31 +22,31 @@ public:
     AttackComponent(float range, float interval);
     virtual ~AttackComponent() = default;
 
-    // ÉèÖÃÄ¿±ê
+    // è®¾ç½®ç›®æ ‡
     void setTarget(IAttackable* target);
     void clearTarget();
 
     bool hasTarget() const { return _target != nullptr; }
 
-    // Ã¿Ö¡¸üĞÂ£¨ÓÉÓµÓĞÕßµ÷ÓÃ£©
+    // æ¯å¸§æ›´æ–°ï¼ˆç”±æ‹¥æœ‰è€…è°ƒç”¨ï¼‰
     void update(IAttackable* owner, float dt);
 
-    // ¹¥»÷·¶Î§
+    // æ”»å‡»èŒƒå›´
     float getAttackRange() const { return _attackRange; }
 
-    // ====== ĞŞÕı£º½« isTargetInRange ÒÆµ½ public ======
+    // ====== ä¿®æ­£ï¼šå°† isTargetInRange ç§»åˆ° public ======
     bool isTargetInRange(IAttackable* owner) const;
 
 protected:
-    // ÕæÕıµÄ¹¥»÷ĞĞÎª£¨×ÓÀàÊµÏÖ£©
+    // çœŸæ­£çš„æ”»å‡»è¡Œä¸ºï¼ˆå­ç±»å®ç°ï¼‰
     virtual void doAttack(IAttackable* owner) = 0;
 
 protected:
     IAttackable* _target = nullptr;
 
-	float _attackRange = 0.f;// ¹¥»÷·¶Î§
-	float _attackInterval = 1.f;// ¹¥»÷¼ä¸ô£¨Ãë£©
-	float _cooldown = 0.f;// ¹¥»÷ÀäÈ´¼ÆÊ±Æ÷
+	float _attackRange = 0.f;// æ”»å‡»èŒƒå›´
+	float _attackInterval = 1.f;// æ”»å‡»é—´éš”ï¼ˆç§’ï¼‰
+	float _cooldown = 0.f;// æ”»å‡»å†·å´è®¡æ—¶å™¨
 };
 
 #endif // __ATTACK_COMPONENT_H__

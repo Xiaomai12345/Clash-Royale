@@ -14,7 +14,7 @@ public:
 
     virtual bool init() override;
     virtual void update(float delta) override;
-    /*²âÊÔdatamanagerÊ±ÔÙ´ò¿ª
+    /*æµ‹è¯•datamanageræ—¶å†æ‰“å¼€
     void testDataManager();
     */
     CREATE_FUNC(BattleScene);
@@ -25,15 +25,15 @@ private:
     void startGame();
     void endGame(bool isPlayer1Win);
 
-    // ÊäÈë´¦Àí - ĞŞ¸Äº¯ÊıÇ©Ãû
+    // è¾“å…¥å¤„ç† - ä¿®æ”¹å‡½æ•°ç­¾å
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
-    void initNextCard();       //³õÊ¼»¯next¿¨ÅÆ
+    void initNextCard();       //åˆå§‹åŒ–nextå¡ç‰Œ
     void refreshNextCard();
-    void initHandCards();      // ³õÊ¼»¯ÊÖÅÆ£¨Ö»µ÷ÓÃÒ»´Î£©
-    void refreshHandLayout();  // ÖØĞÂÅÅ²¼ÊÖÅÆ£¨¿É¶à´Îµ÷ÓÃ£©
+    void initHandCards();      // åˆå§‹åŒ–æ‰‹ç‰Œï¼ˆåªè°ƒç”¨ä¸€æ¬¡ï¼‰
+    void refreshHandLayout();  // é‡æ–°æ’å¸ƒæ‰‹ç‰Œï¼ˆå¯å¤šæ¬¡è°ƒç”¨ï¼‰
     void onCardUsed(Card* card);
     void showDeployPosition();
 private:
@@ -41,18 +41,18 @@ private:
     ManaBar* _manaBar;
     cocos2d::DrawNode* _deployDrawNode;
 
-    // ÓÎÏ·×´Ì¬
+    // æ¸¸æˆçŠ¶æ€
     bool _gameStarted;
     bool _gameEnded;
     float _gameTime;
     float _totalGameTime;
-    // Íæ¼ÒĞÅÏ¢
+    // ç©å®¶ä¿¡æ¯
     int _playerCrowns[2];
     bool _isPlayer1;
-    //¶¯»­ÆÚ¼ä²»ÔÊĞí½»»¥
+    //åŠ¨ç”»æœŸé—´ä¸å…è®¸äº¤äº’
     bool _handLocked = false;
 
-    // Ñ¡ÖĞµÄ¿¨ÅÆ
+    // é€‰ä¸­çš„å¡ç‰Œ
     Card* _selectedCard;
     cocos2d::Sprite* _cardGhost;
 };

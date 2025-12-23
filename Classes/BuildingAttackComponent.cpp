@@ -1,4 +1,4 @@
-﻿#include "BuildingAttackComponent.h"  // ✅ 修正：头文件名
+#include "BuildingAttackComponent.h"  // ✅ 修正：头文件名
 #include "BuildingBase.h"  // ✅ 修正：头文件名
 
 BuildingAttackComponent::BuildingAttackComponent(float range, float interval, int damage)  // ✅ 修正：构造函数名

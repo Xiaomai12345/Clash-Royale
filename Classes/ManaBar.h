@@ -13,7 +13,7 @@ public:
     virtual bool init() override;
     virtual void update(float dt) override;
 
-    // ÉèÖÃÊ¥Ë®£¨0~max£©
+    // è®¾ç½®åœ£æ°´ï¼ˆ0~maxï¼‰
     void setManaValue(float current, float max, bool animate = true);
 
 private:

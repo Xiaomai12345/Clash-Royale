@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 
-// Ç°ÏòÉùÃ÷
+// å‰å‘å£°æ˜
 class TroopBase;
 class IAttackable;
 
@@ -13,9 +13,9 @@ USING_NS_CC;
 // MoveComponent
 // =========================
 //
-// ÒÆ¶¯×é¼ş³éÏó»ùÀà£¨Ö§³Ö¹¥»÷ÈÎºÎIAttackableÄ¿±ê£©
-// - ±£´æÍ¨ÓÃÒÆ¶¯×´Ì¬
-// - Ìá¹©Ä£°å·½·¨ update
+// ç§»åŠ¨ç»„ä»¶æŠ½è±¡åŸºç±»ï¼ˆæ”¯æŒæ”»å‡»ä»»ä½•IAttackableç›®æ ‡ï¼‰
+// - ä¿å­˜é€šç”¨ç§»åŠ¨çŠ¶æ€
+// - æä¾›æ¨¡æ¿æ–¹æ³• update
 //
 class MoveComponent
 {
@@ -23,33 +23,33 @@ public:
     MoveComponent();
     virtual ~MoveComponent();
 
-    // ¸ß²ãÒÆ¶¯ÒâÍ¼£¨AI µ÷ÓÃ£©
+    // é«˜å±‚ç§»åŠ¨æ„å›¾ï¼ˆAI è°ƒç”¨ï¼‰
     virtual void followTarget(IAttackable* target, float desiredDistance);
     virtual void stop();
 
-    // Ã¿Ö¡¸üĞÂ£¨TroopBase µ÷ÓÃ£©
+    // æ¯å¸§æ›´æ–°ï¼ˆTroopBase è°ƒç”¨ï¼‰
     virtual void update(TroopBase* owner, float dt);
 
-    // »ñÈ¡µ±Ç°Ä¿±ê
+    // è·å–å½“å‰ç›®æ ‡
     IAttackable* getFollowTarget() const { return _followTarget; }
 
-    // »ñÈ¡ÆÚÍû¾àÀë
+    // è·å–æœŸæœ›è·ç¦»
     float getDesiredDistance() const { return _desiredDistance; }
 
-    // ÊÇ·ñÕıÔÚÒÆ¶¯
+    // æ˜¯å¦æ­£åœ¨ç§»åŠ¨
     bool isMoving() const { return _moving; }
 
 protected:
     // =========================
-    // Í¨ÓÃÒÆ¶¯×´Ì¬£¨¹Ø¼ü£©
+    // é€šç”¨ç§»åŠ¨çŠ¶æ€ï¼ˆå…³é”®ï¼‰
     // =========================
-    IAttackable* _followTarget = nullptr;  // µ±Ç°¸úËæµÄÄ¿±ê
-    float _desiredDistance = 0.0f;         // Ï£Íû±£³ÖµÄ¾àÀë£¨¹¥»÷¾àÀë£©
-    bool _moving = false;                  // ÊÇ·ñÕıÔÚÒÆ¶¯
+    IAttackable* _followTarget = nullptr;  // å½“å‰è·Ÿéšçš„ç›®æ ‡
+    float _desiredDistance = 0.0f;         // å¸Œæœ›ä¿æŒçš„è·ç¦»ï¼ˆæ”»å‡»è·ç¦»ï¼‰
+    bool _moving = false;                  // æ˜¯å¦æ­£åœ¨ç§»åŠ¨
 
 protected:
     // =========================
-    // ×ÓÀàÊµÏÖµÄ¾ßÌåÒÆ¶¯Âß¼­
+    // å­ç±»å®ç°çš„å…·ä½“ç§»åŠ¨é€»è¾‘
     // =========================
     virtual void onUpdateMove(TroopBase* owner, float dt) = 0;
 };

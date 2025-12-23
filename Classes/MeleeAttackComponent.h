@@ -7,22 +7,22 @@ class TroopBase;
 // MeleeAttackComponent
 // =========================
 //
-// ½üÕ½¹¥»÷×é¼ş
+// è¿‘æˆ˜æ”»å‡»ç»„ä»¶
 //
-// ÌØµã£º
-// - ¹¥»÷·¶Î§Ğ¡
-// - Ö±½Ó¶ÔÄ¿±êÔì³ÉÉËº¦
+// ç‰¹ç‚¹ï¼š
+// - æ”»å‡»èŒƒå›´å°
+// - ç›´æ¥å¯¹ç›®æ ‡é€ æˆä¼¤å®³
 //
 class MeleeAttackComponent : public AttackComponent
 {
 public:
-    // range: ¹¥»÷·¶Î§
-    // interval: ¹¥»÷¼ä¸ô
-    // damage: Ã¿´ÎÉËº¦
+    // range: æ”»å‡»èŒƒå›´
+    // interval: æ”»å‡»é—´éš”
+    // damage: æ¯æ¬¡ä¼¤å®³
     MeleeAttackComponent(float range, float interval, int damage);
 
 protected:
-    // ÕæÕıÖ´ĞĞÒ»´Î¹¥»÷
+    // çœŸæ­£æ‰§è¡Œä¸€æ¬¡æ”»å‡»
     virtual void doAttack(IAttackable* owner) override;
 
 private:

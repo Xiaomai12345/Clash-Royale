@@ -16,7 +16,7 @@ private:
     int   _damage = 0;
     float _aoeRadius = 0.f;
 
-    // AOE ©ийс╩╞╫з╣Ц
+    // AOE Е▐╞Х╖├Е▄√Х┼┌Г┌╧
     cocos2d::DrawNode* _aoeDraw = nullptr;
 };
 

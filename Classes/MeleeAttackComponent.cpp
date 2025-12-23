@@ -9,13 +9,13 @@ MeleeAttackComponent::MeleeAttackComponent(float range, float interval, int dama
 
 void MeleeAttackComponent::doAttack(IAttackable* owner)
 {
-	TroopBase* troop = dynamic_cast<TroopBase*>(owner);// »∑±£ owner  « TroopBase ¿‡–Õ
+	TroopBase* troop = dynamic_cast<TroopBase*>(owner);// Á°Æ‰øù owner ÊòØ TroopBase Á±ªÂûã
     if (troop)
     {
         if (!_target || _target->isDead())
             return;
 
-        // Ω¸’Ω£∫÷±Ω”ø€—™
+        // ËøëÊàòÔºöÁõ¥Êé•Êâ£Ë°Ä
         _target->takeDamage(_damage);
 
         CCLOG("MeleeAttack: %p hit %p for %d damage",

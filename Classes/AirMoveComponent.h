@@ -7,8 +7,8 @@
 // AirMoveComponent
 // =========================
 //
-// ¿ÕÖĞÒÆ¶¯×é¼ş£¨Ö±Ïß×·×Ù°æ±¾£©
-// Ö§³Ö×·×Ù£ºÊ¿±ø(TroopBase) ºÍ ½¨Öş(BuildingBase)
+// ç©ºä¸­ç§»åŠ¨ç»„ä»¶ï¼ˆç›´çº¿è¿½è¸ªç‰ˆæœ¬ï¼‰
+// æ”¯æŒè¿½è¸ªï¼šå£«å…µ(TroopBase) å’Œ å»ºç­‘(BuildingBase)
 //
 class AirMoveComponent : public MoveComponent
 {
@@ -17,11 +17,11 @@ public:
     virtual ~AirMoveComponent() = default;
 
 protected:
-    // ¾ßÌåµÄÒÆ¶¯Âß¼­ÊµÏÖ
+    // å…·ä½“çš„ç§»åŠ¨é€»è¾‘å®ç°
     virtual void onUpdateMove(TroopBase* owner, float dt) override;
 
 private:
-    // ¸¨Öú·½·¨£º¼ÆËãÊµ¼ÊĞèÒªÒÆ¶¯µÄ¾àÀë
+    // è¾…åŠ©æ–¹æ³•ï¼šè®¡ç®—å®é™…éœ€è¦ç§»åŠ¨çš„è·ç¦»
     float calculateMovement(TroopBase* owner, const cocos2d::Vec2& targetPos);
 };
 

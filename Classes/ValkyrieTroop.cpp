@@ -9,10 +9,10 @@ USING_NS_CC;
 ValkyrieTroop::ValkyrieTroop()
 {
     // =========================
-    // »ù´¡ÊôĞÔ
+    // åŸºç¡€å±æ€§
     // =========================
-    _moveSpeed = 90.0f;    // ±ÈÆïÊ¿ÂÔÂı
-    _maxHp = 800;      // Å®ÎäÉñÑªºñ
+    _moveSpeed = 90.0f;    // æ¯”éª‘å£«ç•¥æ…¢
+    _maxHp = 800;      // å¥³æ­¦ç¥è¡€åš
     _alertRange = 220.f;
     _bodyRadius = 18.f;
 
@@ -39,27 +39,27 @@ bool ValkyrieTroop::init()
         return false;
 
     // =========================
-    // 1. ×é¼ş°ó¶¨
+    // 1. ç»„ä»¶ç»‘å®š
     // =========================
 
     // AI
     auto ai = new SimpleTroopAIComponent();
     setAIComponent(ai);
 
-    // µØÃæÒÆ¶¯
+    // åœ°é¢ç§»åŠ¨
     auto move = new GroundMoveComponent();
     setMoveComponent(move);
 
-    // ½üÕ½·¶Î§¹¥»÷£¨ºËĞÄÇø±ğ£©
+    // è¿‘æˆ˜èŒƒå›´æ”»å‡»ï¼ˆæ ¸å¿ƒåŒºåˆ«ï¼‰
     auto attack = new MeleeAreaAttackComponent(
-        45.0f,   // ¹¥»÷·¶Î§£¨AOE °ë¾¶£©
-        1.2f,    // ¹¥»÷¼ä¸ô
-        200      // µ¥´ÎÉËº¦
+        45.0f,   // æ”»å‡»èŒƒå›´ï¼ˆAOE åŠå¾„ï¼‰
+        1.2f,    // æ”»å‡»é—´éš”
+        200      // å•æ¬¡ä¼¤å®³
     );
     setAttackComponent(attack);
 
     // =========================
-    // 2. ±íÏÖ£¨Sprite£©
+    // 2. è¡¨ç°ï¼ˆSpriteï¼‰
     // =========================
 
     _sprite = Sprite::create("Images/troops/valkyrie.webp");

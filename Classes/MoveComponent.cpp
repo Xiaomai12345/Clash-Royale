@@ -17,9 +17,9 @@ MoveComponent::~MoveComponent()
 }
 
 /*
- * ¸úËæÒ»¸öÄ¿±êµ¥Î»£¨¿ÉÒÔÊÇÊ¿±ø»ò½¨Öş£©
- * @param target          Òª¸úËæµÄÄ¿±ê£¨IAttackable½Ó¿Ú£©
- * @param desiredDistance Ï£ÍûÓëÄ¿±ê±£³ÖµÄ×îĞ¡¾àÀë£¨¹¥»÷¾àÀë£©
+ * è·Ÿéšä¸€ä¸ªç›®æ ‡å•ä½ï¼ˆå¯ä»¥æ˜¯å£«å…µæˆ–å»ºç­‘ï¼‰
+ * @param target          è¦è·Ÿéšçš„ç›®æ ‡ï¼ˆIAttackableæ¥å£ï¼‰
+ * @param desiredDistance å¸Œæœ›ä¸ç›®æ ‡ä¿æŒçš„æœ€å°è·ç¦»ï¼ˆæ”»å‡»è·ç¦»ï¼‰
  */
 void MoveComponent::followTarget(IAttackable* target, float desiredDistance)
 {
@@ -29,8 +29,8 @@ void MoveComponent::followTarget(IAttackable* target, float desiredDistance)
 }
 
 /*
- * Í£Ö¹ÒÆ¶¯
- * Çå³ıµ±Ç°¸úËæÄ¿±ê
+ * åœæ­¢ç§»åŠ¨
+ * æ¸…é™¤å½“å‰è·Ÿéšç›®æ ‡
  */
 void MoveComponent::stop()
 {
@@ -41,7 +41,7 @@ void MoveComponent::stop()
 }
 
 /*
- * Ã¿Ö¡¸üĞÂ£¨Ä£°å·½·¨£©
+ * æ¯å¸§æ›´æ–°ï¼ˆæ¨¡æ¿æ–¹æ³•ï¼‰
  */
 void MoveComponent::update(TroopBase* owner, float dt)
 {
@@ -51,7 +51,7 @@ void MoveComponent::update(TroopBase* owner, float dt)
     if (!_moving || !_followTarget)
         return;
 
-    // ¼ì²éÄ¿±êÊÇ·ñÓĞĞ§
+    // æ£€æŸ¥ç›®æ ‡æ˜¯å¦æœ‰æ•ˆ
     if (_followTarget->isDead())
     {
         CCLOG("MoveComponent: Target is dead");
@@ -59,10 +59,10 @@ void MoveComponent::update(TroopBase* owner, float dt)
         return;
     }
 
-    // È·±£Ä¿±êÈÔÈ»ÔÚ³¡¾°ÖĞ
-    // ÓÉÓÚIAttackableÃ»ÓĞgetParent·½·¨£¬ÎÒÃÇĞèÒªÍ¨¹ıÆäËû·½Ê½¼ì²é
-    // ÕâÀï¼ÙÉèÈç¹ûÄ¿±ê»¹»î×Å£¬¾Í¼ÌĞøÒÆ¶¯
+    // ç¡®ä¿ç›®æ ‡ä»ç„¶åœ¨åœºæ™¯ä¸­
+    // ç”±äºIAttackableæ²¡æœ‰getParentæ–¹æ³•ï¼Œæˆ‘ä»¬éœ€è¦é€šè¿‡å…¶ä»–æ–¹å¼æ£€æŸ¥
+    // è¿™é‡Œå‡è®¾å¦‚æœç›®æ ‡è¿˜æ´»ç€ï¼Œå°±ç»§ç»­ç§»åŠ¨
 
-    // µ÷ÓÃ×ÓÀàÊµÏÖµÄ¾ßÌåÒÆ¶¯Âß¼­
+    // è°ƒç”¨å­ç±»å®ç°çš„å…·ä½“ç§»åŠ¨é€»è¾‘
     onUpdateMove(owner, dt);
 }

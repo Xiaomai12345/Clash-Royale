@@ -5,24 +5,24 @@
 
 SkeletonTroop::SkeletonTroop()
 {
-    // ÔÚ¹¹Ôìº¯ÊıÖĞ¸ø»ùÀàºÍ³ÉÔ±±äÁ¿¸³Öµ
-    _moveSpeed = 90.0f;  // Éè¶¨÷¼÷ÃµÄ»ù´¡ÒÆ¶¯ËÙ¶È£¨½ÏÂı£©
-    _maxHp = 80;         // Éè¶¨÷¼÷ÃµÄ×î´óÑªÁ¿
-    _alertRange = 150.f;  // ÉèÖÃ¾¯½ä·¶Î§
-    _bodyRadius = 5.f;   // ÉèÖÃÅö×²°ë¾¶
-    _camp = ECamp::LEFT;  // ÉèÖÃÕóÓªÎª×ó²à
+    // åœ¨æ„é€ å‡½æ•°ä¸­ç»™åŸºç±»å’Œæˆå‘˜å˜é‡èµ‹å€¼
+    _moveSpeed = 90.0f;  // è®¾å®šéª·é«…çš„åŸºç¡€ç§»åŠ¨é€Ÿåº¦ï¼ˆè¾ƒæ…¢ï¼‰
+    _maxHp = 80;         // è®¾å®šéª·é«…çš„æœ€å¤§è¡€é‡
+    _alertRange = 150.f;  // è®¾ç½®è­¦æˆ’èŒƒå›´
+    _bodyRadius = 5.f;   // è®¾ç½®ç¢°æ’åŠå¾„
+    _camp = ECamp::LEFT;  // è®¾ç½®é˜µè¥ä¸ºå·¦ä¾§
 
-    _attacktype = AttackType::Both;  // ÷¼÷Ã¿ÉÒÔ¹¥»÷µØÃæºÍ¿ÕÖĞÄ¿±ê
-    _moveAttack = MoveAttack::Ground; // ÉèÖÃÎªµØÃæ¹¥»÷
-    _moveAttacked = MoveAttack::Both; // ÉèÖÃ¿É±»¹¥»÷µØÃæºÍ¿ÕÖĞµÄÄ¿±ê
-    _moveType = MoveType::Ground;    // ÉèÖÃÎªµØÃæÒÆ¶¯
+    _attacktype = AttackType::Both;  // éª·é«…å¯ä»¥æ”»å‡»åœ°é¢å’Œç©ºä¸­ç›®æ ‡
+    _moveAttack = MoveAttack::Ground; // è®¾ç½®ä¸ºåœ°é¢æ”»å‡»
+    _moveAttacked = MoveAttack::Both; // è®¾ç½®å¯è¢«æ”»å‡»åœ°é¢å’Œç©ºä¸­çš„ç›®æ ‡
+    _moveType = MoveType::Ground;    // è®¾ç½®ä¸ºåœ°é¢ç§»åŠ¨
 
-    _isDying = false;  // ³õÊ¼»¯ËÀÍö×´Ì¬
+    _isDying = false;  // åˆå§‹åŒ–æ­»äº¡çŠ¶æ€
 }
 
 SkeletonTroop::~SkeletonTroop()
 {
-    // Èç¹ûÓĞ´´½¨µÄ×é¼ş£¬ÊÖ¶¯ÇåÀí£¨ÕâÀïÊ¹ÓÃÁË new ´´½¨×é¼ş£¬ËùÒÔÒª delete£©
+    // å¦‚æœæœ‰åˆ›å»ºçš„ç»„ä»¶ï¼Œæ‰‹åŠ¨æ¸…ç†ï¼ˆè¿™é‡Œä½¿ç”¨äº† new åˆ›å»ºç»„ä»¶ï¼Œæ‰€ä»¥è¦ deleteï¼‰
     if (_ai) delete _ai;
     if (_move) delete _move;
     if (_attack) delete _attack;
@@ -30,43 +30,43 @@ SkeletonTroop::~SkeletonTroop()
 
 bool SkeletonTroop::init()
 {
-    if (!TroopBase::init())  // ³õÊ¼»¯»ùÀà (TroopBase)
+    if (!TroopBase::init())  // åˆå§‹åŒ–åŸºç±» (TroopBase)
         return false;
 
-    setupComponents();  // ³õÊ¼»¯×é¼ş
+    setupComponents();  // åˆå§‹åŒ–ç»„ä»¶
 
-    CCLOG("SkeletonTroop ³õÊ¼»¯Íê³É£¬Î»ÖÃ£º(%.0f, %.0f)", getPositionX(), getPositionY());
+    CCLOG("SkeletonTroop åˆå§‹åŒ–å®Œæˆï¼Œä½ç½®ï¼š(%.0f, %.0f)", getPositionX(), getPositionY());
 
     return true;
 }
 
 void SkeletonTroop::setupComponents()
 {
-    // ´´½¨²¢°ó¶¨AI×é¼ş£¨¼òµ¥µÄAIÂß¼­£©
+    // åˆ›å»ºå¹¶ç»‘å®šAIç»„ä»¶ï¼ˆç®€å•çš„AIé€»è¾‘ï¼‰
     auto ai = new SimpleTroopAIComponent();
     setAIComponent(ai);
 
-    // ´´½¨²¢°ó¶¨µØÃæÒÆ¶¯×é¼ş£¨ÓÃÓÚ¿ØÖÆ÷¼÷ÃµÄÒÆ¶¯£©
+    // åˆ›å»ºå¹¶ç»‘å®šåœ°é¢ç§»åŠ¨ç»„ä»¶ï¼ˆç”¨äºæ§åˆ¶éª·é«…çš„ç§»åŠ¨ï¼‰
     auto move = new GroundMoveComponent();
     setMoveComponent(move);
 
-    // ´´½¨²¢°ó¶¨½üÕ½¹¥»÷×é¼ş£¨÷¼÷ÃµÄ½üÕ½¹¥»÷£©
+    // åˆ›å»ºå¹¶ç»‘å®šè¿‘æˆ˜æ”»å‡»ç»„ä»¶ï¼ˆéª·é«…çš„è¿‘æˆ˜æ”»å‡»ï¼‰
     auto attack = new MeleeAttackComponent(
-        20.0f,   // ¹¥»÷·¶Î§
-        1.0f,     // ¹¥»÷¼ä¸ô
-        40        // ÉËº¦Öµ
+        20.0f,   // æ”»å‡»èŒƒå›´
+        1.0f,     // æ”»å‡»é—´éš”
+        40        // ä¼¤å®³å€¼
     );
     setAttackComponent(attack);
 
-    // ´´½¨÷¼÷ÃµÄÍâ¹Û£¨¾«Áé£©
-    _sprite = Sprite::create("Images/troops/Skeleton.png");  // Ìæ»»ÎªÊµ¼ÊÂ·¾¶
+    // åˆ›å»ºéª·é«…çš„å¤–è§‚ï¼ˆç²¾çµï¼‰
+    _sprite = Sprite::create("Images/troops/Skeleton.png");  // æ›¿æ¢ä¸ºå®é™…è·¯å¾„
     if (_sprite)
     {
         addChild(_sprite);
-        _sprite->setScale(0.05f);  // ¸ù¾İĞèÒªµ÷ÕûËõ·Å
+        _sprite->setScale(0.05f);  // æ ¹æ®éœ€è¦è°ƒæ•´ç¼©æ”¾
     }
     else
     {
-        CCLOG("SkeletonTroop: Sprite load failed!");  // ¼ÓÔØÍ¼Æ¬Ê§°ÜÊ±Êä³öÈÕÖ¾
+        CCLOG("SkeletonTroop: Sprite load failed!");  // åŠ è½½å›¾ç‰‡å¤±è´¥æ—¶è¾“å‡ºæ—¥å¿—
     }
 }

@@ -1,16 +1,16 @@
 #include "SkeletonTombstone.h"
-#include "SkeletonLegion.h"  // ÒıÈë¾üÍÅÉú³ÉÀà
+#include "SkeletonLegion.h"  // å¼•å…¥å†›å›¢ç”Ÿæˆç±»
 
 USING_NS_CC;
 
 SkeletonTombstone::SkeletonTombstone()
 {
-    _maxHp = 1000;  // ÉèÖÃÄ¹±®µÄ×î´óÑªÁ¿
+    _maxHp = 1000;  // è®¾ç½®å¢“ç¢‘çš„æœ€å¤§è¡€é‡
     _hp = _maxHp;
-    _bodyRadius = 30.f;  // ÉèÖÃÄ¹±®µÄÅö×²°ë¾¶
-    _camp = ECamp::LEFT;  // Ä¬ÈÏÎªÖĞÁ¢ÕóÓª
-    _moveAttacked = MoveAttack::Both;  // ²»»á±»¹¥»÷
-    _isDying = false;  // ³õÊ¼»¯Îª²»ËÀ
+    _bodyRadius = 30.f;  // è®¾ç½®å¢“ç¢‘çš„ç¢°æ’åŠå¾„
+    _camp = ECamp::LEFT;  // é»˜è®¤ä¸ºä¸­ç«‹é˜µè¥
+    _moveAttacked = MoveAttack::Both;  // ä¸ä¼šè¢«æ”»å‡»
+    _isDying = false;  // åˆå§‹åŒ–ä¸ºä¸æ­»
 }
 
 SkeletonTombstone::~SkeletonTombstone()
@@ -19,15 +19,15 @@ SkeletonTombstone::~SkeletonTombstone()
 
 bool SkeletonTombstone::init()
 {
-    if (!BuildingBase::init())  // µ÷ÓÃ»ùÀàµÄ³õÊ¼»¯
+    if (!BuildingBase::init())  // è°ƒç”¨åŸºç±»çš„åˆå§‹åŒ–
         return false;
 
-    // ÉèÖÃÄ¹±®µÄÍâ¹Û
+    // è®¾ç½®å¢“ç¢‘çš„å¤–è§‚
     _sprite = Sprite::create("Images/buildings/skeleton_tombstone.jpg");
     if (_sprite)
     {
         addChild(_sprite);
-        _sprite->setScale(0.3f);  // µ÷ÕûËõ·Å
+        _sprite->setScale(0.3f);  // è°ƒæ•´ç¼©æ”¾
     }
     else
     {
@@ -35,14 +35,14 @@ bool SkeletonTombstone::init()
         return false;
     }
 
-    // ³õÊ¼»¯ÑªÌõ
+    // åˆå§‹åŒ–è¡€æ¡
     initHpBar();
     _hpBarInited = true;
 
-    // ¶¨Ê±Éú³É÷¼÷Ã
+    // å®šæ—¶ç”Ÿæˆéª·é«…
     schedule([this](float dt) { spawnSkeletons(dt); }, _spawnInterval, "spawn_skeleton_key");
 
-    // ¶¨Ê±¿ÛÑª
+    // å®šæ—¶æ‰£è¡€
     schedule([this](float dt) { takeDamageOverTime(dt); }, _damageInterval, "damage_over_time_key");
 
     return true;
@@ -50,7 +50,7 @@ bool SkeletonTombstone::init()
 
 void SkeletonTombstone::spawnSkeletons(float dt)
 {
-    // È·±£¸¸½Úµã´æÔÚ
+    // ç¡®ä¿çˆ¶èŠ‚ç‚¹å­˜åœ¨
     Node* parent = getParent();
     if (!parent)
     {
@@ -58,18 +58,18 @@ void SkeletonTombstone::spawnSkeletons(float dt)
         return;
     }
 
-    // µ÷ÓÃ spawnAt Éú³É÷¼÷Ã
+    // è°ƒç”¨ spawnAt ç”Ÿæˆéª·é«…
     SkeletonLegion* legion = SkeletonLegion::create(_skeletonCount, _spawnRadius, _camp);
     legion->setWorld(_world);
     parent->addChild(legion);
-    legion->spawnAt(parent, getPosition());  // ½«÷¼÷ÃÉú³ÉÔÚÄ¹±®µÄÎ»ÖÃ
+    legion->spawnAt(parent, getPosition());  // å°†éª·é«…ç”Ÿæˆåœ¨å¢“ç¢‘çš„ä½ç½®
 
     CCLOG("Skeletons spawned at (%.1f, %.1f)", getPosition().x, getPosition().y);
 }
 
 void SkeletonTombstone::takeDamageOverTime(float dt)
 {
-    // Ã¿¸ôÒ»¶¨Ê±¼ä¿Û³ıÑªÁ¿
+    // æ¯éš”ä¸€å®šæ—¶é—´æ‰£é™¤è¡€é‡
     takeDamage(_damagePerTick);
     CCLOG("Tombstone taking %d damage. Remaining HP: %d/%d", _damagePerTick, _hp, _maxHp);
 }

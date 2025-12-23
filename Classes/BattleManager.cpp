@@ -1,4 +1,4 @@
-﻿#include "BattleManager.h"
+#include "BattleManager.h"
 #include "Battlefield.h"
 #include"UnitType.h"
 #include"AllCards.h"

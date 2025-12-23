@@ -6,8 +6,8 @@
 
 // MeleeAreaAttackComponent
 // ------------------------
-// ½üÕ½·¶Î§¹¥»÷£¨Å®ÎäÉñ£©
-// ¹¥»÷·¶Î§ = AOE ·¶Î§
+// è¿‘æˆ˜èŒƒå›´æ”»å‡»ï¼ˆå¥³æ­¦ç¥ï¼‰
+// æ”»å‡»èŒƒå›´ = AOE èŒƒå›´
 //
 class MeleeAreaAttackComponent : public AttackComponent
 {
@@ -20,7 +20,7 @@ protected:
 private:
     int _damage = 0;
 
-    // ¹¥»÷·¶Î§¿ÉÊÓ»¯
+    // æ”»å‡»èŒƒå›´å¯è§†åŒ–
     cocos2d::DrawNode* _rangeDraw = nullptr;
 
     void showAttackRange(cocos2d::Node* ownerNode);

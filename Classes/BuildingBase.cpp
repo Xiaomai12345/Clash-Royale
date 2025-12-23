@@ -1,4 +1,4 @@
-﻿#include "BuildingBase.h"
+#include "BuildingBase.h"
 #include "BuildingAI.h"
 #include "MoveComponent.h"
 #include "AttackComponent.h"

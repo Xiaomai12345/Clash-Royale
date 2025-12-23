@@ -2,7 +2,7 @@
 #include "DataManager.h" 
 #include "BattleScene.h"
 
-// Èç¹ûÊ¹ÓÃÔ¤±àÒëÍ·£¬Çë°üº¬Ëü
+// å¦‚æœä½¿ç”¨é¢„ç¼–è¯‘å¤´ï¼Œè¯·åŒ…å«å®ƒ
 // #include "AppDelegate.h"
 
 USING_NS_CC;
@@ -19,7 +19,7 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
-    // ³õÊ¼»¯µ¼ÑİÀà
+    // åˆå§‹åŒ–å¯¼æ¼”ç±»
     _director = Director::getInstance();
     _glview = _director->getOpenGLView();
     if (!_glview) {
@@ -30,15 +30,15 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
         _director->setOpenGLView(_glview);
     }
-    //¼ÓÔØ¿¨ÅÆJsonÅäÖÃ
+    //åŠ è½½å¡ç‰ŒJsoné…ç½®
     DataManager::getInstance()->loadCardConfig("data\\card_config.json");
-    // ÉèÖÃFPSÏÔÊ¾
+    // è®¾ç½®FPSæ˜¾ç¤º
     _director->setDisplayStats(true);
 
-    // ÉèÖÃFPS
+    // è®¾ç½®FPS
     _director->setAnimationInterval(1.0f / 60);
 
-    // ´´½¨µÚÒ»¸ö³¡¾°
+    // åˆ›å»ºç¬¬ä¸€ä¸ªåœºæ™¯
     auto scene = BattleScene::createScene();
     _director->runWithScene(scene);
 
@@ -54,7 +54,7 @@ void AppDelegate::applicationWillEnterForeground()
 {
     Director::getInstance()->startAnimation();
 }
-//ÍË³öÊ±Ïú»ÙÊµÀı
+//é€€å‡ºæ—¶é”€æ¯å®ä¾‹
 void AppDelegate::applicationExit() {
     DataManager::destroyInstance();
 }

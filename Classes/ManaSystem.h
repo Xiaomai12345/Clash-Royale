@@ -13,44 +13,44 @@ public:
         SUDDEN_DEATH = 2
     };
 
-    // »ñÈ¡µ¥Àı
+    // è·å–å•ä¾‹
     static ManaSystem* getInstance();
     static void destroyInstance();
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     void init(float initialMana = 5.0f, float maxMana = 10.0f, float regenRate = 0.8f);
 
-    // ¸üĞÂ£¨Ã¿Ö¡µ÷ÓÃ£©
+    // æ›´æ–°ï¼ˆæ¯å¸§è°ƒç”¨ï¼‰
     void update(float delta);
 
-    // »ñÈ¡µ±Ç°Ê¥Ë®
+    // è·å–å½“å‰åœ£æ°´
     float getCurrentMana() const { return _currentMana; }
 
-    // »ñÈ¡×î´óÊ¥Ë®
+    // è·å–æœ€å¤§åœ£æ°´
     float getMaxMana() const { return _maxMana; }
 
-    // ÏûºÄÊ¥Ë®
+    // æ¶ˆè€—åœ£æ°´
     bool consumeMana(float amount);
 
-    // Ôö¼ÓÊ¥Ë®
+    // å¢åŠ åœ£æ°´
     void addMana(float amount);
 
-    // ÉèÖÃÊ¥Ë®Ä£Ê½
+    // è®¾ç½®åœ£æ°´æ¨¡å¼
     void setManaMode(ManaMode mode);
 
-    // »ñÈ¡Ê¥Ë®»Ö¸´ËÙÂÊ
+    // è·å–åœ£æ°´æ¢å¤é€Ÿç‡
     float getRegenRate() const;
 
-    // ÖØÖÃÊ¥Ë®ÏµÍ³
+    // é‡ç½®åœ£æ°´ç³»ç»Ÿ
     void reset();
 
-    // ÊÇ·ñ×ã¹»Ê¥Ë®
+    // æ˜¯å¦è¶³å¤Ÿåœ£æ°´
     bool hasEnoughMana(float cost) const;
 
-    // »ñÈ¡Ê¥Ë®°Ù·Ö±È£¨ÓÃÓÚUIÏÔÊ¾£©
+    // è·å–åœ£æ°´ç™¾åˆ†æ¯”ï¼ˆç”¨äºUIæ˜¾ç¤ºï¼‰
     float getManaPercentage() const;
 
-    // ÆôÓÃ/½ûÓÃÏµÍ³
+    // å¯ç”¨/ç¦ç”¨ç³»ç»Ÿ
     void setEnabled(bool enabled) { _isEnabled = enabled; }
     bool isEnabled() const { return _isEnabled; }
 
@@ -58,7 +58,7 @@ private:
     ManaSystem();
     ~ManaSystem();
 
-    // É¾³ı¿½±´¹¹ÔìºÍ¸³Öµ
+    // åˆ é™¤æ‹·è´æ„é€ å’Œèµ‹å€¼
     ManaSystem(const ManaSystem&) = delete;
     ManaSystem& operator=(const ManaSystem&) = delete;
 

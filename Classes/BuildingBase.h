@@ -1,4 +1,4 @@
-﻿
+
 #ifndef __BUILDING_BASE_H__
 #define __BUILDING_BASE_H__
 

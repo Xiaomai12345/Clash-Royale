@@ -2,7 +2,7 @@
 
 USING_NS_CC;
 
-// ¾²Ì¬³ÉÔ±³õÊ¼»¯
+// é™æ€æˆå‘˜åˆå§‹åŒ–
 ManaSystem* ManaSystem::_instance = nullptr;
 
 ManaSystem* ManaSystem::getInstance()
@@ -31,7 +31,7 @@ ManaSystem::ManaSystem()
     , _currentMode(ManaMode::NORMAL)
     , _isEnabled(false)
 {
-    // ³õÊ¼»¯Ä£Ê½±¶ÂÊ
+    // åˆå§‹åŒ–æ¨¡å¼å€ç‡
     _modeMultipliers[ManaMode::NORMAL] = 1.0f;
     _modeMultipliers[ManaMode::DOUBLE] = 2.0f;
     _modeMultipliers[ManaMode::SUDDEN_DEATH] = 2.0f;
@@ -57,17 +57,17 @@ void ManaSystem::update(float delta)
 {
     if (!_isEnabled) return;
 
-    // »Ö¸´Ê¥Ë®
+    // æ¢å¤åœ£æ°´
     float regenAmount = _currentRegenRate * delta;
     _currentMana += regenAmount;
 
-    // ÏŞÖÆ²»³¬¹ı×î´óÖµ
+    // é™åˆ¶ä¸è¶…è¿‡æœ€å¤§å€¼
     if (_currentMana > _maxMana)
     {
         _currentMana = _maxMana;
     }
 
-    // ÏŞÖÆ²»µÍÓÚ0
+    // é™åˆ¶ä¸ä½äº0
     if (_currentMana < 0)
     {
         _currentMana = 0;

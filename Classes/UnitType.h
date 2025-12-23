@@ -2,16 +2,16 @@
 
 enum UnitType
 {
-    UNIT_KNIGHT = 1,//ÆïÊ¿
-    UNIT_ARCHER,//¹­¼ýÊÖ
-    UNIT_GIANT,//¾ÞÈË
-    UNIT_VALKYRIE,//Å®ÎäÉñ
-    UNIT_DRAGONBABY,//Áú±¦
-	UNIT_SKELETON,//÷¼÷Ã±ø
-	UNIT_SKELETON_TOMBSTONE,//÷¼÷ÃÄ¹±®
-	UNIT_CANNON,//¼ÓÅ©ÅÚ
-	UNIT_MINIONS,//ÍöÁé
-	UNIT_SKELETON_LEGION,//÷¼÷Ã¾üÍÅ
-	UNIT_FIREBALL,//»ðÇò
-	UNIT_SLWOWSPELL,//¼õËÙ·¨Êõ
+    UNIT_KNIGHT = 1,//éª‘å£«
+    UNIT_ARCHER,//å¼“ç®­æ‰‹
+    UNIT_GIANT,//å·¨äºº
+    UNIT_VALKYRIE,//å¥³æ­¦ç¥ž
+    UNIT_DRAGONBABY,//é¾™å®
+	UNIT_SKELETON,//éª·é«…å…µ
+	UNIT_SKELETON_TOMBSTONE,//éª·é«…å¢“ç¢‘
+	UNIT_CANNON,//åŠ å†œç‚®
+	UNIT_MINIONS,//äº¡çµ
+	UNIT_SKELETON_LEGION,//éª·é«…å†›å›¢
+	UNIT_FIREBALL,//ç«çƒ
+	UNIT_SLWOWSPELL,//å‡é€Ÿæ³•æœ¯
 };

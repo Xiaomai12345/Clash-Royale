@@ -5,13 +5,13 @@
 
 // KnightTroop
 // -----------
-// ²âÊÔÓÃ½üÕ½Ê¿±ø
-// ÓÃÓÚÑéÖ¤ AI / Move / Attack ÊÇ·ñÄÜÕı³£¹¤×÷
+// æµ‹è¯•ç”¨è¿‘æˆ˜å£«å…µ
+// ç”¨äºéªŒè¯ AI / Move / Attack æ˜¯å¦èƒ½æ­£å¸¸å·¥ä½œ
 //
 class KnightTroop : public TroopBase
 {
 public:
-    KnightTroop();  // ÉùÃ÷¹¹Ôìº¯Êı
+    KnightTroop();  // å£°æ˜æ„é€ å‡½æ•°
     ~KnightTroop();
     virtual bool init() override;
 

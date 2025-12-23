@@ -5,19 +5,19 @@
 
 // SkeletonTroop
 // -------------
-// ����ʿ�������н�ս�������ܣ�ģ��򵥵�AI���ж��߼�
+// 骷髅士兵，具有近战攻击功能，模拟简单的AI和行动逻辑
 //
 class SkeletonTroop : public TroopBase
 {
 public:
-    SkeletonTroop();  // �������캯��
+    SkeletonTroop();  // 声明构造函数
     ~SkeletonTroop();
     virtual bool init() override;
 
     CREATE_FUNC(SkeletonTroop);
 
 private:
-    // �ڹ��캯���г�ʼ�����
+    // 在构造函数中初始化组件
     void setupComponents();
 };
 
