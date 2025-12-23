@@ -1,4 +1,4 @@
-﻿#include "TroopBase.h"
+#include "TroopBase.h"
 #include "TroopAIComponent.h"
 #include "MoveComponent.h"
 #include "AttackComponent.h"

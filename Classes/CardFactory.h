@@ -3,7 +3,7 @@
 
 #include "Card.h"
 
-class CardFactory//Éú²ú¿¨ÅÆµÄ¹¤³§
+class CardFactory//ç”Ÿäº§å¡ç‰Œçš„å·¥å‚
 {
 public:
     static Card* createKnightCard();

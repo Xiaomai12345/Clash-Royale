@@ -7,7 +7,7 @@ template<typename T>
 class Singleton
 {
 public:
-    // »ñÈ¡µ¥ÀıÊµÀı
+    // è·å–å•ä¾‹å®ä¾‹
     static T* getInstance()
     {
         if (!_instance)
@@ -17,7 +17,7 @@ public:
         return _instance;
     }
 
-    // Ïú»Ùµ¥Àı
+    // é”€æ¯å•ä¾‹
     static void destroyInstance()
     {
         if (_instance)
@@ -27,7 +27,7 @@ public:
         }
     }
 
-    // ¼ì²éÊÇ·ñ´æÔÚÊµÀı
+    // æ£€æŸ¥æ˜¯å¦å­˜åœ¨å®ä¾‹
     static bool hasInstance()
     {
         return _instance != nullptr;
@@ -44,7 +44,7 @@ private:
     static T* _instance;
 };
 
-// ¾²Ì¬³ÉÔ±³õÊ¼»¯
+// é™æ€æˆå‘˜åˆå§‹åŒ–
 template<typename T>
 T* Singleton<T>::_instance = nullptr;
 

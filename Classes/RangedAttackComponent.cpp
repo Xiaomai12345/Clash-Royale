@@ -8,13 +8,13 @@ RangedAttackComponent::RangedAttackComponent(float range, float interval, int da
 
 void RangedAttackComponent::doAttack(IAttackable* owner)
 {
-    // Èç¹û owner ÊÇ TroopBase£¬Ôòµ÷ÓÃÄãµÄ TroopBase °æ±¾
+    // å¦‚æœ owner æ˜¯ TroopBaseï¼Œåˆ™è°ƒç”¨ä½ çš„ TroopBase ç‰ˆæœ¬
     TroopBase* troop = dynamic_cast<TroopBase*>(owner);
     if (troop)
     {
         doAttack(troop);
     }
-    // ·ñÔò¿ÉÒÔ¼ÓÈÕÖ¾»òÆäËû´¦Àí
+    // å¦åˆ™å¯ä»¥åŠ æ—¥å¿—æˆ–å…¶ä»–å¤„ç†
 }
 
 void RangedAttackComponent::doAttack(TroopBase* owner)
@@ -22,10 +22,10 @@ void RangedAttackComponent::doAttack(TroopBase* owner)
     if (!_target || _target->isDead())
         return;
 
-    // ¼ÆËã·¢Éä×Óµ¯£¬Ô¶³Ì¹¥»÷µÄ¾ßÌåÊµÏÖ¿ÉÒÔ¼ÓÉÏ×Óµ¯µÄ·ÉĞĞÂß¼­
+    // è®¡ç®—å‘å°„å­å¼¹ï¼Œè¿œç¨‹æ”»å‡»çš„å…·ä½“å®ç°å¯ä»¥åŠ ä¸Šå­å¼¹çš„é£è¡Œé€»è¾‘
     CCLOG("RangedAttack: %p attacks %p with %d damage, projectile speed %f", owner, _target, _damage, _projectileSpeed);
-    // ¿Û³ıÄ¿±êÑªÁ¿
+    // æ‰£é™¤ç›®æ ‡è¡€é‡
     _target->takeDamage(_damage);
 
-    // ÕâÀï¿ÉÒÔÍØÕ¹Ô¶³Ì¹¥»÷µÄ×Óµ¯·ÉĞĞÂß¼­µÈ£¬ÀıÈçÉú³ÉÒ»¸ö×Óµ¯¶ÔÏó²¢·¢Éä
+    // è¿™é‡Œå¯ä»¥æ‹“å±•è¿œç¨‹æ”»å‡»çš„å­å¼¹é£è¡Œé€»è¾‘ç­‰ï¼Œä¾‹å¦‚ç”Ÿæˆä¸€ä¸ªå­å¼¹å¯¹è±¡å¹¶å‘å°„
 }

@@ -4,8 +4,8 @@
 #include "BuildingAI.h"
 #include"BuildingBase.h"
 /**
- * ¼òµ¥½¨ÖşAI×é¼ş
- * ¹¦ÄÜ£º×Ô¶¯Ñ°ÕÒ²¢¹¥»÷·¶Î§ÄÚµÄµĞÈË
+ * ç®€å•å»ºç­‘AIç»„ä»¶
+ * åŠŸèƒ½ï¼šè‡ªåŠ¨å¯»æ‰¾å¹¶æ”»å‡»èŒƒå›´å†…çš„æ•Œäºº
  */
 class SimpleBuildingAI : public BuildingAI
 {
@@ -13,50 +13,50 @@ public:
     SimpleBuildingAI(float detectionRange = 400.0f);
 
     /**
-     * ÖØĞ´¸üĞÂ·½·¨
+     * é‡å†™æ›´æ–°æ–¹æ³•
      */
     virtual void update(BuildingBase* owner, float dt) override;
 
     /**
-     * ÉèÖÃ¼ì²â·¶Î§
-     * @param range ¼ì²â·¶Î§
+     * è®¾ç½®æ£€æµ‹èŒƒå›´
+     * @param range æ£€æµ‹èŒƒå›´
      */
     void setDetectionRange(float range) { _detectionRange = range; }
 
     /**
-     * »ñÈ¡¼ì²â·¶Î§
-     * @return ¼ì²â·¶Î§
+     * è·å–æ£€æµ‹èŒƒå›´
+     * @return æ£€æµ‹èŒƒå›´
      */
     float getDetectionRange() const { return _detectionRange; }
 
 private:
     /**
-     * Ñ°ÕÒ·¶Î§ÄÚµÄµĞÈË
-     * @param owner ½¨Öş×ÔÉí
-     * @return ÕÒµ½µÄµĞÈË£¬Î´ÕÒµ½·µ»Ønullptr
+     * å¯»æ‰¾èŒƒå›´å†…çš„æ•Œäºº
+     * @param owner å»ºç­‘è‡ªèº«
+     * @return æ‰¾åˆ°çš„æ•Œäººï¼Œæœªæ‰¾åˆ°è¿”å›nullptr
      */
     IAttackable* findEnemyInRange(IAttackable* owner);
 
     /**
-     * ¼ì²éÄ¿±êÊÇ·ñÓĞĞ§ÇÒÔÚ·¶Î§ÄÚ
-     * @param owner ½¨Öş×ÔÉí
-     * @param target ¼ì²éµÄÄ¿±ê
-     * @return ÊÇ·ñÓĞĞ§ÇÒÔÚ·¶Î§ÄÚ
+     * æ£€æŸ¥ç›®æ ‡æ˜¯å¦æœ‰æ•ˆä¸”åœ¨èŒƒå›´å†…
+     * @param owner å»ºç­‘è‡ªèº«
+     * @param target æ£€æŸ¥çš„ç›®æ ‡
+     * @return æ˜¯å¦æœ‰æ•ˆä¸”åœ¨èŒƒå›´å†…
      */
     bool isValidTarget(BuildingBase* owner, IAttackable* target) const;
 
     /**
-     * ¼ÆËãÓëÄ¿±êµÄ¾àÀë
-     * @param owner ½¨Öş×ÔÉí
-     * @param target Ä¿±ê
-     * @return ¾àÀë
+     * è®¡ç®—ä¸ç›®æ ‡çš„è·ç¦»
+     * @param owner å»ºç­‘è‡ªèº«
+     * @param target ç›®æ ‡
+     * @return è·ç¦»
      */
     float calculateDistance(BuildingBase* owner, IAttackable* target) const;
 
 private:
-    float _detectionRange;   // ¼ì²â·¶Î§£¨¿ÉÄÜ´óÓÚ¹¥»÷·¶Î§£©
-    float _searchCooldown;   // ËÑË÷ÀäÈ´¼ÆÊ±Æ÷
-    static const float SEARCH_INTERVAL; // ËÑË÷¼ä¸ôÊ±¼ä
+    float _detectionRange;   // æ£€æµ‹èŒƒå›´ï¼ˆå¯èƒ½å¤§äºæ”»å‡»èŒƒå›´ï¼‰
+    float _searchCooldown;   // æœç´¢å†·å´è®¡æ—¶å™¨
+    static const float SEARCH_INTERVAL; // æœç´¢é—´éš”æ—¶é—´
 };
 
 #endif // __SIMPLE_BUILDING_AI_COMPONENT_H__

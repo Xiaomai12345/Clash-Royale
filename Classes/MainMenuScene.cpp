@@ -23,8 +23,8 @@ bool MainMenuScene::init()
 {
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
-    // ´´½¨¿ªÊ¼ÓÎÏ·°´Å¥
-    auto startButton = MenuItemLabel::create(Label::createWithTTF("¿ªÊ¼ÓÎÏ·", "fonts/arial.ttf", 24), CC_CALLBACK_1(MainMenuScene::onStartGame, this));
+    // åˆ›å»ºå¼€å§‹æ¸¸æˆæŒ‰é’®
+    auto startButton = MenuItemLabel::create(Label::createWithTTF("å¼€å§‹æ¸¸æˆ", "fonts/arial.ttf", 24), CC_CALLBACK_1(MainMenuScene::onStartGame, this));
     startButton->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 
     auto menu = Menu::create(startButton, nullptr);
@@ -36,6 +36,6 @@ bool MainMenuScene::init()
 
 void MainMenuScene::onStartGame(Ref* sender)
 {
-    // ÇÐ»»µ½Õ½¶·³¡¾°
+    // åˆ‡æ¢åˆ°æˆ˜æ–—åœºæ™¯
     Director::getInstance()->replaceScene(BattleScene::create());
 }

@@ -1,4 +1,4 @@
-﻿#ifndef __BUILDING_ATTACK_COMPONENT_H__  // ✅ 修正：宏名改为BUILDING_ATTACK
+#ifndef __BUILDING_ATTACK_COMPONENT_H__  // ✅ 修正：宏名改为BUILDING_ATTACK
 #define __BUILDING_ATTACK_COMPONENT_H__
 
 #include "AttackComponent.h"

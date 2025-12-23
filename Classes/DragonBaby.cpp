@@ -4,24 +4,24 @@
 #include "SimpleTroopAIComponent.h"
 DragonBaby::DragonBaby()
 {
-    // ÔÚ¹¹Ôìº¯ÊıÖĞ¸ø»ùÀàºÍ³ÉÔ±±äÁ¿¸³Öµ
-    _moveSpeed = 150.0f;  // Éè¶¨·ÉÁú±¦±¦µÄ»ù´¡ÒÆ¶¯ËÙ¶È
-    _maxHp = 500;         // Éè¶¨·ÉÁú±¦±¦µÄ×î´óÑªÁ¿
-    _alertRange = 250.f;   // ÉèÖÃ¾¯½ä·¶Î§
-    _bodyRadius = 20.f;    // ÉèÖÃÅö×²°ë¾¶
-    _camp = ECamp::LEFT;   // ÉèÖÃÕóÓªÎª×ó²à
+    // åœ¨æ„é€ å‡½æ•°ä¸­ç»™åŸºç±»å’Œæˆå‘˜å˜é‡èµ‹å€¼
+    _moveSpeed = 150.0f;  // è®¾å®šé£é¾™å®å®çš„åŸºç¡€ç§»åŠ¨é€Ÿåº¦
+    _maxHp = 500;         // è®¾å®šé£é¾™å®å®çš„æœ€å¤§è¡€é‡
+    _alertRange = 250.f;   // è®¾ç½®è­¦æˆ’èŒƒå›´
+    _bodyRadius = 20.f;    // è®¾ç½®ç¢°æ’åŠå¾„
+    _camp = ECamp::LEFT;   // è®¾ç½®é˜µè¥ä¸ºå·¦ä¾§
 
     _attacktype = AttackType::Both;  // 
-    _moveAttack = MoveAttack::Both;  // ÉèÖÃ¿É¹¥»÷µØÃæºÍ¿ÕÖĞµÄÄ¿±ê
-    _moveAttacked = MoveAttack::Air; // ÉèÖÃ¿É±»¹¥»÷µØÃæºÍ¿ÕÖĞµÄÄ¿±ê
-    _moveType = MoveType::Air;    // ÉèÖÃÎª·ÉĞĞÒÆ¶¯
+    _moveAttack = MoveAttack::Both;  // è®¾ç½®å¯æ”»å‡»åœ°é¢å’Œç©ºä¸­çš„ç›®æ ‡
+    _moveAttacked = MoveAttack::Air; // è®¾ç½®å¯è¢«æ”»å‡»åœ°é¢å’Œç©ºä¸­çš„ç›®æ ‡
+    _moveType = MoveType::Air;    // è®¾ç½®ä¸ºé£è¡Œç§»åŠ¨
 
-    _isDying = false;  // ³õÊ¼»¯ËÀÍö×´Ì¬
+    _isDying = false;  // åˆå§‹åŒ–æ­»äº¡çŠ¶æ€
 }
 
 DragonBaby::~DragonBaby()
 {
-    // Èç¹ûÓĞ´´½¨µÄ×é¼ş£¬ÊÖ¶¯ÇåÀí£¨ÕâÀïÊ¹ÓÃÁË new ´´½¨×é¼ş£¬ËùÒÔÒª delete£©
+    // å¦‚æœæœ‰åˆ›å»ºçš„ç»„ä»¶ï¼Œæ‰‹åŠ¨æ¸…ç†ï¼ˆè¿™é‡Œä½¿ç”¨äº† new åˆ›å»ºç»„ä»¶ï¼Œæ‰€ä»¥è¦ deleteï¼‰
     if (_ai) delete _ai;
     if (_move) delete _move;
     if (_attack) delete _attack;
@@ -29,47 +29,47 @@ DragonBaby::~DragonBaby()
 
 bool DragonBaby::init()
 {
-    if (!TroopBase::init())  // ³õÊ¼»¯»ùÀà (TroopBase)
+    if (!TroopBase::init())  // åˆå§‹åŒ–åŸºç±» (TroopBase)
         return false;
 
     // =========================
-    // 1. ´´½¨²¢°ó¶¨×é¼ş
+    // 1. åˆ›å»ºå¹¶ç»‘å®šç»„ä»¶
     // =========================
 
-    // ´´½¨²¢°ó¶¨AI×é¼ş£¨¼òµ¥µÄAIÂß¼­£©
+    // åˆ›å»ºå¹¶ç»‘å®šAIç»„ä»¶ï¼ˆç®€å•çš„AIé€»è¾‘ï¼‰
     auto ai = new SimpleTroopAIComponent();
     setAIComponent(ai);
 
-    // ´´½¨²¢°ó¶¨·ÉĞĞÒÆ¶¯×é¼ş£¨ÓÃÓÚ¿ØÖÆ·ÉÁú±¦±¦µÄÒÆ¶¯£©
+    // åˆ›å»ºå¹¶ç»‘å®šé£è¡Œç§»åŠ¨ç»„ä»¶ï¼ˆç”¨äºæ§åˆ¶é£é¾™å®å®çš„ç§»åŠ¨ï¼‰
     auto move = new AirMoveComponent();
     setMoveComponent(move);
 
-    // ´´½¨²¢°ó¶¨ÇøÓò¹¥»÷×é¼ş£¨·ÉÁú±¦±¦µÄ·¶Î§¹¥»÷£©
+    // åˆ›å»ºå¹¶ç»‘å®šåŒºåŸŸæ”»å‡»ç»„ä»¶ï¼ˆé£é¾™å®å®çš„èŒƒå›´æ”»å‡»ï¼‰
     auto attack = new AreaAttackComponent(
-        200.0f,   // ¹¥»÷·¶Î§
-        2.0f,     // ¹¥»÷¼ä¸ô
-        250,       // ÉËº¦Öµ
-        100.0f    // AOE °ë¾¶
+        200.0f,   // æ”»å‡»èŒƒå›´
+        2.0f,     // æ”»å‡»é—´éš”
+        250,       // ä¼¤å®³å€¼
+        100.0f    // AOE åŠå¾„
     );
     setAttackComponent(attack);
 
     // =========================
-    // 2. Ìí¼ÓÍ¼Æ¬×÷ÎªÊ¿±ø±íÏÖ
+    // 2. æ·»åŠ å›¾ç‰‡ä½œä¸ºå£«å…µè¡¨ç°
     // =========================
 
-    // ´´½¨Ê¿±øµÄSprite£¨·ÉÁú±¦±¦µÄÍ¼Æ¬£©
+    // åˆ›å»ºå£«å…µçš„Spriteï¼ˆé£é¾™å®å®çš„å›¾ç‰‡ï¼‰
     _sprite = Sprite::create("Images/troops/DragonBaby.png");
     if (_sprite)
     {
         CCLOG("DragonBaby: Sprite loaded successfully.");
-        addChild(_sprite);  // ½«Í¼Æ¬Ìí¼Óµ½µ±Ç°½Úµã
-        _sprite->setScale(0.1f);  // ¸ù¾İĞèÒªµ÷ÕûËõ·Å
+        addChild(_sprite);  // å°†å›¾ç‰‡æ·»åŠ åˆ°å½“å‰èŠ‚ç‚¹
+        _sprite->setScale(0.1f);  // æ ¹æ®éœ€è¦è°ƒæ•´ç¼©æ”¾
     }
     else
     {
-        CCLOG("DragonBaby: Sprite load failed!");  // ¼ÓÔØÍ¼Æ¬Ê§°ÜÊ±Êä³öÈÕÖ¾
+        CCLOG("DragonBaby: Sprite load failed!");  // åŠ è½½å›¾ç‰‡å¤±è´¥æ—¶è¾“å‡ºæ—¥å¿—
     }
 
-    // ÑªÌõ³õÊ¼»¯£¨È·±£Ö»³õÊ¼»¯Ò»´Î£©
+    // è¡€æ¡åˆå§‹åŒ–ï¼ˆç¡®ä¿åªåˆå§‹åŒ–ä¸€æ¬¡ï¼‰
     return true;
 }

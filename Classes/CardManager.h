@@ -12,25 +12,25 @@ class Card;
 class CardManager
 {
 public:
-    // »ñÈ¡µ¥Àı
+    // è·å–å•ä¾‹
     static CardManager* getInstance();
     static void destroyInstance();
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     void init();
     void initDeck();
     void initHandCards();
     void initDiscardPile();
 
-    // ÊÖÅÆ¹ÜÀí
+    // æ‰‹ç‰Œç®¡ç†
     std::vector<Card*> getHandCards() const { return _handCards; }
-    // ¿¨ÅÆÊ¹ÓÃ
+    // å¡ç‰Œä½¿ç”¨
     bool useCard(Card* card);
 
-    // ¸üĞÂ
+    // æ›´æ–°
     void update(float delta);
 
-    // ÖØÖÃ
+    // é‡ç½®
     void reset();
 
     Card* getCardAtWorldPos(const cocos2d::Vec2& pos);
@@ -46,12 +46,12 @@ private:
 private:
     static CardManager* _instance;
 
-    // ÊÖÅÆ
+    // æ‰‹ç‰Œ
     std::vector<Card*> _handCards;
     std::vector<Card*> _deck;
     std::vector<Card*> _discardPile;
 
-    // ¿¨ÅÆÑ­»·
+    // å¡ç‰Œå¾ªç¯
     float _drawTimer;
     float _drawInterval;
     int _maxHandSize;

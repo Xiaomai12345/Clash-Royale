@@ -7,13 +7,13 @@
 
 // DragonBaby
 // ----------
-// ·ÉÁú±¦±¦
-// »áÖ´ĞĞ·¶Î§¹¥»÷£¬Ê¹ÓÃ·ÉĞĞ×é¼ş
+// é£é¾™å®å®
+// ä¼šæ‰§è¡ŒèŒƒå›´æ”»å‡»ï¼Œä½¿ç”¨é£è¡Œç»„ä»¶
 //
 class DragonBaby : public TroopBase
 {
 public:
-    DragonBaby();  // ÉùÃ÷¹¹Ôìº¯Êı
+    DragonBaby();  // å£°æ˜æ„é€ å‡½æ•°
     ~DragonBaby();
     virtual bool init() override;
 

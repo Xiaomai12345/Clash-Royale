@@ -1,4 +1,4 @@
-﻿#include "BattleScene.h"
+#include "BattleScene.h"
 #include "Battlefield.h"
 #include "TowerBase.h"
 #include "Card.h"
