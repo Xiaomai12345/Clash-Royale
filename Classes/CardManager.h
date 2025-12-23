@@ -5,7 +5,8 @@
 #include "Card.h"
 #include <vector>
 #include <unordered_map>
-
+#include"DataManager.h"
+#include"CardFactory.h"
 class Card;
 
 class CardManager
@@ -17,14 +18,14 @@ public:
 
     // 初始化
     void init();
+    void initDeck();
+    void initHandCards();
+    void initDiscardPile();
 
     // 手牌管理
     std::vector<Card*> getHandCards() const { return _handCards; }
-    bool canDrawCard() const;
-    Card* drawCard();
-
     // 卡牌使用
-    bool useCard(Card* card, const cocos2d::Vec2& position, int playerId);
+    bool useCard(Card* card);
 
     // 更新
     void update(float delta);
@@ -34,6 +35,7 @@ public:
 
     Card* getCardAtWorldPos(const cocos2d::Vec2& pos);
 
+    Card* getNextCard()const { return _nextCard; }
 private:
     CardManager();
     ~CardManager();
@@ -54,6 +56,7 @@ private:
     float _drawInterval;
     int _maxHandSize;
     int _handSize;
+    Card* _nextCard;
 };
 
 #endif // CARD_MANAGER_H

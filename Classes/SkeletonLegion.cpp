@@ -2,7 +2,7 @@
 
 USING_NS_CC;
 
-SkeletonLegion* SkeletonLegion::create(int count, float spacing, ECamp camp=ECamp::LEFT)
+SkeletonLegion* SkeletonLegion::create(int count, float spacing, ECamp camp)
 {
     auto ret = new (std::nothrow) SkeletonLegion();
     if (ret && ret->init(count, spacing, camp))

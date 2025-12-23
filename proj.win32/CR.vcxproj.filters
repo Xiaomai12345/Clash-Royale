@@ -285,6 +285,9 @@
     <ClCompile Include="..\Classes\CardFactory.cpp">
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\DataManager.cpp">
+      <Filter>Classes\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -481,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\IWalkableWorld.h">
       <Filter>Classes\Entities\Troop\MoveComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataManager.h">
+      <Filter>Classes\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

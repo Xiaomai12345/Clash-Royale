@@ -30,9 +30,11 @@ private:
     void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 
+    void initNextCard();       //初始化next卡牌
+    void refreshNextCard();
     void initHandCards();      // 初始化手牌（只调用一次）
     void refreshHandLayout();  // 重新排布手牌（可多次调用）
-
+    void onCardUsed(Card* card);
     void showDeployPosition();
 private:
     Battlefield* _battlefield;
@@ -47,6 +49,8 @@ private:
     // 玩家信息
     int _playerCrowns[2];
     bool _isPlayer1;
+    //动画期间不允许交互
+    bool _handLocked = false;
 
     // 选中的卡牌
     Card* _selectedCard;
