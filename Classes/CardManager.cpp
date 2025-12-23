@@ -2,7 +2,7 @@
 
 USING_NS_CC;
 
-// ¾²Ì¬³ÉÔ±³õÊ¼»¯
+// é™æ€æˆå‘˜åˆå§‹åŒ–
 CardManager* CardManager::_instance = nullptr;
 
 CardManager* CardManager::getInstance()
@@ -25,7 +25,7 @@ void CardManager::destroyInstance()
 
 CardManager::CardManager()
     : _drawTimer(0.0f)
-    , _drawInterval(2.8f)
+    , _drawInterval(0.5f)
     , _maxHandSize(8)
     , _handSize(0)
 {
@@ -41,81 +41,101 @@ void CardManager::init()
     _drawTimer = 0.0f;
     _handSize = 0;
 
-    // Çå¿ÕËùÓĞÅÆ
-    _handCards.clear();
-    _deck.clear();
-    _discardPile.clear();
-
-    // ³õÊ¼³é4ÕÅÅÆ£¨¼ò»¯°æ±¾£©
-    for (int i = 0; i < 8; i++)
-    {
-        if (canDrawCard())
-        {
-            drawCard();
-        }
-    }
+    // æ¸…ç©ºæ‰€æœ‰ç‰Œ
+    initDeck();
+    initHandCards();
+    initDiscardPile();
+    _nextCard = _discardPile[0];
 
     CCLOG("CardManager initialized");
 }
-
-bool CardManager::canDrawCard() const
+void CardManager::initDeck()
 {
-    return _handSize < _maxHandSize;
+    _deck.clear();
+    Card* knight = CardFactory::createKnightCard();
+    Card* archer = CardFactory::createArcherCard();
+    Card* giant = CardFactory::createGiantCard();
+    Card* valkyrie = CardFactory::createValkyrieCard();
+    Card* dragonbaby = CardFactory::createDragonBabyCard();
+    Card* cannon = CardFactory::createCannonCard();
+    Card* skeleton = CardFactory::createSkeletonCard();
+    Card* minions = CardFactory::createMinionsCard();
+
+    _deck.push_back(knight);
+    _deck.push_back(archer);
+    _deck.push_back(giant);
+    _deck.push_back(valkyrie);
+    _deck.push_back(dragonbaby);
+    _deck.push_back(cannon);
+    _deck.push_back(skeleton);
+    _deck.push_back(minions);
+}
+void CardManager::initHandCards()
+{
+    _handCards.clear();
+    for (int i = 0; i < 4; ++i)
+    {
+        _handCards.push_back(_deck[i]);
+    }
+}
+void CardManager::initDiscardPile()
+{
+    _discardPile.clear();
+    for (int i = 5; i < 8; i++)
+    {
+        _discardPile.push_back(_deck[i]);
+    }
 }
 
-Card* CardManager::drawCard()
+
+
+
+bool CardManager::useCard(Card* card)
 {
-    if (!canDrawCard())
+    if (!card) return false;
+
+    for (int i = 0; i < 4; ++i)
     {
-        CCLOG("Hand is full, cannot draw more cards");
-        return nullptr;
+        if (_handCards[i] == card)
+        {
+            // 1. å½“å‰æ§½ä½æ¸…ç©º
+            _handCards[i] = nullptr;
+
+            card->setVisible(false);
+            // 2. å¡å›ç‰Œåº“å°¾ï¼ˆå¾ªç¯ï¼‰
+            _discardPile.push_back(card);
+
+            _drawTimer = 0.0f;
+            return true;
+        }
     }
-
-    // ¼ò»¯°æ±¾£º´´½¨Ò»¸ö¿ÕµÄ¿¨ÅÆ¶ÔÏó
-    Card* card = Card::create();
-    if (card)
-    {
-        CCLOG("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        _handCards.push_back(card);
-
-        _handSize++;
-    }
-
-    return card;
-}
-
-bool CardManager::useCard(Card* card, const cocos2d::Vec2& position, int playerId)
-{
-    //ÒòÎª¿¨ÅÆÊ¾ÀıÉĞÎ´Íê³É£¬ÎŞ·¨²¿Êğ£¬²âÊÔÊ±Çë×¢ÊÍÕâ¶Îº¯Êı£¬²»È»±¨´í
-    //if (!card)
-    //    return false;
-
-    //// ´ÓÊÖÅÆÖĞÒÆ³ı
-    //auto it = std::find(_handCards.begin(), _handCards.end(), card);
-    //if (it != _handCards.end())
-    //{
-    //    _handCards.erase(it);
-    //    _handSize--;
-    //    return true;
-    //}
-
     return false;
 }
+
 
 void CardManager::update(float delta)
 {
     _drawTimer += delta;
 
-    if (_drawTimer >= _drawInterval && canDrawCard())
+    if (_drawTimer < _drawInterval) return;
+
+    for (int i = 0; i < 4; ++i)
     {
-        drawCard();
-        _drawTimer = 0.0f;
+        if (_handCards[i] == nullptr && !_discardPile.empty())
+        {
+
+            _handCards[i] = _discardPile[0];
+            _discardPile.erase(_discardPile.begin());
+            _nextCard = _discardPile[0];
+            break; // ä¸€æ¬¡åªè¡¥ä¸€å¼ 
+        }
     }
+    _drawTimer = 0.0f;
 }
 
 void CardManager::reset()
 {
-    // ÇåÀíËùÓĞ¿¨ÅÆ
+    // æ¸…ç†æ‰€æœ‰å¡ç‰Œ
     for (auto card : _handCards)
     {
         if (card)
@@ -152,7 +172,13 @@ Card* CardManager::getCardAtWorldPos(const cocos2d::Vec2& pos)
 {
     for (auto it = _handCards.rbegin(); it != _handCards.rend(); ++it)
     {
+        Card* card = *it;
+        if (!card) continue;                 // é˜² nullptr
+        if (!card->isVisible()) continue;
+        if (!card->getParent()) continue;    // é˜²å·²ç§»é™¤
 
+        if (card->hitTest(pos))
+            return card;
     }
     return nullptr;
 }

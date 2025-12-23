@@ -7,7 +7,7 @@ class SkeletonLegion : public cocos2d::Node
 {
 public:
     // 
-    static SkeletonLegion* create(int count, float spacing, ECamp camp);
+    static SkeletonLegion* create(int count, float spacing, ECamp camp=ECamp::LEFT);
 
     // ≥ı ºªØ
     bool init(int count, float spacing, ECamp camp);
