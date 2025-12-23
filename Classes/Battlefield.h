@@ -5,6 +5,7 @@
 #include "Grid.h"
 #include "BattleManager.h"
 #include <vector>
+#include"IWalkableWorld.h"
 struct Coordinate
 {
     int x;
@@ -19,26 +20,28 @@ struct Area
     Area(int x1, int y1, int x2, int y2) :leftBottom(x1, y1), rightTop(x2, y2) {}
     Area() : leftBottom(0, 0), rightTop(0, 0) {}
 };
-class Battlefield : public cocos2d::Node
+class Battlefield : public cocos2d::Node, public IWalkableWorld
 {
 public:
     CREATE_FUNC(Battlefield);
     virtual bool init() override;
 
-    // 初始化
     void setupBattlefield(int level = 1);
 
-    // 判定
     bool isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const;
     bool isWalkable(const cocos2d::Vec2& worldPos) const;
-
-    // 坐标转换
+    bool isBridge(const cocos2d::Vec2& worldPos) const;
+    bool canWalk(const cocos2d::Vec2& worldPos) const ;
+    cocos2d::Vec2 constrainPosition(const cocos2d::Vec2& desired, const cocos2d::Vec2& current) const;
+    const Area* findBridgeArea(const cocos2d::Vec2& worldPos) const;
+    cocos2d::Vec2 projectToBridge(const cocos2d::Vec2& desiredPos) const;
+    float getNearestBridgeX(const cocos2d::Vec2& currentPos) const override;
     bool worldToGrid(const cocos2d::Vec2& worldPos, int& outRow, int& outCol) const;
     cocos2d::Vec2 gridToWorld(int row, int col) const;
 
-    // 调试
     void enableDebugDraw(bool enable);
     bool isDebugDrawEnabled() const { return _debugEnabled; }
+	void addUnit(cocos2d::Node* unit);
 
     std::vector<Area>getMyarea() { return myArea; }
     std::vector<Area>getEnemyarea() { return enemyArea; }
@@ -58,7 +61,7 @@ private:
 private:
     cocos2d::Size _mapSize;
     cocos2d::Size _gridSize;
-    //32行，18列，世界坐标下左下角点(80,280)
+
     const float gridHeight = 31.11;
     const float gridWeight = 40.5;
     int _rows = 32;

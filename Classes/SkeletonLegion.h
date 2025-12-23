@@ -2,22 +2,28 @@
 #define __SKELETON_LEGION_H__
 
 #include "cocos2d.h"
-
+#include"SkeletonTroop.h"
 class SkeletonLegion : public cocos2d::Node
 {
 public:
-    // 工厂方法
-    static SkeletonLegion* create(int count, float spacing);
+    // 
+    static SkeletonLegion* create(int count, float spacing, ECamp camp);
 
-    // 初始化（注意：这是“自定义 init”，不是 override）
-    bool init(int count, float spacing);
+    // 初始化
+    bool init(int count, float spacing, ECamp camp);
 
-    // 在指定父节点 + 世界坐标生成骷髅
+    void setWorld(IWalkableWorld* world);
+    // 生成骷髅
     void spawnAt(cocos2d::Node* parent, const cocos2d::Vec2& worldPos);
 
+    // （可选）如果你后面想动态改阵营
+    void setCamp(ECamp camp) { _camp = camp; }
+
 private:
-    int _count = 0;        // 骷髅数量
-    float _spacing = 0.f; // 横向间距
+    IWalkableWorld* _world = nullptr;
+    int _count = 0;
+    float _spacing = 0.f;
+    ECamp _camp = ECamp::LEFT;   // 
 };
 
-#endif // __SKELETON_LEGION_H__
+#endif

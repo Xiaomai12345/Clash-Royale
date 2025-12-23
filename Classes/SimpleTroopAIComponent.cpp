@@ -13,14 +13,12 @@ void SimpleTroopAIComponent::update(TroopBase* owner, float dt)
     auto attack = owner->getAttackComponent();
 
     if (!_target) {
-        CCLOG("???0");
 		owner->setState(State::IDLE);//设置状态为闲置
     }
 
     _target = checkAlertRange(owner);
 
     if (!_target) {
-        CCLOG("No target found in alert range.");
         return;
     }
 
@@ -49,7 +47,6 @@ void SimpleTroopAIComponent::update(TroopBase* owner, float dt)
 
 IAttackable* SimpleTroopAIComponent::checkAlertRange(TroopBase* owner)
 {
-    CCLOG("check now");
     Node* parent = owner->getParent();
     if (!parent)
         return nullptr;
@@ -76,7 +73,6 @@ IAttackable* SimpleTroopAIComponent::checkAlertRange(TroopBase* owner)
             float temp = ownerPos.distance(target->getPosition());
             if (temp < distancetoBaseTarget)
             {
-                CCLOG("temp is %f ,dis id %f", temp, distancetoBaseTarget);
                 distancetoBaseTarget = temp;
                 BaseTarget = target;
             }

@@ -24,7 +24,6 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
     AttackComponent* attackComponent = owner->getAttackComponent();
     if (!attackComponent)
     {
-        CCLOG("SimpleBuildingAI: No attack component found");
         return;
     }
 
@@ -43,8 +42,6 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
         }
         else
         {
-            // 目标在检测范围内但不在攻击范围内
-            CCLOG("SimpleBuildingAI: Target out of range");
             clearTarget();
             attackComponent->clearTarget();
         }
@@ -64,12 +61,9 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
         {
             _target = newTarget;
             attackComponent->setTarget(newTarget);
-            CCLOG("SimpleBuildingAI: New target found at distance %.1f",
-                calculateDistance(owner, newTarget));
         }
         else
         {
-            CCLOG("SimpleBuildingAI: No enemy found in range");
         }
 
         _searchCooldown = SEARCH_INTERVAL;

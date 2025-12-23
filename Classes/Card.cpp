@@ -1,4 +1,5 @@
-#include "Card.h"
+é”˜ï¿½#include "Card.h"
+#include <algorithm>
 
 USING_NS_CC;
 
@@ -6,16 +7,17 @@ bool Card::init()
 {
     if (!Node::init())
         return false;
-    _cardId = 0;
-    _name = "Unknown";
-    _manaCost = 0.0f;
-    _isSelected = false;
 
+    /* =========================
+     * é—ï¼„å¢çå“„î‡­é”›å æ•®æ¶“ï¿½çå“„î‡­å©§æ„¶ç´š
+     * ========================= */
+    Size cardSize(100, 140);
 
-    // ´´½¨¿¨ÅÆ±³¾°
+    /* =========================
+     * é—ï¼„å¢ç€¹ç‘°æ«’
+     * ========================= */
     _cardSprite = Sprite::create();
-    auto bg = LayerColor::create(Color4B(255, 0, 0, 255), 120, 160);
-    _cardSprite->addChild(bg);
+    _cardSprite->setContentSize(cardSize);      // çŒ¸ï¿½ éæŠ½æ•­é”›æ°±ç²°çå“„î‡­
     _cardSprite->setAnchorPoint(Vec2::ZERO);
     addChild(_cardSprite,200);
     if (_cardSprite)
@@ -24,55 +26,71 @@ bool Card::init()
     }
 
 
-    // ´´½¨Ê¥Ë®ÏûºÄ±êÇ©
+    setContentSize(cardSize);
+
+    /* =========================
+     * é—ï¼„å¢é‘³å±¾æ«™
+     * ========================= */
+    auto bg = LayerColor::create(Color4B(80, 80, 80, 255),
+        cardSize.width,
+        cardSize.height);
+    bg->setAnchorPoint(Vec2::ZERO);
+    bg->setPosition(Vec2::ZERO);
+    _cardSprite->addChild(bg, 0);
+
+    /* =========================
+     * é¦ï½†æŒ‰å¨‘å £ï¿½ï¿½
+     * ========================= */
     _manaLabel = Label::createWithSystemFont("0", "Arial", 20);
-    _manaLabel->setPosition(25, 120);
-    _manaLabel->setTextColor(Color4B(0, 255, 255, 255));
-    _cardSprite->addChild(_manaLabel);
+    _manaLabel->setPosition(Vec2(cardSize.width * 0.2f,
+        cardSize.height * 0.85f));
+    _manaLabel->setTextColor(Color4B::RED);
+    _cardSprite->addChild(_manaLabel, 2);
 
-    // ´´½¨Ãû³Æ±êÇ©
+    /* =========================
+     * é—ï¼„å¢éšå¶‡Ğ
+     * ========================= */
     _nameLabel = Label::createWithSystemFont("Card", "Arial", 16);
-    _nameLabel->setPosition(50, 30);
+    _nameLabel->setPosition(Vec2(cardSize.width * 0.5f,
+        cardSize.height * 0.15f));
     _nameLabel->setTextColor(Color4B::WHITE);
-    _cardSprite->addChild(_nameLabel);
+    _cardSprite->addChild(_nameLabel, 2);
 
-    setContentSize(Size(120, 160));
     return true;
 }
 
-void Card::setCardInfo(int cardId, const std::string& name, float manaCost)
+void Card::setCardInfo(int cardId,
+    const std::string& name,
+    int manaCost)
 {
     _cardId = cardId;
     _name = name;
     _manaCost = manaCost;
 
-    // ¸üĞÂUI
-    _manaLabel->setString(StringUtils::format("%.0f", manaCost));
+    _manaLabel->setString(StringUtils::format("%d", manaCost));
     _nameLabel->setString(name);
 
-    // ¸ù¾İÊ¥Ë®ÏûºÄÉèÖÃÑÕÉ«
     if (manaCost <= 2)
-    {
         _manaLabel->setTextColor(Color4B(100, 255, 100, 255));
-    }
     else if (manaCost <= 4)
-    {
         _manaLabel->setTextColor(Color4B(255, 255, 100, 255));
-    }
     else
-    {
         _manaLabel->setTextColor(Color4B(255, 100, 100, 255));
-    }
 }
 
-bool Card::use(const cocos2d::Vec2& position, int playerId)
+void Card::setPlayFunc(const PlayFunc& func)
 {
-    CCLOG("Using card %d (%s) at (%.1f, %.1f) for player %d",
-        _cardId, _name.c_str(), position.x, position.y, playerId);
+    _playFunc = func;
+}
 
-    // ÕâÀïÓ¦¸Ã´¥·¢¿¨ÅÆĞ§¹û
-    // ·µ»Øtrue±íÊ¾Ê¹ÓÃ³É¹¦
-    return true;
+bool Card::use(const Vec2& worldPos, int playerId)
+{
+    if (!_playFunc)
+    {
+        CCLOG("Card [%s] has no play function!", _name.c_str());
+        return false;
+    }
+    return _playFunc(worldPos, playerId);
 }
 
 void Card::setSelected(bool selected)
@@ -82,7 +100,7 @@ void Card::setSelected(bool selected)
     if (selected)
     {
         _cardSprite->setScale(1.1f);
-        _cardSprite->setColor(Color3B(255, 255, 0));
+        _cardSprite->setColor(Color3B::YELLOW);
     }
     else
     {
@@ -91,9 +109,35 @@ void Card::setSelected(bool selected)
     }
 }
 
-bool Card::hitTest(const Vec2& worldPos) const
+/* =========================
+ * ç’å‰§ç–†é—ï¼„å¢é»æ”æ•¾é”›å ¥æ‘µå©ŠÂ¤å„—é…îˆ¤ç´š
+ * ========================= */
+void Card::setCardArt(const std::string& imagePath)
 {
-    Vec2 local = this->convertToNodeSpace(worldPos);
-    Rect rect(Vec2::ZERO, getContentSize());
-    return rect.containsPoint(local);
+    if (_artSprite)
+    {
+        _artSprite->removeFromParent();
+        _artSprite = nullptr;
+    }
+
+    _artSprite = Sprite::create(imagePath);
+    if (!_artSprite) return;
+
+    // çŒ¸ï¿½ é¢ï¿½ cardSprite é¨å‹«æ˜‚ç€µé©ç´™éœæ¿æ¹ªæ¶“ï¿½ç€¹æ°«ç¬‰é„ï¿½ 0é”›ï¿½
+    Size bgSize = _cardSprite->getContentSize();
+    Size imgSize = _artSprite->getContentSize();
+
+    float scaleX = bgSize.width / imgSize.width;
+    float scaleY = bgSize.height / imgSize.height;
+    CCLOG("%f %f",scaleX,scaleY);
+
+    // coveré”›æ°¶æ‘µå©Šï¿½
+    float scale = std::max(scaleX, scaleY);
+
+    _artSprite->setScale(scale);
+    _artSprite->setPosition(bgSize.width * 0.5f,
+        bgSize.height * 0.5f);
+
+    // é»æ”æ•¾é¦ã„¨å„—é…îˆ™ç®£æ¶“å¨¿ï¿½ä¹I æ¶”å¬©ç¬…
+    _cardSprite->addChild(_artSprite, 1);
 }

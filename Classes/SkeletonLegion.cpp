@@ -1,12 +1,11 @@
 ﻿#include "SkeletonLegion.h"
-#include "SkeletonTroop.h"
 
 USING_NS_CC;
 
-SkeletonLegion* SkeletonLegion::create(int count, float spacing)
+SkeletonLegion* SkeletonLegion::create(int count, float spacing, ECamp camp=ECamp::LEFT)
 {
     auto ret = new (std::nothrow) SkeletonLegion();
-    if (ret && ret->init(count, spacing))
+    if (ret && ret->init(count, spacing, camp))
     {
         ret->autorelease();
         return ret;
@@ -15,25 +14,24 @@ SkeletonLegion* SkeletonLegion::create(int count, float spacing)
     return nullptr;
 }
 
-bool SkeletonLegion::init(int count, float spacing)
+bool SkeletonLegion::init(int count, float spacing, ECamp camp)
 {
     if (!Node::init())
         return false;
 
     _count = count;
     _spacing = spacing;
+    _camp = camp;   // 
+
     return true;
 }
 
 void SkeletonLegion::spawnAt(Node* parent, const Vec2& worldPos)
 {
     if (!parent)
-    {
-        CCLOG("SkeletonLegion::spawnAt parent is null");
         return;
-    }
 
-    const int perRow = 4;        // 每行 4 个
+    const int perRow = 4;
     const float rowSpacing = 12.f;
 
     for (int i = 0; i < _count; ++i)
@@ -42,6 +40,9 @@ void SkeletonLegion::spawnAt(Node* parent, const Vec2& worldPos)
         if (!skeleton)
             continue;
 
+        // 
+        skeleton->setCamp(_camp);
+
         int row = i / perRow;
         int col = i % perRow;
 
@@ -49,9 +50,14 @@ void SkeletonLegion::spawnAt(Node* parent, const Vec2& worldPos)
         float offsetY = row * rowSpacing;
 
         skeleton->setPosition(worldPos + Vec2(offsetX, offsetY));
+        skeleton->setWorld(_world);
         parent->addChild(skeleton);
     }
 
-    // 一次性生成器，用完自毁
+    // 一次性生成器，用完即销毁（你的原设计，非常合理）
     removeFromParent();
+}
+void SkeletonLegion::setWorld(IWalkableWorld* world)
+{
+    _world = world;
 }

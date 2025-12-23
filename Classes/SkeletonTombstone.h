@@ -9,7 +9,7 @@ class SkeletonTombstone : public BuildingBase
 public:
     SkeletonTombstone();
     virtual ~SkeletonTombstone();
-
+    void setWorld(IWalkableWorld* world);
     virtual bool init() override;  // 初始化
 
     CREATE_FUNC(SkeletonTombstone); // 用于创建实例
@@ -19,6 +19,7 @@ protected:
     void takeDamageOverTime(float dt);  // 定时扣血
 
 private:
+    IWalkableWorld* _world = nullptr;
     float _damageInterval = 3.0f;  // 扣血时间间隔
     int _damagePerTick = 5;        // 每次扣血的量
     float _spawnInterval = 5.0f;   // 生成骷髅的间隔

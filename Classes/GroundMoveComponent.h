@@ -3,7 +3,7 @@
 
 #include "MoveComponent.h"
 #include "cocos2d.h"
-
+class IWalkableWorld;
 class GroundMoveComponent : public MoveComponent
 {
 public:
@@ -14,15 +14,28 @@ protected:
     virtual void onUpdateMove(TroopBase* owner, float dt) override;
 
 private:
-    // =====================
-    // ÈÆĞĞ£¨±ÜÕÏ£©×´Ì¬
-    // =====================
-    bool _isOrbiting = false;        // ÊÇ·ñÕıÔÚÈÆĞĞ
-    cocos2d::Vec2 _orbitDir;         //  ËøËÀµÄÈÆĞĞ·½Ïò
-    float _orbitTimer = 0.f;         // ÈÆĞĞ×îĞ¡³ÖĞøÊ±¼ä
+    // ===== å¨Œå†²å“ºå©Šæˆ£î”‘ =====
+    bool _isSlidingRiver = false;
+    float _riverLockTimer = 0.f;
+    float _riverLockTime = 0.4f;
+    cocos2d::Vec2 _riverDir;
+    cocos2d::Vec2 _lastValidPos;
 
-    // ²ÎÊı£¨¿Éµ÷£©
-    float _minOrbitTime = 0.25f;     // ×î¶ÌÈÆĞĞÊ±¼ä
+    // ===== å¦—ãƒ§å§¸é¬ï¿½ =====
+    bool _isOnBridge = false;
+
+    // ===== é—æ›šç¶…çº°ç‰ˆæŒ’ç¼æ›¡î”‘ =====
+    bool _isOrbiting = false;
+    cocos2d::Vec2 _orbitDir;
+    float _orbitTimer = 0.f;
+    float _minOrbitTime = 0.2f;
+
+private:
+    bool findRiverExit(
+        const cocos2d::Vec2& start,
+        float dirX,
+        IWalkableWorld* world,
+        cocos2d::Vec2& outExit);
 };
 
-#endif // __GROUND_MOVE_COMPONENT_H__
+#endif
