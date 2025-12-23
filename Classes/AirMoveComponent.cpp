@@ -134,15 +134,3 @@ void AirMoveComponent::onUpdateMove(TroopBase* owner, float dt)
     }
 }
 
-float AirMoveComponent::calculateMovement(TroopBase* owner, const cocos2d::Vec2& targetPos)
-{
-    // 计算当前位置到目标的向量
-    Vec2 direction = targetPos - owner->getPosition();
-    float distance = direction.length();
-
-    // 考虑碰撞半径的调整
-    float adjustedDistance = distance - owner->getBodyRadius();
-
-    return adjustedDistance;
-}
-

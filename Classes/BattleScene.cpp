@@ -524,6 +524,27 @@ void BattleScene::endGame(bool isPlayer1Win)
     CCLOG("Game ended. Winner: %s", isPlayer1Win ? "Player 1" : "Player 2");
 }
 
+std::vector<Area>Battlefield::getDeployarea()
+{
+
+    std::vector<Area>t{ enemyArea3 };
+    if (BattleManager::getInstance()->getEnemyLeftPrincessAlive())
+    {
+        t.push_back(enemyArea1);
+        t.push_back(bridgeArea1);
+        t.push_back(riverArea1);
+        t.push_back(riverArea2);
+    }
+    if (BattleManager::getInstance()->getEnemyRightPrincessAlive())
+    {
+        t.push_back(enemyArea2);
+        t.push_back(bridgeArea2);
+        t.push_back(riverArea3);
+        t.push_back(riverArea4);
+    }
+    return t;
+}
+
 /*测试DataManager, 由于容易编码错误，log日志生成到项目根目录（需要请自行去掉注释）
 void BattleScene::testDataManager() {
     auto dataMgr = DataManager::getInstance();

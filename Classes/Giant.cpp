@@ -49,7 +49,7 @@ bool Giant::init()
     auto attack = new MeleeAttackComponent(
         50.0f,   // 攻击范围（较大的攻击范围）
         1.5f,    // 攻击间隔（慢一点的攻击间隔）
-        150      // 伤害值（较高的伤害）
+        500      // 伤害值（较高的伤害）
     );
     setAttackComponent(attack);
 

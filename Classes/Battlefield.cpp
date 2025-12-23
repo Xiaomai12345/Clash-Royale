@@ -66,7 +66,7 @@ void Battlefield::setupBattlefield(int level)
 
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
 
-    //// 2️⃣ 创建一张 Knight 卡
+    
     //auto card = CardFactory::createKnightCard();
     //card->setPosition(Vec2(100, 80));
     //this->addChild(card); // 只是为了看见卡，不影响逻辑
@@ -128,18 +128,7 @@ void Battlefield::setupBattlefield(int level)
     this->addChild(troop7);
 
 
-    CCLOG("creat skeleton legion");
-    auto legion = SkeletonLegion::create(6, 20.0f);
-    this->addChild(legion);
-    legion->spawnAt(this, Vec2(400, 500));
-
-
-    auto tombstone = SkeletonTombstone::create();
-    tombstone->setPosition(Vec2(500, 600));  // 璁剧疆澧撶浣嶇疆
-    this->addChild(tombstone);  //
-
-
-
+ 
 
     auto building1 = PrincessTower::create();
     building1->setPosition(Vec2(500, 1024));
@@ -167,10 +156,6 @@ void Battlefield::setupBattlefield(int level)
     building2left->setCamp(ECamp::LEFT);
     this->addChild(building2left);
 
-    auto building3left = Cannon::create();
-    building3left->setPosition(Vec2(450, 500));
-    building3left->setCamp(ECamp::LEFT);
-    this->addChild(building3left);
 
 
     if (_debugEnabled)
@@ -492,6 +477,43 @@ float Battlefield::getNearestBridgeX(const cocos2d::Vec2& currentPos) const
     }
     return targetX;
 }
+
+
+float Battlefield::getNearestBridgeY(const cocos2d::Vec2& currentPos) const
+{
+    float minDist = FLT_MAX;
+    float targetY = currentPos.y;
+
+    for (const auto& area : bridgeArea)
+    {
+        // 1. 桥的下边界 Y（grid → world）
+        Vec2 bottomWorld = gridToWorld(area.leftBottom.y, 0);
+        float bottomY = bottomWorld.y;
+
+        // 2. 桥的上边界 Y（grid → world）
+        Vec2 topWorld = gridToWorld(area.rightTop.y, 0);
+        float topY = topWorld.y;
+
+        // 3. 比较当前位置离上下边界哪个更近
+        float distToBottom = std::abs(currentPos.y - bottomY);
+        float distToTop = std::abs(currentPos.y - topY);
+
+        // 4. 选择更近的那个
+        if (distToBottom < minDist)
+        {
+            minDist = distToBottom;
+            targetY = bottomY;
+        }
+
+        if (distToTop < minDist)
+        {
+            minDist = distToTop;
+            targetY = topY;
+        }
+    }
+
+    return targetY;
+}
 std::vector<Area>Battlefield::getDeployarea()
 {
 
@@ -511,4 +533,5 @@ std::vector<Area>Battlefield::getDeployarea()
         t.push_back(riverArea4);
     }
     return t;
+
 }

@@ -36,6 +36,7 @@ public:
     const Area* findBridgeArea(const cocos2d::Vec2& worldPos) const;
     cocos2d::Vec2 projectToBridge(const cocos2d::Vec2& desiredPos) const;
     float getNearestBridgeX(const cocos2d::Vec2& currentPos) const override;
+    float getNearestBridgeY(const cocos2d::Vec2& currentPos) const override;
     bool worldToGrid(const cocos2d::Vec2& worldPos, int& outRow, int& outCol) const;
     cocos2d::Vec2 gridToWorld(int row, int col) const;
 

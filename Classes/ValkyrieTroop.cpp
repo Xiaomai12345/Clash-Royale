@@ -54,7 +54,7 @@ bool ValkyrieTroop::init()
     auto attack = new MeleeAreaAttackComponent(
         45.0f,   // ¹¥»÷·¶Î§£¨AOE °ë¾¶£©
         1.2f,    // ¹¥»÷¼ä¸ô
-        20      // µ¥´ÎÉËº¦
+        200      // µ¥´ÎÉËº¦
     );
     setAttackComponent(attack);
 
