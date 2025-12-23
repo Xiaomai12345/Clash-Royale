@@ -282,6 +282,9 @@
     <ClCompile Include="..\Classes\ValkyrieTroop.cpp">
       <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\DataManager.cpp">
+      <Filter>Classes\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -466,6 +469,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ValkyrieTroop.h">
       <Filter>Classes\Entities\AllCards\Troops\Ground\Else</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataManager.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Grid.h">
+      <Filter>Classes\Entities\Battle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

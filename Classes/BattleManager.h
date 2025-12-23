@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "ManaSystem.h"
-
+#include<vector>
 class Battlefield;
 class UnitBase;
 
@@ -34,6 +34,8 @@ public:
     void setGameMode(const std::string& mode);
     std::string getCurrentGameMode() const { return _currentGameMode; }
 
+    bool getEnemyLeftPrincessAlive()const { return enemyLeftPrincessAlive; }
+    bool getEnemyRightPrincessAlive()const { return enemyRightPrincessAlive; }
 private:
     BattleManager();
     ~BattleManager();
@@ -51,6 +53,14 @@ private:
     bool _gameActive;
     bool _gameEnded;
     float _gameTime;
+    int myCrown;
+    int enemyCrown;
+    bool myLeftPrincessAlive;
+    bool enemyLeftPrincessAlive;
+    bool myRightPrincessAlive;
+    bool enemyRightPrincessAlive;
+    bool myKingAlive;
+    bool enemyKingAlive;
     std::string _currentGameMode;
 
     // Íæ¼ÒÊý¾Ý

@@ -1,4 +1,4 @@
-ï»¿#include "Card.h"
+#include "Card.h"
 
 USING_NS_CC;
 
@@ -6,34 +6,37 @@ bool Card::init()
 {
     if (!Node::init())
         return false;
-
     _cardId = 0;
     _name = "Unknown";
     _manaCost = 0.0f;
     _isSelected = false;
 
-    // åˆ›å»ºå¡ç‰ŒèƒŒæ™¯
+
+    // ´´½¨¿¨ÅÆ±³¾°
     _cardSprite = Sprite::create();
-    auto bg = LayerColor::create(Color4B(100, 100, 100, 255), 100, 140);
+    auto bg = LayerColor::create(Color4B(255, 0, 0, 255), 120, 160);
     _cardSprite->addChild(bg);
-
     _cardSprite->setAnchorPoint(Vec2::ZERO);
-    addChild(_cardSprite);
+    addChild(_cardSprite,200);
+    if (_cardSprite)
+    {
+        CCLOG("bbbbbbbbbbbbb");
+    }
 
-    // åˆ›å»ºåœ£æ°´æ¶ˆè€—æ ‡ç­¾
+
+    // ´´½¨Ê¥Ë®ÏûºÄ±êÇ©
     _manaLabel = Label::createWithSystemFont("0", "Arial", 20);
     _manaLabel->setPosition(25, 120);
     _manaLabel->setTextColor(Color4B(0, 255, 255, 255));
     _cardSprite->addChild(_manaLabel);
 
-    // åˆ›å»ºåç§°æ ‡ç­¾
+    // ´´½¨Ãû³Æ±êÇ©
     _nameLabel = Label::createWithSystemFont("Card", "Arial", 16);
     _nameLabel->setPosition(50, 30);
     _nameLabel->setTextColor(Color4B::WHITE);
     _cardSprite->addChild(_nameLabel);
 
-    setContentSize(Size(100, 140));
-
+    setContentSize(Size(120, 160));
     return true;
 }
 
@@ -43,11 +46,11 @@ void Card::setCardInfo(int cardId, const std::string& name, float manaCost)
     _name = name;
     _manaCost = manaCost;
 
-    // æ›´æ–°UI
+    // ¸üĞÂUI
     _manaLabel->setString(StringUtils::format("%.0f", manaCost));
     _nameLabel->setString(name);
 
-    // æ ¹æ®åœ£æ°´æ¶ˆè€—è®¾ç½®é¢œè‰²
+    // ¸ù¾İÊ¥Ë®ÏûºÄÉèÖÃÑÕÉ«
     if (manaCost <= 2)
     {
         _manaLabel->setTextColor(Color4B(100, 255, 100, 255));
@@ -67,8 +70,8 @@ bool Card::use(const cocos2d::Vec2& position, int playerId)
     CCLOG("Using card %d (%s) at (%.1f, %.1f) for player %d",
         _cardId, _name.c_str(), position.x, position.y, playerId);
 
-    // è¿™é‡Œåº”è¯¥è§¦å‘å¡ç‰Œæ•ˆæœ
-    // è¿”å›trueè¡¨ç¤ºä½¿ç”¨æˆåŠŸ
+    // ÕâÀïÓ¦¸Ã´¥·¢¿¨ÅÆĞ§¹û
+    // ·µ»Øtrue±íÊ¾Ê¹ÓÃ³É¹¦
     return true;
 }
 
@@ -86,4 +89,11 @@ void Card::setSelected(bool selected)
         _cardSprite->setScale(1.0f);
         _cardSprite->setColor(Color3B::WHITE);
     }
+}
+
+bool Card::hitTest(const Vec2& worldPos) const
+{
+    Vec2 local = this->convertToNodeSpace(worldPos);
+    Rect rect(Vec2::ZERO, getContentSize());
+    return rect.containsPoint(local);
 }

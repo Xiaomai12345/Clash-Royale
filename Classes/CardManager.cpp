@@ -47,7 +47,7 @@ void CardManager::init()
     _discardPile.clear();
 
     // 初始抽4张牌（简化版本）
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 8; i++)
     {
         if (canDrawCard())
         {
@@ -75,7 +75,9 @@ Card* CardManager::drawCard()
     Card* card = Card::create();
     if (card)
     {
+        CCLOG("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         _handCards.push_back(card);
+
         _handSize++;
     }
 
@@ -84,17 +86,18 @@ Card* CardManager::drawCard()
 
 bool CardManager::useCard(Card* card, const cocos2d::Vec2& position, int playerId)
 {
-    if (!card)
-        return false;
+    //因为卡牌示例尚未完成，无法部署，测试时请注释这段函数，不然报错
+    //if (!card)
+    //    return false;
 
-    // 从手牌中移除
-    auto it = std::find(_handCards.begin(), _handCards.end(), card);
-    if (it != _handCards.end())
-    {
-        _handCards.erase(it);
-        _handSize--;
-        return true;
-    }
+    //// 从手牌中移除
+    //auto it = std::find(_handCards.begin(), _handCards.end(), card);
+    //if (it != _handCards.end())
+    //{
+    //    _handCards.erase(it);
+    //    _handSize--;
+    //    return true;
+    //}
 
     return false;
 }
@@ -143,4 +146,14 @@ void CardManager::reset()
 
     _drawTimer = 0.0f;
     _handSize = 0;
+}
+
+Card* CardManager::getCardAtWorldPos(const cocos2d::Vec2& pos)
+{
+    for (auto it = _handCards.rbegin(); it != _handCards.rend(); ++it)
+    {
+        if ((*it)->isVisible() && (*it)->hitTest(pos))
+            return *it;
+    }
+    return nullptr;
 }

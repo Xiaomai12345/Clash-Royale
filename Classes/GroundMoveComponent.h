@@ -1,4 +1,4 @@
-ï»¿#ifndef __GROUND_MOVE_COMPONENT_H__
+#ifndef __GROUND_MOVE_COMPONENT_H__
 #define __GROUND_MOVE_COMPONENT_H__
 
 #include "MoveComponent.h"
@@ -15,14 +15,14 @@ protected:
 
 private:
     // =====================
-    // ç»•è¡Œï¼ˆé¿éšœï¼‰çŠ¶æ€
+    // ÈÆĞĞ£¨±ÜÕÏ£©×´Ì¬
     // =====================
-    bool _isOrbiting = false;        // æ˜¯å¦æ­£åœ¨ç»•è¡Œ
-    cocos2d::Vec2 _orbitDir;         // ğŸ”’ é”æ­»çš„ç»•è¡Œæ–¹å‘
-    float _orbitTimer = 0.f;         // ç»•è¡Œæœ€å°æŒç»­æ—¶é—´
+    bool _isOrbiting = false;        // ÊÇ·ñÕıÔÚÈÆĞĞ
+    cocos2d::Vec2 _orbitDir;         //  ËøËÀµÄÈÆĞĞ·½Ïò
+    float _orbitTimer = 0.f;         // ÈÆĞĞ×îĞ¡³ÖĞøÊ±¼ä
 
-    // å‚æ•°ï¼ˆå¯è°ƒï¼‰
-    float _minOrbitTime = 0.25f;     // æœ€çŸ­ç»•è¡Œæ—¶é—´
+    // ²ÎÊı£¨¿Éµ÷£©
+    float _minOrbitTime = 0.25f;     // ×î¶ÌÈÆĞĞÊ±¼ä
 };
 
 #endif // __GROUND_MOVE_COMPONENT_H__
