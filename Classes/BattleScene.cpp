@@ -1,4 +1,4 @@
-#include "BattleScene.h"
+ï»¿#include "BattleScene.h"
 #include "Battlefield.h"
 #include "TowerBase.h"
 #include "Card.h"
@@ -6,6 +6,12 @@
 #include "BattleManager.h"
 #include "CardManager.h"
 #include "ManaBar.h"
+#include "DataManager.h"
+/*
+PS:è¿™ä¸ªå¤´æ–‡ä»¶æ˜¯ç”¨äºDataManageræµ‹è¯•çš„ï¼Œæµ‹è¯•æ—¶å»æ‰æ³¨é‡Šå³å¯
+#include <fstream>
+#include <string>
+*/
 
 USING_NS_CC;
 
@@ -18,8 +24,11 @@ bool BattleScene::init()
 {
     if (!Scene::init())
         return false;
-
-    // ³õÊ¼»¯ÓÎÏ·×´Ì¬
+    /*
+    æ­¤ä¸ºæµ‹è¯•ç¨‹åºï¼Œä½¿ç”¨æ—¶ä¼šè¾“å‡ºä¸€ä»½æ—¥å¿—æ–‡ä»¶æ¥æ£€æµ‹DataManagerèƒ½å¦æ­£å¸¸è¿è¡Œã€‚
+    testDataManager();
+    */
+    // åˆå§‹åŒ–æ¸¸æˆçŠ¶æ€
     _gameStarted = false;
     _gameEnded = false;
     _gameTime = 0.0f;
@@ -29,30 +38,30 @@ bool BattleScene::init()
     _selectedCard = nullptr;
     _cardGhost = nullptr;
 
-    // ´´½¨Õ½³¡
+    // åˆ›å»ºæˆ˜åœº
     _battlefield = Battlefield::create();
     _battlefield->setupBattlefield(1);
     addChild(_battlefield, 0);
 
-    // ÉèÖÃUI
+    // è®¾ç½®UI
     setupUI();
 
-    // ÉèÖÃÊäÈë
+    // è®¾ç½®è¾“å…¥
     setupInput();
 
-    // ³õÊ¼»¯¹ÜÀíÆ÷
+    // åˆå§‹åŒ–ç®¡ç†å™¨
     BattleManager::getInstance()->init(_battlefield);
 
-    // ³õÊ¼»¯Ê¥Ë®ÏµÍ³
+    // åˆå§‹åŒ–åœ£æ°´ç³»ç»Ÿ
     ManaSystem::getInstance()->init(5.0f, 10.0f, 0.3333f);
 
-    // ³õÊ¼»¯¿¨ÅÆ¹ÜÀíÆ÷
+    // åˆå§‹åŒ–å¡ç‰Œç®¡ç†å™¨
     CardManager::getInstance()->init();
 
-    // ¿ªÊ¼ÓÎÏ·
+    // å¼€å§‹æ¸¸æˆ
     startGame();
 
-    // ¿ªÆô¸üĞÂ
+    // å¼€å¯æ›´æ–°
     scheduleUpdate();
 
     return true;
@@ -63,13 +72,13 @@ void BattleScene::setupUI()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 
-    // ´´½¨Ê¥Ë®Ìõ
+    // åˆ›å»ºåœ£æ°´æ¡
     _manaBar = ManaBar::create();
     _manaBar->setPosition(visibleSize.width / 4, 0);
     addChild(_manaBar, 100);
     //_manaBar->setManaValue(5, 10, false);
 
-    // ´´½¨µ¹¼ÆÊ±±êÇ©
+    // åˆ›å»ºå€’è®¡æ—¶æ ‡ç­¾
     auto countdownLabel = Label::create("Time Left :", "fonts/Clash_Regular.otf", 20);
     auto countdown = Label::createWithSystemFont("3:00", "fonts/Clash_Regular.otf", 48);
     countdown->setPosition(visibleSize.width-80, visibleSize.height - 70);
@@ -79,26 +88,26 @@ void BattleScene::setupUI()
     countdown->setTag(1001);
     addChild(countdown, 100);
     addChild(countdownLabel, 100);
-    // Ê¹ÓÃ DrawNode »æÖÆ¾ØĞÎ¿ò
+    // ä½¿ç”¨ DrawNode ç»˜åˆ¶çŸ©å½¢æ¡†
     auto drawNode = DrawNode::create();
 
-    // »æÖÆÌî³ä¾ØĞÎ
+    // ç»˜åˆ¶å¡«å……çŸ©å½¢
     drawNode->drawSolidRect(
-        Vec2(visibleSize.width - 140, visibleSize.height - 95),           // ×óÏÂ½Ç
-        Vec2(visibleSize.width - 20, visibleSize.height - 20),           // ÓÒÉÏ½Ç
-        Color4F(0, 0, 0,0.5f )  // 50%ºÚÉ«Ìî³ä
+        Vec2(visibleSize.width - 140, visibleSize.height - 95),           // å·¦ä¸‹è§’
+        Vec2(visibleSize.width - 20, visibleSize.height - 20),           // å³ä¸Šè§’
+        Color4F(0, 0, 0,0.5f )  // 50%é»‘è‰²å¡«å……
     );
 
-    // »æÖÆ±ß¿ò
+    // ç»˜åˆ¶è¾¹æ¡†
     drawNode->drawRect(
-        Vec2(visibleSize.width - 140, visibleSize.height - 95),           // ×óÏÂ½Ç
-        Vec2(visibleSize.width-20, visibleSize.height - 20),           // ÓÒÉÏ½Ç
-        Color4F(0, 0, 0, 1.0f)    // ºÚÉ«±ß¿ò
+        Vec2(visibleSize.width - 140, visibleSize.height - 95),           // å·¦ä¸‹è§’
+        Vec2(visibleSize.width-20, visibleSize.height - 20),           // å³ä¸Šè§’
+        Color4F(0, 0, 0, 1.0f)    // é»‘è‰²è¾¹æ¡†
     );
 
     addChild(drawNode, 90);
 
-    //»æÖÆÊ¥Ë®±¶ÂÊ"X1"
+    //ç»˜åˆ¶åœ£æ°´å€ç‡"X1"
     auto closeLabel = Label::createWithSystemFont("\\", "Arial Bold", 48);
     auto closeLabe2 = Label::createWithSystemFont("/", "Arial Bold", 48);
     closeLabel->setTextColor(Color4B(128,0,128,255));
@@ -113,7 +122,7 @@ void BattleScene::setupUI()
     _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
     addChild(_manaMutiple, 100);
     _manaMutiple->setTag(20);
-    //// µ÷ÊÔ°´Å¥
+    //// è°ƒè¯•æŒ‰é’®
     //auto debugButton = MenuItemLabel::create(
     //    Label::createWithSystemFont("Debug", "Arial", 24),
     //    [this](Ref* sender) {
@@ -147,18 +156,18 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
 
     Vec2 touchPos = touch->getLocation();
 
-    // ¼ì²éÊÇ·ñµã»÷ÁË¿¨ÅÆ£¨¼ò»¯°æ±¾£©
+    // æ£€æŸ¥æ˜¯å¦ç‚¹å‡»äº†å¡ç‰Œï¼ˆç®€åŒ–ç‰ˆæœ¬ï¼‰
     auto cardManager = CardManager::getInstance();
     auto handCards = cardManager->getHandCards();
 
-    // Èç¹ûÊÖÅÆÇøÓòÓĞ¿¨ÅÆ£¬¿ÉÒÔÑ¡Ôñ£¨¼ò»¯Âß¼­£©
+    // å¦‚æœæ‰‹ç‰ŒåŒºåŸŸæœ‰å¡ç‰Œï¼Œå¯ä»¥é€‰æ‹©ï¼ˆç®€åŒ–é€»è¾‘ï¼‰
     if (!handCards.empty())
     {
-        _selectedCard = handCards[0]; // Ñ¡ÔñµÚÒ»ÕÅ¿¨ÅÆ×÷ÎªÊ¾Àı
+        _selectedCard = handCards[0]; // é€‰æ‹©ç¬¬ä¸€å¼ å¡ç‰Œä½œä¸ºç¤ºä¾‹
         _selectedCard->setSelected(true);
     }
 
-    // ´´½¨ÍÏ×§ĞéÓ°
+    // åˆ›å»ºæ‹–æ‹½è™šå½±
     if (!_cardGhost)
     {
         _cardGhost = Sprite::create();
@@ -180,10 +189,10 @@ void BattleScene::onTouchMoved(Touch* touch, Event* event)
         Vec2 touchPos = touch->getLocation();
         _cardGhost->setPosition(touchPos);
 
-        // ¼ì²é²¿ÊğÎ»ÖÃÊÇ·ñÓĞĞ§
+        // æ£€æŸ¥éƒ¨ç½²ä½ç½®æ˜¯å¦æœ‰æ•ˆ
         bool isValid = _battlefield->isValidDeployPosition(touchPos, _isPlayer1 ? 1 : 2);
 
-        // ¸Ä±äĞéÓ°ÑÕÉ«±íÊ¾ÓĞĞ§ĞÔ
+        // æ”¹å˜è™šå½±é¢œè‰²è¡¨ç¤ºæœ‰æ•ˆæ€§
         auto layerColor = dynamic_cast<LayerColor*>(_cardGhost->getChildren().at(0));
         if (layerColor)
         {
@@ -207,10 +216,10 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
     {
         Vec2 touchPos = touch->getLocation();
 
-        // ¼ì²éÊÇ·ñ¿ÉÒÔ²¿Êğ
+        // æ£€æŸ¥æ˜¯å¦å¯ä»¥éƒ¨ç½²
         if (_battlefield->isValidDeployPosition(touchPos, _isPlayer1 ? 1 : 2))
         {
-            // ¼ì²éÊ¥Ë®ÊÇ·ñ×ã¹»
+            // æ£€æŸ¥åœ£æ°´æ˜¯å¦è¶³å¤Ÿ
             float manaCost = _selectedCard->getManaCost();
             auto manaSystem = ManaSystem::getInstance();
 
@@ -218,10 +227,10 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
             {
                 if (manaSystem->consumeMana(manaCost))
                 {
-                    // Ê¹ÓÃ¿¨ÅÆ
+                    // ä½¿ç”¨å¡ç‰Œ
                     if (_selectedCard->use(touchPos, _isPlayer1 ? 1 : 2))
                     {
-                        // ´ÓÊÖÅÆÖĞÒÆ³ı¸Ã¿¨ÅÆ
+                        // ä»æ‰‹ç‰Œä¸­ç§»é™¤è¯¥å¡ç‰Œ
                         auto cardManager = CardManager::getInstance();
                         cardManager->useCard(_selectedCard, touchPos, _isPlayer1 ? 1 : 2);
 
@@ -231,7 +240,7 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
             }
         }
 
-        // È¡ÏûÑ¡Ôñ
+        // å–æ¶ˆé€‰æ‹©
         _selectedCard->setSelected(false);
         _selectedCard = nullptr;
         _cardGhost->setVisible(false);
@@ -255,10 +264,10 @@ void BattleScene::update(float delta)
     if (!_gameStarted || _gameEnded)
         return;
 
-    // ¸üĞÂÓÎÏ·Ê±¼ä
+    // æ›´æ–°æ¸¸æˆæ—¶é—´
     _gameTime += delta;
 
-    // ¸üĞÂµ¹¼ÆÊ±ÏÔÊ¾
+    // æ›´æ–°å€’è®¡æ—¶æ˜¾ç¤º
     int remainingTime = (int)(_totalGameTime - _gameTime);
     if (remainingTime < 0) remainingTime = 0;
 
@@ -284,23 +293,23 @@ void BattleScene::update(float delta)
         countdownLabel->setString(StringUtils::format("%2d:%02d", minutes, seconds));
     }
 
-    // ¼ì²éÓÎÏ·½áÊøÌõ¼ş
+    // æ£€æŸ¥æ¸¸æˆç»“æŸæ¡ä»¶
     if (remainingTime <= 0)
     {
         endGame(_playerCrowns[0] > _playerCrowns[1]);
         return;
     }
 
-    // ¸üĞÂÊ¥Ë®ÏµÍ³
+    // æ›´æ–°åœ£æ°´ç³»ç»Ÿ
     ManaSystem::getInstance()->update(delta);
 
-    // ¸üĞÂÕ½¶·¹ÜÀíÆ÷
+    // æ›´æ–°æˆ˜æ–—ç®¡ç†å™¨
     BattleManager::getInstance()->update(delta);
 
-    // ¸üĞÂ¿¨ÅÆ¹ÜÀíÆ÷
+    // æ›´æ–°å¡ç‰Œç®¡ç†å™¨
     CardManager::getInstance()->update(delta);
 
-    // ¸üĞÂ»Ê¹ÚÏÔÊ¾
+    // æ›´æ–°çš‡å† æ˜¾ç¤º
     for (int i = 0; i < 2; i++)
     {
         auto crownNode = getChildByTag(2001 + i);
@@ -323,7 +332,7 @@ void BattleScene::endGame(bool isPlayer1Win)
     _gameEnded = true;
     _gameStarted = false;
 
-    // ÏÔÊ¾ÓÎÏ·½áÊø½çÃæ
+    // æ˜¾ç¤ºæ¸¸æˆç»“æŸç•Œé¢
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
     auto resultLayer = LayerColor::create(Color4B(0, 0, 0, 180),
@@ -331,14 +340,14 @@ void BattleScene::endGame(bool isPlayer1Win)
         visibleSize.height);
     addChild(resultLayer, 1000);
 
-    // ½á¹ûÎÄ±¾
+    // ç»“æœæ–‡æœ¬
     std::string resultText = isPlayer1Win ? "Player 1 Wins!" : "Player 2 Wins!";
     auto resultLabel = Label::createWithSystemFont(resultText, "Arial", 72);
     resultLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 100);
     resultLabel->setTextColor(Color4B::YELLOW);
     resultLayer->addChild(resultLabel);
 
-    // ·µ»Ø°´Å¥
+    // è¿”å›æŒ‰é’®
     auto returnButton = MenuItemLabel::create(
         Label::createWithSystemFont("Return to Menu", "Arial", 32),
         [](Ref* sender) {
@@ -354,3 +363,68 @@ void BattleScene::endGame(bool isPlayer1Win)
 
     CCLOG("Game ended. Winner: %s", isPlayer1Win ? "Player 1" : "Player 2");
 }
+
+/*æµ‹è¯•DataManager, ç”±äºå®¹æ˜“ç¼–ç é”™è¯¯ï¼Œlogæ—¥å¿—ç”Ÿæˆåˆ°é¡¹ç›®æ ¹ç›®å½•ï¼ˆéœ€è¦è¯·è‡ªè¡Œå»æ‰æ³¨é‡Šï¼‰
+void BattleScene::testDataManager() {
+    auto dataMgr = DataManager::getInstance();
+    std::string logFilePath = "D:/teamwork/Clash-Royale/test_log.txt";//è¿™é‡Œæ˜¯é¡¹ç›®æ ¹ç›®å½•
+    std::ofstream logFile(logFilePath, std::ios::out | std::ios::trunc); // æ¸…ç©ºåŸæœ‰å†…å®¹ï¼Œé‡æ–°å†™å…¥
+    // å®šä¹‰æ—¥å¿—å†…å®¹ï¼ˆå’Œè¾“å‡ºçª—å£çš„æ—¥å¿—ä¸€è‡´ï¼‰
+    std::string logContent;
+    logContent += "==================================\n";
+    logContent += "========= DataManager Test =======\n";
+    logContent += "==================================\n";
+    // 1. å¡ç‰Œæ€»æ•°
+    int cardCount = dataMgr->getCardCount();
+    char buffer[256];
+    sprintf(buffer, "Card Total Number: %d\n\n", cardCount);
+    logContent += buffer;
+    log(buffer); 
+    // 2. æ£€æŸ¥ID=1çš„å¡ç‰Œ
+    logContent += "--- Check Card ID=1 ---\n";
+    log("--- Check Card ID=1 ---");
+    ValueMap card1 = dataMgr->getCardDataById(1);
+    if (!card1.empty()) {
+        sprintf(buffer, "ID: %d\n", card1["id"].asInt());
+        logContent += buffer; log(buffer);
+
+        sprintf(buffer, "Name: %s\n", card1["name"].asString().c_str());
+        logContent += buffer; log(buffer);
+
+        sprintf(buffer, "Mana Cost: %.0f\n", card1["manaCost"].asFloat());
+        logContent += buffer; log(buffer);
+
+        sprintf(buffer, "Image Path: %s\n", card1["imgPath"].asString().c_str());
+        logContent += buffer; log(buffer);
+    }
+    else {
+        logContent += "Card ID=1 NOT FOUND!\n";
+        log("Card ID=1 NOT FOUND!");
+    }
+    // 3. æ‰€æœ‰å¡ç‰Œåˆ—è¡¨
+    logContent += "\n--- All Cards List ---\n";
+    log("\n--- All Cards List ---");
+    ValueVector allCards = dataMgr->getAllCardData();
+    for (int i = 0; i < allCards.size(); i++) {
+        ValueMap card = allCards[i].asValueMap();
+        sprintf(buffer, "Card %d: ID=%d, Name=%s, Mana=%.0f\n",
+            i + 1,
+            card["id"].asInt(),
+            card["name"].asString().c_str(),
+            card["manaCost"].asFloat());
+        logContent += buffer; log(buffer);
+    }
+    logContent += "==================================\n";
+    logContent += "========= Test Finished ==========\n";
+    logContent += "==================================\n";
+    //æŠŠæ—¥å¿—å†…å®¹å†™å…¥æœ¬åœ°æ–‡ä»¶
+    if (logFile.is_open()) {
+        logFile.write(logContent.c_str(), logContent.size());
+        logFile.close();
+        log("âœ… æ—¥å¿—å·²å†™å…¥æœ¬åœ°æ–‡ä»¶ï¼štest_log.txt");
+    }
+    else {
+        log("âŒ æ— æ³•åˆ›å»ºæ—¥å¿—æ–‡ä»¶ï¼");
+    }
+}
+*/

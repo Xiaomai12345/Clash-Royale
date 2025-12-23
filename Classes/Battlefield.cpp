@@ -1,4 +1,4 @@
-﻿#include "Battlefield.h"
+锘�#include "Battlefield.h"
 #include"TroopAIComponent.h"
 #include"SimpleTroopAIComponent.h"
 #include"BattleManager.h"
@@ -116,6 +116,31 @@ void Battlefield::setupBattlefield(int level)
     building->setCamp(ECamp::RIGHT);
     this->addChild(building);
 
+ 
+
+
+    auto troop6 = Giant::create();
+    troop6->setPosition(Vec2(100, 300));
+    this->addChild(troop6);
+
+    auto troop7 = SkeletonTroop::create();
+    troop7->setPosition(Vec2(50, 300));
+    this->addChild(troop7);
+
+
+    CCLOG("creat skeleton legion");
+    auto legion = SkeletonLegion::create(6, 20.f);
+    this->addChild(legion);
+    legion->spawnAt(this, Vec2(400, 500));
+
+
+    auto tombstone = SkeletonTombstone::create();
+    tombstone->setPosition(Vec2(500, 600));  // 璁剧疆澧撶浣嶇疆
+    this->addChild(tombstone);  //
+
+
+
+
     auto building1 = PrincessTower::create();
     building1->setPosition(Vec2(500, 1024));
     building1->setCamp(ECamp::RIGHT);
@@ -156,15 +181,15 @@ void Battlefield::setupBattlefield(int level)
 
 void Battlefield::createBackground()
 {
-    // 尝试加载图片背景
+    // 灏濊瘯鍔犺浇鍥剧墖鑳屾櫙
     _background = Sprite::create("Images/background/battlefield.jpg");
     CCLOG("Successfully loaded battlefield background image");
-    // 获取原始尺寸并计算缩放
+    // 鑾峰彇鍘熷灏哄骞惰绠楃缉鏀�
     Size originalSize = _background->getContentSize();
     float scaleX = 0.8 * 0.85;
     float scaleY = 0.8 * 0.8;
 
-    // 设置缩放
+    // 璁剧疆缂╂斁
     _background->setScaleX(scaleX);
     _background->setScaleY(scaleY);
 
@@ -173,8 +198,8 @@ void Battlefield::createBackground()
         originalSize.width * scaleX,
         originalSize.height * scaleY);
 
-    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // 锚点在顶部中间
-    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);  // 放在顶部
+    _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // 閿氱偣鍦ㄩ《閮ㄤ腑闂�
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);  // 鏀惧湪椤堕儴
     addChild(_background, 0);
     auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
     lavenderRect->setPosition(0, _mapSize.height * 0.8 - 50);
@@ -183,7 +208,7 @@ void Battlefield::createBackground()
     auto drawNode = cocos2d::DrawNode::create();
     this->addChild(drawNode, 2000);
 
-    // 绘制矩形，位置是世界坐标，宽和高是矩形的尺寸
+    // 缁樺埗鐭╁舰锛屼綅缃槸涓栫晫鍧愭爣锛屽鍜岄珮鏄煩褰㈢殑灏哄
     drawNode->drawRect(Vec2(80, 280), Vec2(20 * gridWeight, 1732 * 0.8 - 110), Color4F::RED);
 }
 

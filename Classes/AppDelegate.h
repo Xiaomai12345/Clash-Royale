@@ -12,6 +12,7 @@ public:
     virtual bool applicationDidFinishLaunching() override;
     virtual void applicationDidEnterBackground() override;
     virtual void applicationWillEnterForeground() override;
+    void applicationExit();
 
 private:
     cocos2d::Director* _director;
