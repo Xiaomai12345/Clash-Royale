@@ -29,26 +29,26 @@ void UnitBase::initUnit(int playerId, int level, const Vec2& position)
     _playerId = playerId;
     _level = level;
 
-    // »ù´¡ÊôĞÔ£¨×ÓÀàÓ¦¸ÃÖØĞ´ÕâĞ©£©
+    // åŸºç¡€å±æ€§ï¼ˆå­ç±»åº”è¯¥é‡å†™è¿™äº›ï¼‰
     _maxHealth = 100.0f;
     _currentHealth = _maxHealth;
     _attackDamage = 10.0f;
     _attackRange = 50.0f;
-    _attackSpeed = 1.0f; // Ã¿Ãë¹¥»÷Ò»´Î
-    _moveSpeed = 100.0f; // ÏñËØ/Ãë
+    _attackSpeed = 1.0f; // æ¯ç§’æ”»å‡»ä¸€æ¬¡
+    _moveSpeed = 100.0f; // åƒç´ /ç§’
 
     setPosition(position);
 
-    // ´´½¨¾«Áé
+    // åˆ›å»ºç²¾çµ
     _unitSprite = Sprite::create();
-    // ×ÓÀàÓ¦¸ÃÉèÖÃ¾ßÌåµÄ¾«ÁéÍ¼Æ¬
+    // å­ç±»åº”è¯¥è®¾ç½®å…·ä½“çš„ç²¾çµå›¾ç‰‡
 
     addChild(_unitSprite);
 
-    // ´´½¨ÑªÌõ
+    // åˆ›å»ºè¡€æ¡
     createHealthBar();
 
-    // ÉèÖÃÑÕÉ«Çø·ÖÕóÓª
+    // è®¾ç½®é¢œè‰²åŒºåˆ†é˜µè¥
     if (_playerId == 1)
     {
         _unitSprite->setColor(Color3B::BLUE);
@@ -58,7 +58,7 @@ void UnitBase::initUnit(int playerId, int level, const Vec2& position)
         _unitSprite->setColor(Color3B::RED);
     }
 
-    // ¿ªÆô¸üĞÂ
+    // å¼€å¯æ›´æ–°
     scheduleUpdate();
 }
 
@@ -86,7 +86,7 @@ void UnitBase::update(float delta)
 
     _attackTimer += delta;
 
-    // ¼ì²é¹¥»÷Ä¿±ê
+    // æ£€æŸ¥æ”»å‡»ç›®æ ‡
     if (_currentTarget && _currentTarget->isAlive())
     {
         if (isTargetInRange())
@@ -101,7 +101,7 @@ void UnitBase::update(float delta)
         else
         {
             _isAttacking = false;
-            // ÏòÄ¿±êÒÆ¶¯
+            // å‘ç›®æ ‡ç§»åŠ¨
             moveTo(_currentTarget->getPosition(), delta);
         }
     }
@@ -119,7 +119,7 @@ void UnitBase::update(float delta)
         else
         {
             _isAttacking = false;
-            // ÏòËşÒÆ¶¯
+            // å‘å¡”ç§»åŠ¨
             moveTo(_currentTargetTower->getPosition(), delta);
         }
     }
@@ -133,7 +133,7 @@ void UnitBase::update(float delta)
         _isAttacking = false;
     }
 
-    // ¸üĞÂÑªÌõ
+    // æ›´æ–°è¡€æ¡
     updateHealthBar();
 }
 
@@ -173,22 +173,22 @@ bool UnitBase::canAttack(UnitBase* target) const
     if (!target || !target->isAlive())
         return false;
 
-    // ¼ì²éÊÇ·ñ¿ÉÒÔ¹¥»÷¸ÃÀàĞÍ
+    // æ£€æŸ¥æ˜¯å¦å¯ä»¥æ”»å‡»è¯¥ç±»å‹
     if (_isFlying)
     {
-        // ·ÉĞĞµ¥Î»¿ÉÒÔ¹¥»÷µØÃæºÍ¿ÕÖĞ
+        // é£è¡Œå•ä½å¯ä»¥æ”»å‡»åœ°é¢å’Œç©ºä¸­
         return true;
     }
     else
     {
-        // µØÃæµ¥Î»Ö»ÄÜ¹¥»÷µØÃæµ¥Î»
+        // åœ°é¢å•ä½åªèƒ½æ”»å‡»åœ°é¢å•ä½
         return !target->isFlying();
     }
 }
 
 bool UnitBase::canAttackTower() const
 {
-    // ´ó¶àÊıµ¥Î»¿ÉÒÔ¹¥»÷Ëş
+    // å¤§å¤šæ•°å•ä½å¯ä»¥æ”»å‡»å¡”
     return true;
 }
 
@@ -203,20 +203,20 @@ void UnitBase::moveTo(const Vec2& position, float delta)
     Vec2 currentPos = getPosition();
     Vec2 direction = position - currentPos;
 
-    // Èç¹ûÒÑ¾­µ½´ïÄ¿±êÎ»ÖÃ
+    // å¦‚æœå·²ç»åˆ°è¾¾ç›®æ ‡ä½ç½®
     if (direction.length() < 5.0f)
     {
         _hasMoveTarget = false;
         return;
     }
 
-    // ±ê×¼»¯·½Ïò²¢ÒÆ¶¯
+    // æ ‡å‡†åŒ–æ–¹å‘å¹¶ç§»åŠ¨
     direction.normalize();
     Vec2 newPos = currentPos + direction * _moveSpeed * delta;
 
     setPosition(newPos);
 
-    // ¸üĞÂ¾«Áé³¯Ïò
+    // æ›´æ–°ç²¾çµæœå‘
     if (direction.x > 0)
     {
         _unitSprite->setFlippedX(false);
@@ -247,15 +247,15 @@ void UnitBase::takeDamage(float damage)
     if (_currentHealth < 0)
         _currentHealth = 0;
 
-    // ÏÔÊ¾ÉËº¦Ğ§¹û
+    // æ˜¾ç¤ºä¼¤å®³æ•ˆæœ
     playDamageEffect();
 
-    // Èç¹ûËÀÍö
+    // å¦‚æœæ­»äº¡
     if (_currentHealth <= 0)
     {
         playDeathEffect();
         unscheduleUpdate();
-        removeFromParent(); // ×¢Òâ£ºÊµ¼ÊÓ¦¸ÃÍ¨¹ıBattleManager´¦Àí
+        removeFromParent(); // æ³¨æ„ï¼šå®é™…åº”è¯¥é€šè¿‡BattleManagerå¤„ç†
     }
 }
 
@@ -264,13 +264,13 @@ void UnitBase::attack(UnitBase* target)
     if (!target || !target->isAlive())
         return;
 
-    // Ôì³ÉÉËº¦£¨Êµ¼ÊÉËº¦Ó¦¸ÃÔÚBattleManagerÖĞ¼ÆËã£©
+    // é€ æˆä¼¤å®³ï¼ˆå®é™…ä¼¤å®³åº”è¯¥åœ¨BattleManagerä¸­è®¡ç®—ï¼‰
     // target->takeDamage(_attackDamage);
 
-    // ²¥·Å¹¥»÷¶¯»­
+    // æ’­æ”¾æ”»å‡»åŠ¨ç”»
     playAttackEffect();
 
-    // Í¨ÖªBattleManager
+    // é€šçŸ¥BattleManager
     // BattleManager::getInstance()->unitAttack(this, target);
 }
 
@@ -279,10 +279,10 @@ void UnitBase::attackTower(TowerBase* tower)
     if (!tower || !tower->isAlive())
         return;
 
-    // ²¥·Å¹¥»÷¶¯»­
+    // æ’­æ”¾æ”»å‡»åŠ¨ç”»
     playAttackEffect();
 
-    // Í¨ÖªBattleManager
+    // é€šçŸ¥BattleManager
     // BattleManager::getInstance()->unitAttackTower(this, tower);
 }
 
@@ -309,7 +309,7 @@ void UnitBase::updateHealthBar()
     float percentage = (_currentHealth / _maxHealth) * 100.0f;
     _healthBar->setPercentage(percentage);
 
-    // ¸ù¾İÑªÁ¿¸Ä±äÑÕÉ«
+    // æ ¹æ®è¡€é‡æ”¹å˜é¢œè‰²
     if (percentage > 50.0f)
     {
         _healthBar->setColor(Color3B::GREEN);
@@ -326,7 +326,7 @@ void UnitBase::updateHealthBar()
 
 void UnitBase::playAttackEffect()
 {
-    // ¹¥»÷¶¯»­
+    // æ”»å‡»åŠ¨ç”»
     auto scaleUp = ScaleTo::create(0.1f, 1.2f);
     auto scaleDown = ScaleTo::create(0.1f, 1.0f);
     auto sequence = Sequence::create(scaleUp, scaleDown, nullptr);
@@ -335,13 +335,13 @@ void UnitBase::playAttackEffect()
 
 void UnitBase::playDamageEffect()
 {
-    // ÊÜÉËÉÁË¸
+    // å—ä¼¤é—ªçƒ
     auto tintTo = TintTo::create(0.1f, 255, 100, 100);
     auto tintBack = TintTo::create(0.1f, 255, 255, 255);
     auto sequence = Sequence::create(tintTo, tintBack, nullptr);
     _unitSprite->runAction(sequence);
 
-    // ÉËº¦Êı×Ö
+    // ä¼¤å®³æ•°å­—
     auto damageLabel = Label::createWithTTF("-", "Fonts/arial.ttf", 18);
     damageLabel->setPosition(0, 50);
     damageLabel->setTextColor(Color4B::RED);
@@ -361,12 +361,12 @@ void UnitBase::playDamageEffect()
 
 void UnitBase::playDeathEffect()
 {
-    // ËÀÍöÁ£×ÓĞ§¹û
+    // æ­»äº¡ç²’å­æ•ˆæœ
     auto deathEffect = ParticleSystemQuad::create("Particles/death.plist");
     deathEffect->setPosition(getPosition());
     getParent()->addChild(deathEffect);
 
-    // µ¥Î»ÏûÊ§¶¯»­
+    // å•ä½æ¶ˆå¤±åŠ¨ç”»
     auto fadeOut = FadeOut::create(0.3f);
     auto scaleDown = ScaleTo::create(0.3f, 0.1f);
     auto spawn = Spawn::create(fadeOut, scaleDown, nullptr);

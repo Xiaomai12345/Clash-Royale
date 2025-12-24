@@ -15,20 +15,20 @@ public:
 
     virtual bool init() override;
 
-    // Ê©·Å»ğÇò
+    // æ–½æ”¾ç«çƒ
     virtual void cast(const Vec2& worldPos, ECamp casterCamp) override;
 
 protected:
-    // ²éÕÒ²¢ÉËº¦Ä¿±ê
+    // æŸ¥æ‰¾å¹¶ä¼¤å®³ç›®æ ‡
     void applyDamage();
 
-    // µ÷ÊÔÏÔÊ¾¹¥»÷·¶Î§
+    // è°ƒè¯•æ˜¾ç¤ºæ”»å‡»èŒƒå›´
     void drawDebugRange();
 
 protected:
-    float _radius = 100.0f;   // ±¬Õ¨°ë¾¶
-    int   _damage = 150;      // ÉËº¦Öµ
-    ECamp _casterCamp = ECamp::LEFT; // ¼ÇÂ¼Ê©·¨ÕßµÄÕóÓª
+    float _radius = 100.0f;   // çˆ†ç‚¸åŠå¾„
+    int   _damage = 150;      // ä¼¤å®³å€¼
+    ECamp _casterCamp = ECamp::LEFT; // è®°å½•æ–½æ³•è€…çš„é˜µè¥
 
     DrawNode* _debugDraw = nullptr;
 };

@@ -12,20 +12,20 @@ public:
 
     virtual bool init() override;
 
-    // ³õÊ¼»¯Ëş
+    // åˆå§‹åŒ–å¡”
     void initWithData(int playerId, int towerType, int towerId);
 
-    // ÊôĞÔ·ÃÎÊ
+    // å±æ€§è®¿é—®
     int getPlayerId() const { return _playerId; }
     int getTowerType() const { return _towerType; }
     int getTowerId() const { return _towerId; }
     bool isAlive() const { return _isAlive; }
     bool isKingTower() const { return _towerType == 1; }
 
-    // Õ½¶··½·¨
+    // æˆ˜æ–—æ–¹æ³•
     void takeDamage(float damage);
 
-    // ¸üĞÂ
+    // æ›´æ–°
     virtual void update(float delta) override;
 
 private:
@@ -35,15 +35,15 @@ private:
 
 private:
     int _playerId;
-    int _towerType;  // 1:¹úÍõËş, 2:¹«Ö÷Ëş
+    int _towerType;  // 1:å›½ç‹å¡”, 2:å…¬ä¸»å¡”
     int _towerId;
     bool _isAlive;
 
-    // ÊôĞÔ
+    // å±æ€§
     float _currentHealth;
     float _maxHealth;
 
-    // ÊÓ¾õÔªËØ
+    // è§†è§‰å…ƒç´ 
     cocos2d::Sprite* _towerSprite;
     cocos2d::ProgressTimer* _healthBar;
 };

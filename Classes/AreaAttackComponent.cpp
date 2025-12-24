@@ -1,4 +1,4 @@
-﻿#include "AreaAttackComponent.h"
+#include "AreaAttackComponent.h"
 #include "TroopBase.h"
 #include "BuildingBase.h"
 

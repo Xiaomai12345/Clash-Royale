@@ -8,25 +8,25 @@ USING_NS_CC;
 Minions::Minions()
 {
     // =========================
-    // »ù´¡ÊôĞÔ³õÊ¼»¯
+    // åŸºç¡€å±æ€§åˆå§‹åŒ–
     // =========================
-    _moveSpeed = 180.0f;     // ÍöÁéÒÆ¶¯ËÙ¶È£¨±È·ÉÁú¿ì£©
-    _maxHp = 90;             // ÍöÁéÑªÁ¿½ÏµÍ
-    _alertRange = 220.f;     // ¾¯½ä·¶Î§
-    _bodyRadius = 12.f;      // Åö×²°ë¾¶Æ«Ğ¡
-    _camp = ECamp::LEFT;     // ×ó²àÕóÓª
+    _moveSpeed = 180.0f;     // äº¡çµç§»åŠ¨é€Ÿåº¦ï¼ˆæ¯”é£é¾™å¿«ï¼‰
+    _maxHp = 90;             // äº¡çµè¡€é‡è¾ƒä½
+    _alertRange = 220.f;     // è­¦æˆ’èŒƒå›´
+    _bodyRadius = 12.f;      // ç¢°æ’åŠå¾„åå°
+    _camp = ECamp::LEFT;     // å·¦ä¾§é˜µè¥
 
-    _attacktype = AttackType::Both; // ¿É¹¥»÷½¨ÖşºÍµ¥Î»
-    _moveAttack = MoveAttack::Both; // ¿É¹¥»÷¿ÕÖĞºÍµØÃæ
-    _moveAttacked = MoveAttack::Air; // Ö»ÄÜ±»¶Ô¿Õ¹¥»÷
-    _moveType = MoveType::Air;      // ·ÉĞĞµ¥Î»
+    _attacktype = AttackType::Both; // å¯æ”»å‡»å»ºç­‘å’Œå•ä½
+    _moveAttack = MoveAttack::Both; // å¯æ”»å‡»ç©ºä¸­å’Œåœ°é¢
+    _moveAttacked = MoveAttack::Air; // åªèƒ½è¢«å¯¹ç©ºæ”»å‡»
+    _moveType = MoveType::Air;      // é£è¡Œå•ä½
 
     _isDying = false;
 }
 
 Minions::~Minions()
 {
-    // ×é¼şÊÇ new ³öÀ´µÄ£¬±ØĞëÊÖ¶¯ delete
+    // ç»„ä»¶æ˜¯ new å‡ºæ¥çš„ï¼Œå¿…é¡»æ‰‹åŠ¨ delete
     if (_ai)     delete _ai;
     if (_move)   delete _move;
     if (_attack) delete _attack;
@@ -38,22 +38,22 @@ bool Minions::init()
         return false;
 
     // =========================
-    // 1. ×é¼ş°ó¶¨
+    // 1. ç»„ä»¶ç»‘å®š
     // =========================
 
     // AI
     auto ai = new SimpleTroopAIComponent();
     setAIComponent(ai);
 
-    // ·ÉĞĞÒÆ¶¯
+    // é£è¡Œç§»åŠ¨
     auto move = new AirMoveComponent();
     setMoveComponent(move);
 
-    // ½üÕ½¹¥»÷
+    // è¿‘æˆ˜æ”»å‡»
     auto attack = new MeleeAttackComponent(
-        20.0f,   // ¹¥»÷·¶Î§£¨ºÜ½ü£©
-        0.8f,    // ¹¥»÷¼ä¸ô£¨¿ì¹¥£©
-        45       // ÉËº¦
+        20.0f,   // æ”»å‡»èŒƒå›´ï¼ˆå¾ˆè¿‘ï¼‰
+        0.8f,    // æ”»å‡»é—´éš”ï¼ˆå¿«æ”»ï¼‰
+        45       // ä¼¤å®³
     );
     setAttackComponent(attack);
 

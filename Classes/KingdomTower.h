@@ -6,19 +6,19 @@
 class KingdomTower : public BuildingBase
 {
 public:
-    // Ê¹ÓÃ¹¹Ôìº¯Êı½øĞĞ¸³Öµ³õÊ¼»¯
+    // ä½¿ç”¨æ„é€ å‡½æ•°è¿›è¡Œèµ‹å€¼åˆå§‹åŒ–
     KingdomTower(float maxHp = 2000, float attackRange = 400.0f, float attackInterval = 2.f, int attackDamage = 20);
-    virtual bool init() override;  // ³õÊ¼»¯
+    virtual bool init() override;  // åˆå§‹åŒ–
 
-    CREATE_FUNC(KingdomTower);  // Ê¹ÓÃºêÀ´´´½¨ÊµÀı
-
-private:
-    void setupComponents();  // ³õÊ¼»¯×é¼ş
+    CREATE_FUNC(KingdomTower);  // ä½¿ç”¨å®æ¥åˆ›å»ºå®ä¾‹
 
 private:
-    float _attackRange;     // ¹¥»÷·¶Î§
-    float _attackInterval;  // ¹¥»÷¼ä¸ô
-    int _attackDamage;      // µ¥´ÎÉËº¦
+    void setupComponents();  // åˆå§‹åŒ–ç»„ä»¶
+
+private:
+    float _attackRange;     // æ”»å‡»èŒƒå›´
+    float _attackInterval;  // æ”»å‡»é—´éš”
+    int _attackDamage;      // å•æ¬¡ä¼¤å®³
 };
 
 #endif // __KINGDOM_TOWER_H__

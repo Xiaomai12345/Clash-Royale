@@ -14,7 +14,7 @@ bool SpellBase::init()
     if (!Node::init())
         return false;
 
-    // Spell Ä¬ÈÏ²»ĞèÒª update
-    // Èç¹û×ÓÀàĞèÒª¶¯»­£¬¿ÉÒÔ×Ô¼º scheduleUpdate
+    // Spell é»˜è®¤ä¸éœ€è¦ update
+    // å¦‚æœå­ç±»éœ€è¦åŠ¨ç”»ï¼Œå¯ä»¥è‡ªå·± scheduleUpdate
     return true;
 }

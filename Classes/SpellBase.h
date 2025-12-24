@@ -10,10 +10,10 @@ USING_NS_CC;
 // SpellBase
 // =========================
 //
-// ·¨Êõ»ùÀà£¨Ò»´ÎĞÔĞ§¹û£©
-// - ÓÉ Card ´´½¨²¢Ê©·Å
-// - ²»¿É±»¹¥»÷
-// - ²»²ÎÓë AI / Move / Attack
+// æ³•æœ¯åŸºç±»ï¼ˆä¸€æ¬¡æ€§æ•ˆæœï¼‰
+// - ç”± Card åˆ›å»ºå¹¶æ–½æ”¾
+// - ä¸å¯è¢«æ”»å‡»
+// - ä¸å‚ä¸ AI / Move / Attack
 //
 class SpellBase : public Node
 {
@@ -23,16 +23,16 @@ public:
 
     virtual bool init() override;
 
-    // Ê©·Å·¨Êõ£¨ºËĞÄÈë¿Ú£©
-    // worldPos : ÊÀ½ç×ø±ê
-    // casterCamp : Ê©·¨ÕßÕóÓª£¨LEFT / RIGHT£©
+    // æ–½æ”¾æ³•æœ¯ï¼ˆæ ¸å¿ƒå…¥å£ï¼‰
+    // worldPos : ä¸–ç•Œåæ ‡
+    // casterCamp : æ–½æ³•è€…é˜µè¥ï¼ˆLEFT / RIGHTï¼‰
     virtual void cast(const Vec2& worldPos, ECamp casterCamp) = 0;
 
 protected:
-    // ·¨ÊõËùÊôÕóÓª
-    ECamp _casterCamp = ECamp::LEFT;//Ä¬ÈÏÕóÓª
+    // æ³•æœ¯æ‰€å±é˜µè¥
+    ECamp _casterCamp = ECamp::LEFT;//é»˜è®¤é˜µè¥
 
-    // ÊÇ·ñÒÑ¾­ÉúĞ§£¨·ÀÖ¹ÖØ¸´´¥·¢£©
+    // æ˜¯å¦å·²ç»ç”Ÿæ•ˆï¼ˆé˜²æ­¢é‡å¤è§¦å‘ï¼‰
     bool _hasCast = false;
 };
 

@@ -58,6 +58,6 @@ void Cannon::setupComponents()
     }
     else
     {
-        CCLOG("ERROR: Cannon 图片加载失败 Images/Buildings/Cannon.jpg");
+        CCLOG("Cannon 图片加载失败");
     }
 }

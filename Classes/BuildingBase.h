@@ -1,4 +1,4 @@
-﻿
+
 #ifndef __BUILDING_BASE_H__
 #define __BUILDING_BASE_H__
 
@@ -13,14 +13,14 @@ class MoveComponent;
 class AttackComponent;
 
 
-class BuildingBase : public IAttackable  // ✅ 修正：类名拼写
+class BuildingBase : public IAttackable  // 修正：类名拼写
 {
 public:
     BuildingBase();
-    virtual ~BuildingBase();  // ✅ 修正：析构函数名拼写
+    virtual ~BuildingBase();  // 修正：析构函数名拼写
 
     virtual bool init() override;
-    CREATE_FUNC(BuildingBase);  // ✅ 修正：宏名拼写
+    CREATE_FUNC(BuildingBase);  // 修正：宏名拼写
 
     // 每帧更新（核心调度）
     virtual void update(float dt) override;

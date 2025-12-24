@@ -3,24 +3,24 @@
 
 #include "AttackComponent.h"
 
-class TroopBase; // Ç°ÏòÉùÃ÷£¬ĞŞ¸´C2061´íÎó
+class TroopBase; // å‰å‘å£°æ˜ï¼Œä¿®å¤C2061é”™è¯¯
 
-// Ô¶³Ì¹¥»÷×é¼ş
-// ¸ºÔğÔ¶³Ì¹¥»÷Âß¼­£¬ÅĞ¶ÏÄ¿±êÊÇ·ñÔÚ¹¥»÷·¶Î§ÄÚ£¬²¢Ö´ĞĞ¹¥»÷
+// è¿œç¨‹æ”»å‡»ç»„ä»¶
+// è´Ÿè´£è¿œç¨‹æ”»å‡»é€»è¾‘ï¼Œåˆ¤æ–­ç›®æ ‡æ˜¯å¦åœ¨æ”»å‡»èŒƒå›´å†…ï¼Œå¹¶æ‰§è¡Œæ”»å‡»
 class RangedAttackComponent : public AttackComponent
 {
 public:
     RangedAttackComponent(float range, float interval, int damage, float projectileSpeed);
     virtual ~RangedAttackComponent() {}
 
-    // ¸²¸Ç»ùÀàµÄ´¿Ğéº¯Êı
+    // è¦†ç›–åŸºç±»çš„çº¯è™šå‡½æ•°
     virtual void doAttack(IAttackable* owner) override;
 
-    // ¿ÉÑ¡£ºÄã×Ô¼ºµÄ TroopBase °æ±¾
+    // å¯é€‰ï¼šä½ è‡ªå·±çš„ TroopBase ç‰ˆæœ¬
     void doAttack(TroopBase* owner);
 
 protected:
-    float _projectileSpeed; // ×Óµ¯ËÙ¶È£¨Ô¶³Ì¹¥»÷µÄÌØĞÔ£©
+    float _projectileSpeed; // å­å¼¹é€Ÿåº¦ï¼ˆè¿œç¨‹æ”»å‡»çš„ç‰¹æ€§ï¼‰
     int _damage = 0;
 };
 

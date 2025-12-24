@@ -51,6 +51,13 @@ public:
     const std::vector<Area>getEnemyarea() { return enemyArea; }
     std::vector<Area>getDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
+
+    // ������Ϸ����UI��ʾ����
+    void showGameEndUI(bool isPlayer1Win);
+
+    // �����¼����η���
+    void createEventBlocker();
+    void removeEventBlocker();
 private:
     void createBackground();
     void createDebugLayer();
@@ -61,7 +68,8 @@ private:
 
     Grid* getGrid(int row, int col);
     const Grid* getGrid(int row, int col) const;
-    
+    // ���ӻص�����
+    void setupGameEndCallback();
 private:
     cocos2d::Size _mapSize;
     cocos2d::Size _gridSize;

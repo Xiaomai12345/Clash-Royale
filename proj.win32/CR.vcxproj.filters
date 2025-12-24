@@ -493,6 +493,9 @@
     <ClInclude Include="..\Classes\EnemyManaSystem.h">
       <Filter>Classes\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\LoadingScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

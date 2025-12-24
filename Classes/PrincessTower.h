@@ -6,19 +6,19 @@
 class PrincessTower : public BuildingBase
 {
 public:
-    // Ê¹ÓÃ¹¹Ôìº¯Êı½øĞĞ¸³Öµ³õÊ¼»¯
+    // ä½¿ç”¨æ„é€ å‡½æ•°è¿›è¡Œèµ‹å€¼åˆå§‹åŒ–
     PrincessTower(float maxHp = 1200, float attackRange = 300.0f, float attackInterval = 1.f, int attackDamage = 10);
-    virtual bool init() override;  // ³õÊ¼»¯
+    virtual bool init() override;  // åˆå§‹åŒ–
 
     CREATE_FUNC(PrincessTower);
 
 private:
-    void setupComponents();  // ³õÊ¼»¯×é¼ş
+    void setupComponents();  // åˆå§‹åŒ–ç»„ä»¶
 
 private:
-    float _attackRange;     // ¹¥»÷·¶Î§
-    float _attackInterval;  // ¹¥»÷¼ä¸ô
-    int _attackDamage;      // µ¥´ÎÉËº¦
+    float _attackRange;     // æ”»å‡»èŒƒå›´
+    float _attackInterval;  // æ”»å‡»é—´éš”
+    int _attackDamage;      // å•æ¬¡ä¼¤å®³
 };
 
 #endif // __PRINCESS_TOWER_H__

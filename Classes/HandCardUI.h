@@ -11,16 +11,16 @@ public:
 
     virtual bool init() override;
 
-    // Ìí¼Ó¿¨ÅÆµ½ÊÖÅÆ
+    // æ·»åŠ å¡ç‰Œåˆ°æ‰‹ç‰Œ
     void addCard(Card* card);
 
-    // ´ÓÊÖÅÆÖĞÒÆ³ı¿¨ÅÆ
+    // ä»æ‰‹ç‰Œä¸­ç§»é™¤å¡ç‰Œ
     void removeCard(Card* card);
 
-    // »ñÈ¡ËùÓĞÊÖÅÆ
+    // è·å–æ‰€æœ‰æ‰‹ç‰Œ
     const cocos2d::Vector<Card*>& getCards() const { return _cards; }
 
-    // ¸üĞÂÊÖÅÆ²¼¾Ö
+    // æ›´æ–°æ‰‹ç‰Œå¸ƒå±€
     void updateLayout();
 
 private:

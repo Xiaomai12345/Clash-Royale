@@ -4,34 +4,41 @@
 #include "cocos2d.h"
 #include "ManaSystem.h"
 #include<vector>
+#include <functional>
 class Battlefield;
 class UnitBase;
 
 class BattleManager
 {
 public:
-    // »ñÈ¡µ¥Àı
+    // è·å–å•ä¾‹
     static BattleManager* getInstance();
     static void destroyInstance();
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     void init(Battlefield* battlefield);
 
-    // ¸üĞÂ
+    // æ›´æ–°
     void update(float delta);
 
-    // µ¥Î»¹ÜÀí
+    // å•ä½ç®¡ç†
     void deployUnit(int unitType, const cocos2d::Vec2& position, int playerId);
 
-    // ÓÎÏ·×´Ì¬
-    void addCrown(int playerId, int crowns = 1);
+    // æ¸¸æˆçŠ¶æ€
+    void addCrown();
     int getPlayerCrowns(int playerId) const;
 
-    // ÖØÖÃ
+    // æ·»åŠ å›è°ƒç±»å‹
+    using GameEndCallback = std::function<void(int winnerPlayerId)>;
+
+    // æ·»åŠ è®¾ç½®å›è°ƒçš„æ–¹æ³•
+    void setGameEndCallback(GameEndCallback callback) { _gameEndCallback = callback; }
+
+    // é‡ç½®
     void reset();
 
-    // ÓÎÏ·Ä£Ê½
-    void setGameMode(const std::string& mode);
+    // æ¸¸æˆæ¨¡å¼
+    void setGameMode(const std::string& mode) { _currentGameMode = mode; }
     std::string getCurrentGameMode() const { return _currentGameMode; }
 
     bool getEnemyLeftPrincessAlive()const { return enemyLeftPrincessAlive; }
@@ -39,7 +46,7 @@ public:
 private:
     BattleManager();
     ~BattleManager();
-
+    void checkGameEnded();
     BattleManager(const BattleManager&) = delete;
     BattleManager& operator=(const BattleManager&) = delete;
 
@@ -48,13 +55,13 @@ private:
 
     Battlefield* _battlefield;
     ManaSystem* _manaSystem;
-
-    // ÓÎÏ·×´Ì¬
+    ManaSystem* _enemyManaSystem;
+    // æ¸¸æˆçŠ¶æ€
     bool _gameActive;
     bool _gameEnded;
     float _gameTime;
-    int myCrown;
-    int enemyCrown;
+    std::vector<bool>myTower;
+    std::vector<bool>enemyTower;
     bool myLeftPrincessAlive;
     bool enemyLeftPrincessAlive;
     bool myRightPrincessAlive;
@@ -62,8 +69,9 @@ private:
     bool myKingAlive;
     bool enemyKingAlive;
     std::string _currentGameMode;
-
-    // Íæ¼ÒÊı¾İ
+    // æ·»åŠ å›è°ƒæˆå‘˜
+    GameEndCallback _gameEndCallback;
+    // ç©å®¶æ•°æ®
     std::unordered_map<int, int> _playerCrowns;
 };
 

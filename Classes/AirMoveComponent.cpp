@@ -18,97 +18,97 @@ void AirMoveComponent::onUpdateMove(TroopBase* owner, float dt)
         return;
     }
 
-    // ¼ì²éÄ¿±êÊÇ·ñËÀÍö
+    // æ£€æŸ¥ç›®æ ‡æ˜¯å¦æ­»äº¡
     if (_followTarget->isDead())
     {
         this->stop();
         return;
     }
 
-    // »ñÈ¡µ±Ç°Î»ÖÃºÍÄ¿±êÎ»ÖÃ
+    // è·å–å½“å‰ä½ç½®å’Œç›®æ ‡ä½ç½®
     Vec2 ownerPos = owner->getPosition();
     Vec2 targetPos = _followTarget->getWorldPosition();
 
-    // ¼ÆËã¾àÀë
+    // è®¡ç®—è·ç¦»
     Vec2 direction = targetPos - ownerPos;
     float centerDistance = direction.length();
 
-    // Èç¹ûÒÑ¾­·Ç³£½Ó½ü£¬Í£Ö¹ÒÆ¶¯
+    // å¦‚æœå·²ç»éå¸¸æ¥è¿‘ï¼Œåœæ­¢ç§»åŠ¨
     if (centerDistance <= 1.0f)
     {
         this->stop();
         return;
     }
 
-    // »ñÈ¡×ÔÉí°ë¾¶
+    // è·å–è‡ªèº«åŠå¾„
     float ownerRadius = owner->getBodyRadius();
 
-    // ¼ÆËãÊµ¼Ê±íÃæ¾àÀë£¨¿¼ÂÇÅö×²Ìå»ı£©
+    // è®¡ç®—å®é™…è¡¨é¢è·ç¦»ï¼ˆè€ƒè™‘ç¢°æ’ä½“ç§¯ï¼‰
     float surfaceDistance = centerDistance - ownerRadius;
 
-    // Èç¹ûÒÑ¾­´ïµ½¹¥»÷¾àÀë£¬Í£Ö¹ÒÆ¶¯
+    // å¦‚æœå·²ç»è¾¾åˆ°æ”»å‡»è·ç¦»ï¼Œåœæ­¢ç§»åŠ¨
     if (surfaceDistance <= _desiredDistance)
     {
         this->stop();
         return;
     }
 
-    // ¼ÆËãĞèÒªÒÆ¶¯µÄ¾àÀë
+    // è®¡ç®—éœ€è¦ç§»åŠ¨çš„è·ç¦»
     float distanceToMove = surfaceDistance - _desiredDistance;
 
-    // »ñÈ¡ÒÆ¶¯ËÙ¶È
+    // è·å–ç§»åŠ¨é€Ÿåº¦
     float moveSpeed = owner->getMoveSpeed();
  
-    // ¼ÆËã±¾Ö¡×î´óÒÆ¶¯¾àÀë
+    // è®¡ç®—æœ¬å¸§æœ€å¤§ç§»åŠ¨è·ç¦»
     float maxMoveThisFrame = moveSpeed * dt;
 
-    // Êµ¼ÊÒÆ¶¯¾àÀë
+    // å®é™…ç§»åŠ¨è·ç¦»
     float actualMove = std::min(maxMoveThisFrame, distanceToMove);
 
-    // °²È«¼ì²é
+    // å®‰å…¨æ£€æŸ¥
     if (actualMove <= 0.0f || centerDistance <= 0.0f)
     {
         this->stop();
         return;
     }
 
-    // ¼ÆËãÒÆ¶¯·½Ïò²¢¸üĞÂÎ»ÖÃ
+    // è®¡ç®—ç§»åŠ¨æ–¹å‘å¹¶æ›´æ–°ä½ç½®
     direction.normalize();
     Vec2 newPos = ownerPos + direction * actualMove;
     owner->setPosition(newPos);
 
-    Node* worldNode = owner->getParent();//ÊÀ½çÖĞµÄ½Úµã
+    Node* worldNode = owner->getParent();//ä¸–ç•Œä¸­çš„èŠ‚ç‚¹
 
-    for (Node* node : worldNode->getChildren())//±éÀúÀ´·ÀÖ¹Ä£ĞÍÅö×²
+    for (Node* node : worldNode->getChildren())//éå†æ¥é˜²æ­¢æ¨¡å‹ç¢°æ’
     {
-        // È·±£Ã¿¸ö½ÚµãÊÇ¿É¹¥»÷µÄÄ¿±ê
+        // ç¡®ä¿æ¯ä¸ªèŠ‚ç‚¹æ˜¯å¯æ”»å‡»çš„ç›®æ ‡
         auto target = dynamic_cast<IAttackable*>(node);
         if (!target)
-            continue; // Èç¹û²»ÊÇÓĞĞ§µÄ¹¥»÷Ä¿±ê£¬Ìø¹ı
+            continue; // å¦‚æœä¸æ˜¯æœ‰æ•ˆçš„æ”»å‡»ç›®æ ‡ï¼Œè·³è¿‡
 
-        // ºöÂÔ×Ô¼º£¬»òÕßÊÇÒÑ¾­ËÀÍöµÄÄ¿±ê
+        // å¿½ç•¥è‡ªå·±ï¼Œæˆ–è€…æ˜¯å·²ç»æ­»äº¡çš„ç›®æ ‡
         if (target == owner || target->isDead())
             continue;
 
-        if (owner->getMoveType() != target->getMoveType())//ÒÆ¶¯ÀàĞÍ²»Í¬£¬²»ĞèÒªÅĞ¶ÏÅö×²¡£
+        if (owner->getMoveType() != target->getMoveType())//ç§»åŠ¨ç±»å‹ä¸åŒï¼Œä¸éœ€è¦åˆ¤æ–­ç¢°æ’ã€‚
             continue;
 
-        // ¼ÆËãÄ¿±êÓëµ±Ç°µ¥Î»µÄ¾àÀë
+        // è®¡ç®—ç›®æ ‡ä¸å½“å‰å•ä½çš„è·ç¦»
         float dist = ownerPos.distance(target->getPosition());
-        float hitRange = ownerRadius + target->getBodyRadius();  // Åö×²¼ì²â·¶Î§£ºµ±Ç°µ¥Î»°ë¾¶ + Ä¿±êµ¥Î»°ë¾¶
+        float hitRange = ownerRadius + target->getBodyRadius();  // ç¢°æ’æ£€æµ‹èŒƒå›´ï¼šå½“å‰å•ä½åŠå¾„ + ç›®æ ‡å•ä½åŠå¾„
 
-        // Èç¹ûÔÚÅö×²·¶Î§ÄÚ£¬½øĞĞÅö×²ÅĞ¶Ï
+        // å¦‚æœåœ¨ç¢°æ’èŒƒå›´å†…ï¼Œè¿›è¡Œç¢°æ’åˆ¤æ–­
         if (dist <= hitRange)
         {
-            Vec2 pushDirection = ownerPos - target->getPosition();  // ´ÓÄ¿±êÖ¸Ïòµ±Ç°µ¥Î»
-            pushDirection.normalize();  // ¹éÒ»»¯£¬Ê¹µÃ·½ÏòÎªµ¥Î»ÏòÁ¿
+            Vec2 pushDirection = ownerPos - target->getPosition();  // ä»ç›®æ ‡æŒ‡å‘å½“å‰å•ä½
+            pushDirection.normalize();  // å½’ä¸€åŒ–ï¼Œä½¿å¾—æ–¹å‘ä¸ºå•ä½å‘é‡
 
-            // ¼ÆËãÍÆ¶¯µÄÁ¦¶È£¨¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû£©
-            float pushStrength = 2.0f;  // ÍÆ¶¯Á¦¶È£¬¿ÉÒÔ¸ù¾İÊµ¼ÊÇé¿öµ÷½Ú
+            // è®¡ç®—æ¨åŠ¨çš„åŠ›åº¦ï¼ˆå¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´ï¼‰
+            float pushStrength = 2.0f;  // æ¨åŠ¨åŠ›åº¦ï¼Œå¯ä»¥æ ¹æ®å®é™…æƒ…å†µè°ƒèŠ‚
             Vec2 ownerNewPos = ownerPos + pushDirection * pushStrength;
             Vec2 targetNewPos = target->getPosition() - pushDirection * pushStrength;
 
-            // ¸üĞÂµ¥Î»µÄÎ»ÖÃ£¬È·±£ËüÃÇ²»ÔÙÏà×²
+            // æ›´æ–°å•ä½çš„ä½ç½®ï¼Œç¡®ä¿å®ƒä»¬ä¸å†ç›¸æ’
             owner->setPosition(ownerNewPos);
             target->setPosition(targetNewPos);
 
@@ -116,14 +116,14 @@ void AirMoveComponent::onUpdateMove(TroopBase* owner, float dt)
         }
     }
 
-    // µ÷ÊÔĞÅÏ¢£ºÏÔÊ¾Ä¿±êÀàĞÍ
+    // è°ƒè¯•ä¿¡æ¯ï¼šæ˜¾ç¤ºç›®æ ‡ç±»å‹
     static float debugTimer = 0;
     debugTimer += dt;
     if (debugTimer > 1.5f)
     {
         debugTimer = 0;
 
-        // Ê¶±ğÄ¿±êÀàĞÍ
+        // è¯†åˆ«ç›®æ ‡ç±»å‹
         TroopBase* troopTarget = dynamic_cast<TroopBase*>(_followTarget);
         BuildingBase* buildingTarget = dynamic_cast<BuildingBase*>(_followTarget);
 

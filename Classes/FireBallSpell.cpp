@@ -1,4 +1,4 @@
-﻿#include "FireballSpell.h"
+#include "FireballSpell.h"
 #include "IAttackable.h"
 #include "TroopBase.h"
 #include "BuildingBase.h"

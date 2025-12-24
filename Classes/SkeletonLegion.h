@@ -9,14 +9,14 @@ public:
     // 
     static SkeletonLegion* create(int count, float spacing, ECamp camp=ECamp::LEFT);
 
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     bool init(int count, float spacing, ECamp camp);
 
     void setWorld(IWalkableWorld* world);
-    // Éú³É÷¼÷Ã
+    // ç”Ÿæˆéª·é«…
     void spawnAt(cocos2d::Node* parent, const cocos2d::Vec2& worldPos);
 
-    // £¨¿ÉÑ¡£©Èç¹ûÄãºóÃæÏë¶¯Ì¬¸ÄÕóÓª
+    // ï¼ˆå¯é€‰ï¼‰å¦‚æœä½ åé¢æƒ³åŠ¨æ€æ”¹é˜µè¥
     void setCamp(ECamp camp) { _camp = camp; }
 
 private:
