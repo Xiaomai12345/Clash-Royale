@@ -5,10 +5,10 @@
 DragonBaby::DragonBaby()
 {
     // 在构造函数中给基类和成员变量赋值
-    _moveSpeed = 150.0f;  // 设定飞龙宝宝的基础移动速度
-    _maxHp = 500;         // 设定飞龙宝宝的最大血量
-    _alertRange = 250.f;   // 设置警戒范围
-    _bodyRadius = 20.f;    // 设置碰撞半径
+    _moveSpeed = 120.f;  // 设定飞龙宝宝的基础移动速度
+    _maxHp = 420;         // 设定飞龙宝宝的最大血量
+    _alertRange = 300.f;   // 设置警戒范围
+    _bodyRadius = 18.f;    // 设置碰撞半径
     _camp = ECamp::LEFT;   // 设置阵营为左侧
 
     _attacktype = AttackType::Both;  // 
@@ -46,10 +46,10 @@ bool DragonBaby::init()
 
     // 创建并绑定区域攻击组件（飞龙宝宝的范围攻击）
     auto attack = new AreaAttackComponent(
-        200.0f,   // 攻击范围
-        2.0f,     // 攻击间隔
-        250,       // 伤害值
-        100.0f    // AOE 半径
+        180.0f,   // 攻击范围
+        1.8f,     // 攻击间隔
+        20,       // 伤害值
+        90.0f    // AOE 半径
     );
     setAttackComponent(attack);
 

@@ -7,49 +7,72 @@
 
 #include "cocos2d.h"
 
+USING_NS_CC;
+
+ArcherTroop::ArcherTroop()
+{
+
+    _moveSpeed = 90.0f;
+    _maxHp = 70;
+    _alertRange = 300.f;
+    _bodyRadius = 12.f;
+    _camp = ECamp::LEFT;
+
+    _attacktype = AttackType::Both;
+    _moveAttack = MoveAttack::Both;
+    _moveAttacked = MoveAttack::Both;
+    _moveType = MoveType::Ground;
+
+    _isDying = false;
+}
+
+ArcherTroop::~ArcherTroop()
+{
+    if (_ai)     delete _ai;
+    if (_move)   delete _move;
+    if (_attack) delete _attack;
+}
+
 bool ArcherTroop::init()
 {
-    if (!TroopBase::init())  // 初始化基类 (TroopBase)
+    if (!TroopBase::init())
         return false;
 
     // =========================
     // 1. 创建并绑定组件
     // =========================
 
-    // 创建并绑定AI组件 (简单的AI逻辑)
+    // AI
     auto ai = new SimpleTroopAIComponent();
     setAIComponent(ai);
 
-    // 创建并绑定地面移动组件 (用于控制弓箭手的移动)
+    // 地面移动
     auto move = new GroundMoveComponent();
     setMoveComponent(move);
 
-    // 创建并绑定远程攻击组件 (弓箭手的攻击)
+    // 远程攻击
     auto attack = new RangedAttackComponent(
         100.0f,  // 攻击范围
         1.5f,    // 攻击间隔
-        34,
-        // 伤害值
-        500.0f   // 弹道速度 (原为 30，太慢了)
+        34,      // 伤害
+        500.0f   // 弹道速度
     );
     setAttackComponent(attack);
 
     // =========================
-    // 2. 添加图片作为士兵表现
+    // 2. 添加图片
     // =========================
 
-    // 创建士兵的Sprite (弓箭手的图片)
-    _sprite = Sprite::create("Images/troops/Archer.webp");  // 替换为弓箭手的图片
+    _sprite = Sprite::create("Images/troops/Archer.webp");
     if (_sprite)
     {
-        addChild(_sprite);  // 将图片添加到当前节点
-        _sprite->setScale(0.1f);  // 根据需要调整缩放
+        addChild(_sprite);
+        _sprite->setScale(0.1f);
     }
     else
     {
-        CCLOG("ArcherTroop: sprite load failed");  // 加载图片失败时输出日志
+        CCLOG("ArcherTroop: sprite load failed");
     }
 
-    // 仅初始化一次血条，保证士兵初始化时创建血条
     return true;
 }

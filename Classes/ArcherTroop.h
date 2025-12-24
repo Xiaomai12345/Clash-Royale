@@ -1,20 +1,23 @@
-#ifndef __ARCHER_TROOP_H__
+ï»¿#ifndef __ARCHER_TROOP_H__
 #define __ARCHER_TROOP_H__
 
 #include "TroopBase.h"
 
 // ArcherTroop
 // -----------
-// ²âÊÔÓÃÔ¶³ÌÊ¿±ø£¨¹­¼ıÊÖ£©
+// æµ‹è¯•ç”¨è¿œç¨‹å£«å…µï¼ˆå¼“ç®­æ‰‹ï¼‰
 //
-// ÓÃÓÚÑéÖ¤£º
-// - Ô¶³Ì¹¥»÷×é¼ş
-// - ¹¥»÷¾àÀëÍ£¿¿Âß¼­
-// - AI / Move / Attack Ğ­×÷
+// ç”¨äºéªŒè¯ï¼š
+// - è¿œç¨‹æ”»å‡»ç»„ä»¶
+// - æ”»å‡»è·ç¦»åœé é€»è¾‘
+// - AI / Move / Attack åä½œ
 //
 class ArcherTroop : public TroopBase
 {
 public:
+    ArcherTroop();        // âœ… å£°æ˜æ„é€ å‡½æ•°
+    virtual ~ArcherTroop(); // âœ… å£°æ˜ææ„å‡½æ•°
+
     virtual bool init() override;
 
     CREATE_FUNC(ArcherTroop);

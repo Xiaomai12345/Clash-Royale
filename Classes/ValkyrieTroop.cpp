@@ -12,7 +12,7 @@ ValkyrieTroop::ValkyrieTroop()
     // 基础属性
     // =========================
     _moveSpeed = 90.0f;    // 比骑士略慢
-    _maxHp = 800;      // 女武神血厚
+    _maxHp = 200;      // 女武神血厚
     _alertRange = 220.f;
     _bodyRadius = 18.f;
 
@@ -54,7 +54,7 @@ bool ValkyrieTroop::init()
     auto attack = new MeleeAreaAttackComponent(
         45.0f,   // 攻击范围（AOE 半径）
         1.2f,    // 攻击间隔
-        200      // 单次伤害
+        30      // 单次伤害
     );
     setAttackComponent(attack);
 

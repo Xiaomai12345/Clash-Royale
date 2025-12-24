@@ -1,20 +1,13 @@
-#ifndef ENEMY_AI_SYSTEM_H
-#define ENEMY_AI_SYSTEM_H
+#ifndef __ENEMY_AI_SYSTEM_H__
+#define __ENEMY_AI_SYSTEM_H__
 
 #include "cocos2d.h"
 #include <vector>
 
 class BattleManager;
 class Battlefield;
+class EnemyManaSystem;
 
-/**
- * 敌方 AI 系统
- * 职责：
- * 1. 管理敌方圣水
- * 2. 定时尝试出兵
- * 3. 从卡池中随机选择单位
- * 4. 在敌方可部署区域随机落点
- */
 class EnemyAISystem : public cocos2d::Node
 {
 public:
@@ -22,46 +15,54 @@ public:
 
     virtual bool init() override;
     virtual void update(float dt) override;
+    EnemyAISystem()
+        : _battleManager(nullptr)
+        , _battlefield(nullptr)
+        , _enemyMana(nullptr)
+        , _isActive(false)
+        , _thinkTimer(0.0f)
+        , _nextThinkInterval(3.0f)
+    {
+    }
 
+    virtual ~EnemyAISystem();
+
+    // 外部依赖注入
     void setBattleManager(BattleManager* manager);
     void setBattlefield(Battlefield* battlefield);
 
+    // AI 控制
     void startAI();
     void stopAI();
 
 private:
     // ======================
-    // 内部逻辑
+    // AI 核心逻辑
     // ======================
-    void updateMana(float dt);
     void tryDeployTroop();
-
-    cocos2d::Vec2 getRandomDeployPosition();
-    int getRandomCardId();
+    int  selectUnitByStrategy() const;
+    cocos2d::Vec2 getRandomDeployPosition() const;
 
 private:
-    // 外部系统引用
+    // ======================
+    // AI 状态
+    // ======================
+    bool  _isActive = false;
+    float _thinkTimer = 0.0f;
+    float _nextThinkInterval = -0.1f;
+
+    // ======================
+    // 系统依赖
+    // ======================
     BattleManager* _battleManager = nullptr;
     Battlefield* _battlefield = nullptr;
+    EnemyManaSystem* _enemyMana = nullptr;
 
     // ======================
-    // 圣水系统
+    // 敌方卡池（基础）
     // ======================
-    float _currentMana = 0.0f;
-    float _maxMana = 10.0f;
-    float _manaRegenRate = 1.0f;   // 每秒回复 1 点圣水
-
-    // ======================
-    // AI 行为节奏
-    // ======================
-    float _spawnTimer = 0.0f;
-    float _nextSpawnInterval = 3.0f;
-    bool  _isActive = false;
-
-    // ======================
-    // 敌方卡池（单位 ID）
-    // ======================
-    std::vector<int> _availableUnitTypes;
+    std::vector<int> _lowCostUnits;   // 低费
+    std::vector<int> _highCostUnits;  // 高费
 };
 
-#endif // ENEMY_AI_SYSTEM_H
+#endif // __ENEMY_AI_SYSTEM_H__

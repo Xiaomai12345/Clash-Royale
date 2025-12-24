@@ -6,7 +6,7 @@
 Giant::Giant()
 {
     // 在构造函数中给基类和成员变量赋值
-    _moveSpeed = 100.0f;   // 设定巨人的基础移动速度（相对较慢）
+    _moveSpeed = 20.0f;   // 设定巨人的基础移动速度（相对较慢）
     _maxHp = 500;         // 设定巨人的最大血量
     _alertRange = 250.f;   // 设置警戒范围
     _bodyRadius = 30.f;    // 设置碰撞半径（比骑士大）
@@ -49,7 +49,7 @@ bool Giant::init()
     auto attack = new MeleeAttackComponent(
         50.0f,   // 攻击范围（较大的攻击范围）
         1.5f,    // 攻击间隔（慢一点的攻击间隔）
-        500      // 伤害值（较高的伤害）
+        250      // 伤害值（较高的伤害）
     );
     setAttackComponent(attack);
 

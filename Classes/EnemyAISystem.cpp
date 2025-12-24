@@ -2,32 +2,48 @@
 #include "BattleManager.h"
 #include "Battlefield.h"
 #include "UnitType.h"
-#include "cocos2d.h"
+#include "EnemyManaSystem.h"
 
 USING_NS_CC;
+
+
+EnemyAISystem::~EnemyAISystem()
+{
+    CC_SAFE_DELETE(_enemyMana);
+}
 
 bool EnemyAISystem::init()
 {
     if (!Node::init())
         return false;
 
+    CCLOG("[EnemyAI] init %p", this);
+
     // ======================
-    // 初始化敌方卡池
+    // 单位池（简单策略）
     // ======================
-    _availableUnitTypes =
+    _lowCostUnits =
+    {
+        UNIT_SKELETON,
+        UNIT_ARCHER
+    };
+
+    _highCostUnits =
     {
         UNIT_KNIGHT,
-        UNIT_ARCHER,
-        UNIT_GIANT,
         UNIT_VALKYRIE,
+        UNIT_GIANT,
         UNIT_DRAGONBABY,
-        UNIT_SKELETON,
         UNIT_SKELETON_LEGION
     };
 
-    _currentMana = 5.0f;   // 初始圣水
-    scheduleUpdate();
+    // ======================
+    // 敌方圣水系统（独立）
+    // ======================
+    _enemyMana = new EnemyManaSystem();
+    _enemyMana->init(5.0f, 10.0f, 0.8f);
 
+    scheduleUpdate();
     return true;
 }
 
@@ -43,9 +59,18 @@ void EnemyAISystem::setBattlefield(Battlefield* battlefield)
 
 void EnemyAISystem::startAI()
 {
+    // ⚠️ 关键：防止重复 start
+    if (_isActive)
+    {
+        CCLOG("[EnemyAI] startAI ignored (already active)");
+        return;
+    }
+
+    CCLOG("[EnemyAI] startAI");
+
     _isActive = true;
-    _spawnTimer = 0.0f;
-    _nextSpawnInterval = 3.0f;
+    _thinkTimer = 0.0f;
+    _nextThinkInterval = 3.0f;
 }
 
 void EnemyAISystem::stopAI()
@@ -55,114 +80,83 @@ void EnemyAISystem::stopAI()
 
 void EnemyAISystem::update(float dt)
 {
-    if (!_isActive || !_battleManager || !_battlefield)
+    if (!_isActive || !_battleManager || !_battlefield || !_enemyMana)
         return;
 
-    // 1️⃣ 圣水回复
-    updateMana(dt);
+    // ===== Debug 核心日志 =====
+    CCLOG("AI %p | dt=%.3f think=%.3f",
+        this, dt, _thinkTimer);
 
-    // 2️⃣ AI 行为计时
-    _spawnTimer += dt;
-    if (_spawnTimer >= _nextSpawnInterval)
+    // 1️⃣ 更新敌方圣水
+    _enemyMana->update(dt);
+
+    // 2️⃣ 累加思考时间（⚠️ 这里不会被重置）
+    _thinkTimer += dt;
+
+    if (_thinkTimer >= _nextThinkInterval)
     {
         tryDeployTroop();
     }
 }
 
-void EnemyAISystem::updateMana(float dt)
-{
-    if (_currentMana >= _maxMana)
-        return;
-
-    _currentMana += _manaRegenRate * dt;
-    if (_currentMana > _maxMana)
-        _currentMana = _maxMana;
-}
-
 void EnemyAISystem::tryDeployTroop()
 {
-    // ======================
-    // 圣水检测
-    // ======================
     const float kDeployCost = 4.0f;
-    if (_currentMana < kDeployCost)
+
+    if (!_enemyMana->hasEnoughMana(kDeployCost))
+    {
+        CCLOG("[EnemyAI] Not enough mana");
         return;
+    }
 
-    // ======================
-    // 随机单位
-    // ======================
-    int unitType = getRandomCardId();
-
-    // ======================
-    // 随机部署点
-    // ======================
+    int unitType = selectUnitByStrategy();
     Vec2 deployPos = getRandomDeployPosition();
+
     if (deployPos == Vec2::ZERO)
         return;
 
-    // ======================
-    // 执行部署
-    // 阵营 2：敌方
-    // ======================
     _battleManager->deployUnit(unitType, deployPos, 2);
+    _enemyMana->consumeMana(kDeployCost);
 
-    // ======================
-    // 扣费 & 重置节奏
-    // ======================
-    _currentMana -= kDeployCost;
-    _spawnTimer = 0.0f;
-    _nextSpawnInterval = RandomHelper::random_real(2.0f, 5.0f);
+    // ⚠️ 只有这里才 reset
+    _thinkTimer = 0.0f;
+    _nextThinkInterval = RandomHelper::random_real(2.0f, 5.0f);
 
-    CCLOG("[EnemyAI] Deploy unit %d at (%.1f, %.1f)",
-        unitType, deployPos.x, deployPos.y);
+    CCLOG("[EnemyAI] Deploy %d | Mana %.1f%%",
+        unitType,
+        _enemyMana->getManaPercentage() * 100.0f);
 }
 
-int EnemyAISystem::getRandomCardId()
+int EnemyAISystem::selectUnitByStrategy() const
 {
-    if (_availableUnitTypes.empty())
-        return UNIT_KNIGHT;
+    float manaPercent = _enemyMana->getManaPercentage();
+
+    const std::vector<int>& pool =
+        (manaPercent > 0.6f) ? _highCostUnits : _lowCostUnits;
 
     int index = RandomHelper::random_int(
         0,
-        static_cast<int>(_availableUnitTypes.size()) - 1
+        static_cast<int>(pool.size()) - 1
     );
 
-    return _availableUnitTypes[index];
+    return pool[index];
 }
 
-Vec2 EnemyAISystem::getRandomDeployPosition()
+Vec2 EnemyAISystem::getRandomDeployPosition() const
 {
-    // ===== 1. 防御性检查 =====
-    if (!_battlefield)
-        return cocos2d::Vec2::ZERO;
-
-    // ===== 2. 获取敌方区域（一定要先声明）=====
     const std::vector<Area>& enemyAreas = _battlefield->getEnemyarea();
     if (enemyAreas.empty())
-        return cocos2d::Vec2::ZERO;
+        return Vec2::ZERO;
 
-    // ===== 3. 随机一个区域索引 =====
-    int areaIndex = cocos2d::RandomHelper::random_int(
+    int areaIndex = RandomHelper::random_int(
         0,
         static_cast<int>(enemyAreas.size()) - 1
     );
 
-    // ===== 4. 绑定区域（先声明再用）=====
     const Area& area = enemyAreas[areaIndex];
 
-    // ===== 5. 区域内随机格子 =====
-    int row = cocos2d::RandomHelper::random_int(
-        area.leftBottom.y,
-        area.rightTop.y
-    );
+    int row = RandomHelper::random_int(area.leftBottom.y, area.rightTop.y);
+    int col = RandomHelper::random_int(area.leftBottom.x, area.rightTop.x);
 
-    int col = cocos2d::RandomHelper::random_int(
-        area.leftBottom.x,
-        area.rightTop.x
-    );
-
-    // ===== 6. 转世界坐标 =====
     return _battlefield->gridToWorld(row, col);
 }
-
-

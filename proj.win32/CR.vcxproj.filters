@@ -4,9 +4,6 @@
     <Filter Include="win32">
       <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
     </Filter>
-    <Filter Include="resource">
-      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes">
       <UniqueIdentifier>{a22b6cab-5a63-4cbb-9ae2-f013dd69e579}</UniqueIdentifier>
     </Filter>
@@ -108,6 +105,9 @@
     </Filter>
     <Filter Include="Classes\Entities\AllCards\Troops\Ground\Else">
       <UniqueIdentifier>{eb31bccc-eeaa-4594-a7e5-76661cb2dfec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -285,6 +285,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Projectile.cpp">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EnemyManaSystem.cpp">
+      <Filter>Classes\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -487,10 +490,13 @@
     <ClInclude Include="..\Classes\Projectile.h">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\EnemyManaSystem.h">
+      <Filter>Classes\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
-      <Filter>resource</Filter>
+      <Filter>win32\resource</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>
