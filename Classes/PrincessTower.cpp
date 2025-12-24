@@ -9,42 +9,58 @@ PrincessTower::PrincessTower(float maxHp, float attackRange, float attackInterva
     , _attackInterval(attackInterval)
     , _attackDamage(attackDamage)
 {
-    _maxHp = maxHp;  // ÉèÖÃ×î´óÑªÁ¿
-    _hp = _maxHp;    // µ±Ç°ÑªÁ¿Óë×î´óÑªÁ¿Ò»ÖÂ
-    _bodyRadius = 25.0f;  // ÉèÖÃÅö×²°ë¾¶
-    _camp = ECamp::LEFT;  // ÉèÖÃÕóÓª
+    // æ„é€ å‡½æ•°ä¸­åˆå§‹åŒ–
+    _maxHp = maxHp;
+    _hp = _maxHp;
+    _bodyRadius = 25.0f;
+    _camp = ECamp::LEFT;
     _moveAttack = MoveAttack::Both;
     _moveAttacked = MoveAttack::Both;
-    _isDying = false;  // ³õÊ¼»¯ËÀÍö×´Ì¬
+    _isDying = false;
 }
 
 bool PrincessTower::init()
 {
-    if (!BuildingBase::init())  // ³õÊ¼»¯¸¸Àà
+    if (!BuildingBase::init())
+    {
+        CCLOG("PrincessTower::init - BuildingBase::init failed");
         return false;
+    }
 
-    setupComponents();  // ³õÊ¼»¯×é¼ş
+    // å†æ¬¡ç¡®ä¿è¡€é‡æ­£ç¡® (é˜²æ­¢åŸºç±»è¦†ç›–)
+    if (_maxHp <= 0) _maxHp = 1200;
+    _hp = _maxHp;
 
-    CCLOG("¹«Ö÷Ëş³õÊ¼»¯Íê³É£¬Î»ÖÃ£º(%.0f, %.0f)", getPositionX(), getPositionY());
+    setupComponents();
+
+    if (!_sprite)
+    {
+        CCLOG("PrincessTower::init - Sprite creation failed!");
+    }
+    else
+    {
+        CCLOG("PrincessTower created at (%.1f, %.1f), HP: %d/%d", getPositionX(), getPositionY(), _hp, _maxHp);
+    }
 
     return true;
 }
 
 void PrincessTower::setupComponents()
 {
-    // ÉèÖÃAI×é¼ş
+    // 1. AI
     auto ai = new SimpleBuildingAI();
     setAIComponent(ai);
 
-    // ÉèÖÃ¹¥»÷×é¼ş
+    // 2. Attack
     auto attack = new BuildingAttackComponent(
-        _attackRange,    // ¹¥»÷·¶Î§
-        _attackInterval, // ¹¥»÷¼ä¸ô
-        _attackDamage    // µ¥´ÎÉËº¦
+        _attackRange,
+        _attackInterval,
+        _attackDamage,
+        500.0f
     );
     setAttackComponent(attack);
 
-    // ÉèÖÃÍâ¹Û£¨¾«Áé£©
+    // 3. Sprite
     _sprite = Sprite::create("Images/towers/princess_tower_red.png");
     if (_sprite)
     {
@@ -53,6 +69,6 @@ void PrincessTower::setupComponents()
     }
     else
     {
-        CCLOG("¹«Ö÷ËşÍ¼Æ¬¼ÓÔØÊ§°Ü");
+        CCLOG("ERROR: Could not load Images/towers/princess_tower_red.png");
     }
 }

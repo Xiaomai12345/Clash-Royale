@@ -1,4 +1,4 @@
-﻿#include "SimpleTroopAIComponent.h"
+#include "SimpleTroopAIComponent.h"
 #include "TroopBase.h"
 #include "MoveComponent.h"
 #include "AttackComponent.h"
@@ -67,8 +67,9 @@ IAttackable* SimpleTroopAIComponent::checkAlertRange(TroopBase* owner)
 		if (owner->getState()== State::ATTACKING && target != _target)//如果当前处于攻击状态，并且目标不是当前目标，则跳过
             continue;
 
-        // 判断是否是公主塔
-        if (target == dynamic_cast<PrincessTower*>(node)|| target == dynamic_cast<KingdomTower*>(node))
+        // 判断是否是塔 (公主塔或国王塔)
+        bool isTower = dynamic_cast<PrincessTower*>(node) || dynamic_cast<KingdomTower*>(node);
+        if (isTower)
         {
             float temp = ownerPos.distance(target->getPosition());
             if (temp < distancetoBaseTarget)

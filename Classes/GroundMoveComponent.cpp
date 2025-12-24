@@ -101,13 +101,16 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
     }
 
     Vec2 newPos = ownerPos + moveDir * moveDist;
-    Vec2 bodyOffset = moveDir * ownerRadius;
+
+    float ySign = (moveDir.y >= 0.f) ? 1.f : -1.f;
+    Vec2 bodyOffset = Vec2(0, ySign) * ownerRadius;
 
     Vec2 finalPos = world->constrainPosition(newPos, ownerPos);
 
     // =========================
     // 河道 / 桥口滑行
     // =========================
+
     if (!world->canWalk(newPos + bodyOffset) &&
         _bridgeState != BridgeState::OnBridge)
     {

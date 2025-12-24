@@ -4,6 +4,7 @@
 #include"BattleManager.h"
 #include"AllCards.h"
 #include"CardFactory.h"
+#include "EnemyAISystem.h"
 USING_NS_CC;
 
 bool Battlefield::init()//ch
@@ -61,75 +62,14 @@ void Battlefield::setupBattlefield(int level)
     createGrids();
     buildRegions();
 
-
-
-
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
-
-    
-    //auto card = CardFactory::createKnightCard();
-    //card->setPosition(Vec2(100, 80));
-    //this->addChild(card); // 只是为了看见卡，不影响逻辑
-
-    //auto card1 = CardFactory::createArcherCard();
-    //card1->setPosition(Vec2(200, 80));
-    //this->addChild(card1);
-
-    //auto card2 = CardFactory::createGiantCard();
-    //card2->setPosition(Vec2(300, 80));
-    //this->addChild(card2);
-
-    //auto card3 = CardFactory::createValkyrieCard();
-    //card3->setPosition(Vec2(400, 80));
-    //this->addChild(card3);
-
-    //auto card4 = CardFactory::createDragonBabyCard();
-    //card4->setPosition(Vec2(500, 80));
-    //this->addChild(card4);
-
-    //auto card5 = CardFactory::createCannonCard();
-    //card5->setPosition(Vec2(600, 80)); // 设置位置
-    //this->addChild(card5);
-
-    //auto card6 = CardFactory::createSkeletonCard();
-    //card6->setPosition(Vec2(700, 80)); // 设置位置
-    //this->addChild(card6);
-
-    //auto card7 = CardFactory::createSkeletonLegionCard();
-    //card7->setPosition(Vec2(800, 80)); // 设置位置
-    //this->addChild(card7);
-
-    //auto card8 = CardFactory::createSkeletonTombstoneCard();
-    //this->addChild(card8);
-
-
-    //Vec2 testPos(300, 900);   // 你想让士兵出现的位置
-    //int playerId = 0;         // 测试用阵营
-
-
-    //card2->use(Vec2(600, 500), !playerId);
-
-
-
+  
     auto building = PrincessTower::create();
     building->setPosition(Vec2(300, 1024));
     building->setCamp(ECamp::RIGHT);
     this->addChild(building);
 
  
-
-
-    auto troop6 = Giant::create();
-    troop6->setPosition(Vec2(100, 300));
-    this->addChild(troop6);
-
-    auto troop7 = SkeletonTroop::create();
-    troop7->setPosition(Vec2(50, 300));
-    this->addChild(troop7);
-
-
- 
-
     auto building1 = PrincessTower::create();
     building1->setPosition(Vec2(500, 1024));
     building1->setCamp(ECamp::RIGHT);
@@ -160,6 +100,18 @@ void Battlefield::setupBattlefield(int level)
 
     if (_debugEnabled)
         createDebugLayer();
+    
+    // 初始化敌人AI
+    _enemyAI = EnemyAISystem::create();
+    if (_enemyAI)
+    {
+        addChild(_enemyAI);
+        _enemyAI->setBattleManager(BattleManager::getInstance());
+        _enemyAI->setBattlefield(this);
+        _enemyAI->startAI();
+        CCLOG("Enemy AI System started.");
+    }
+
     CCLOG("Setup battlefield level %d", level);
 
 }

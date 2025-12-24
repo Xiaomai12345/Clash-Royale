@@ -20,12 +20,15 @@ struct Area
     Area(int x1, int y1, int x2, int y2) :leftBottom(x1, y1), rightTop(x2, y2) {}
     Area() : leftBottom(0, 0), rightTop(0, 0) {}
 };
+#include "EnemyAISystem.h"
+
 class Battlefield : public cocos2d::Node, public IWalkableWorld
 {
 public:
     CREATE_FUNC(Battlefield);
     virtual bool init() override;
 
+    // ʼ
     void setupBattlefield(int level = 1);
 
     bool isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const;
@@ -45,7 +48,7 @@ public:
 	void addUnit(cocos2d::Node* unit);
 
     std::vector<Area>getMyarea() { return myArea; }
-    std::vector<Area>getEnemyarea() { return enemyArea; }
+    const std::vector<Area>getEnemyarea() { return enemyArea; }
     std::vector<Area>getDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
 private:
@@ -78,6 +81,7 @@ private:
     cocos2d::DrawNode* _debugDrawNode = nullptr;
 
     bool _debugEnabled = false;
+    EnemyAISystem* _enemyAI = nullptr;
 };
 
 #endif // BATTLEFIELD_H

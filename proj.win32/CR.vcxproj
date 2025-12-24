@@ -173,6 +173,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\ConfigLoader.cpp" />
     <ClCompile Include="..\Classes\CountdownLabel.cpp" />
     <ClCompile Include="..\Classes\DataManager.cpp" />
+    <ClCompile Include="..\Classes\EnemyAISystem.cpp" />
     <ClCompile Include="..\Classes\FireBallSpell.cpp" />
     <ClCompile Include="..\Classes\DragonBaby.cpp" />
     <ClCompile Include="..\Classes\GameManager.cpp" />
@@ -234,6 +235,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\ConfigLoader.h" />
     <ClInclude Include="..\Classes\CountdownLabel.h" />
     <ClInclude Include="..\Classes\DataManager.h" />
+    <ClInclude Include="..\Classes\EnemyAISystem.h" />
     <ClInclude Include="..\Classes\FireBallSpell.h" />
     <ClInclude Include="..\Classes\DragonBaby.h" />
     <ClInclude Include="..\Classes\GameManager.h" />

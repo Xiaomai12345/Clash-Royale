@@ -30,7 +30,7 @@ bool ArcherTroop::init()
         1.5f,    // 攻击间隔
         34,
         // 伤害值
-        30
+        500.0f   // 弹道速度 (原为 30，太慢了)
     );
     setAttackComponent(attack);
 

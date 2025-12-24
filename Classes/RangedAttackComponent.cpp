@@ -1,5 +1,6 @@
 #include "RangedAttackComponent.h"
 #include "TroopBase.h"
+#include "Projectile.h"
 
 RangedAttackComponent::RangedAttackComponent(float range, float interval, int damage, float projectileSpeed)
     : AttackComponent(range, interval), _projectileSpeed(projectileSpeed), _damage(damage)
@@ -8,13 +9,12 @@ RangedAttackComponent::RangedAttackComponent(float range, float interval, int da
 
 void RangedAttackComponent::doAttack(IAttackable* owner)
 {
-    // Èç¹û owner ÊÇ TroopBase£¬Ôòµ÷ÓÃÄãµÄ TroopBase °æ±¾
+    // å°† owner è½¬ä¸º TroopBase
     TroopBase* troop = dynamic_cast<TroopBase*>(owner);
     if (troop)
     {
         doAttack(troop);
     }
-    // ·ñÔò¿ÉÒÔ¼ÓÈÕÖ¾»òÆäËû´¦Àí
 }
 
 void RangedAttackComponent::doAttack(TroopBase* owner)
@@ -22,10 +22,32 @@ void RangedAttackComponent::doAttack(TroopBase* owner)
     if (!_target || _target->isDead())
         return;
 
-    // ¼ÆËã·¢Éä×Óµ¯£¬Ô¶³Ì¹¥»÷µÄ¾ßÌåÊµÏÖ¿ÉÒÔ¼ÓÉÏ×Óµ¯µÄ·ÉÐÐÂß¼­
-    CCLOG("RangedAttack: %p attacks %p with %d damage, projectile speed %f", owner, _target, _damage, _projectileSpeed);
-    // ¿Û³ýÄ¿±êÑªÁ¿
-    _target->takeDamage(_damage);
+    // 1. èŽ·å–å‘å°„ä½ç½®ï¼ˆä¸–ç•Œåæ ‡æˆ–çˆ¶èŠ‚ç‚¹åæ ‡ï¼‰
+    // å‡è®¾ owner å’Œ Projectile éƒ½å°†æ·»åŠ åˆ°åŒä¸€ä¸ªçˆ¶èŠ‚ç‚¹ (Battlefield)
+    Node* world = owner->getParent();
+    if (!world) return;
 
-    // ÕâÀï¿ÉÒÔÍØÕ¹Ô¶³Ì¹¥»÷µÄ×Óµ¯·ÉÐÐÂß¼­µÈ£¬ÀýÈçÉú³ÉÒ»¸ö×Óµ¯¶ÔÏó²¢·¢Éä
+    Vec2 startPos = owner->getPosition();
+    startPos.y += 20; // ç®€å•çš„å‘å°„ç‚¹é«˜åº¦åç§»
+
+    // 2. åˆ›å»ºå¼¹é“
+    // æ³¨æ„ï¼šLambda å¿…é¡»æŒ‰å€¼æ•èŽ· damageï¼Œä¸èƒ½æ•èŽ· thisï¼Œé˜²æ­¢å‘å°„è€…æ­»äº¡åŽç»„ä»¶è¢«é”€æ¯å¯¼è‡´é‡ŽæŒ‡é’ˆ
+    int damage = _damage;
+
+    auto projectile = Projectile::create(_target, damage, _projectileSpeed, [target = _target, damage]() {
+        // å‘½ä¸­å›žè°ƒ
+        if (target && !target->isDead())
+        {
+            target->takeDamage(damage);
+        }
+    });
+
+    if (projectile)
+    {
+        projectile->setPosition(startPos);
+        // æ·»åŠ åˆ°åœºæ™¯ä¸­ï¼ŒZOrder è®¾é«˜ä¸€ç‚¹ç¡®ä¿åœ¨å•ä½ä¸Šæ–¹
+        world->addChild(projectile, 1000); 
+    }
+
+    CCLOG("RangedAttack: %p fired projectile at %p", owner, _target);
 }
