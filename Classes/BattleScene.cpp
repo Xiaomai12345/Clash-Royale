@@ -32,12 +32,13 @@ bool BattleScene::init()
     _gameStarted = false;
     _gameEnded = false;
     _gameTime = 0.0f;
-    _totalGameTime = 70.0f;
+    _totalGameTime = 10.0f;
     _playerCrowns[0] = _playerCrowns[1] = 0;
     _isPlayer1 = true;
     _selectedCard = nullptr;
     _cardGhost = nullptr;
     _deployDrawNode = nullptr;
+    _changeGameMode = false;
     // 创建战场
     _battlefield = Battlefield::create();
     _battlefield->setupBattlefield(1);
@@ -54,7 +55,7 @@ bool BattleScene::init()
 
     // 初始化圣水系统
     ManaSystem::getInstance()->init(5.0f, 10.0f, 0.3333f);
-
+    ManaSystem::getEnemyInstance()->init(5.0f, 10.0f, 0.3333f);
     // 初始化卡牌管理器
     CardManager::getInstance()->init();
 
@@ -422,28 +423,23 @@ void BattleScene::update(float delta)
 
     if (minutes >= 0 && minutes < 1)
     {
-        auto _manaMutiple = Label::createWithSystemFont("2", "Arial Bold", 48);
-        _manaMutiple->setTextColor(Color4B(128, 0, 128, 255));
-        _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
-        addChild(_manaMutiple, 100);
-
         auto _mana = dynamic_cast<Label*>(this->getChildByTag(20));
         if (_mana)
         {
-            _mana->setString(StringUtils::format("%d", 2));
+            if (_changeGameMode == false)
+            {
+                _mana->setString(StringUtils::format("%d", 2));
+            }
+            else
+            {
+                _mana->setString(StringUtils::format("%d", 3));
+            }
         }
     }
     auto countdownLabel = dynamic_cast<Label*>(getChildByTag(1001));
     if (countdownLabel)
     {
         countdownLabel->setString(StringUtils::format("%2d:%02d", minutes, seconds));
-    }
-
-    // 检查游戏结束条件
-    if (remainingTime <= 0)
-    {
-        endGame(_playerCrowns[0] > _playerCrowns[1]);
-        return;
     }
 
     // 更新圣水系统
@@ -454,21 +450,13 @@ void BattleScene::update(float delta)
 
     // 更新卡牌管理器
     CardManager::getInstance()->update(delta);
-    //refreshHandLayout();
-    //refreshNextCard();
 
-
-    static int lastHandSize = 4;
-    int currentSize = CardManager::getInstance()->getHandCards().size();
-    CCLOG("dddddddd %d", currentSize);
-    if (currentSize != lastHandSize)
+    //改变模式后更新倒计时
+    if (BattleManager::getInstance()->getCurrentGameMode() == "sudden_death" && _changeGameMode == false)
     {
-        //initHandCards();      // 确保新卡进 Scene
-        //refreshHandLayout();  // 重排
-        lastHandSize = currentSize;
+        _gameTime = 0.0f;
+        _changeGameMode = true;
     }
-
-
     // 更新皇冠显示
     for (int i = 0; i < 2; i++)
     {
@@ -484,66 +472,9 @@ void BattleScene::update(float delta)
     }
 }
 
-void BattleScene::endGame(bool isPlayer1Win)
-{
-    if (_gameEnded)
-        return;
 
-    _gameEnded = true;
-    _gameStarted = false;
 
-    // 显示游戏结束界面
-    auto visibleSize = Director::getInstance()->getVisibleSize();
 
-    auto resultLayer = LayerColor::create(Color4B(0, 0, 0, 180),
-        visibleSize.width,
-        visibleSize.height);
-    addChild(resultLayer, 1000);
-
-    // 结果文本
-    std::string resultText = isPlayer1Win ? "Player 1 Wins!" : "Player 2 Wins!";
-    auto resultLabel = Label::createWithSystemFont(resultText, "Arial", 72);
-    resultLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 100);
-    resultLabel->setTextColor(Color4B::YELLOW);
-    resultLayer->addChild(resultLabel);
-
-    // 返回按钮
-    auto returnButton = MenuItemLabel::create(
-        Label::createWithSystemFont("Return to Menu", "Arial", 32),
-        [](Ref* sender) {
-            Director::getInstance()->popScene();
-        }
-    );
-
-    returnButton->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 100);
-
-    auto menu = Menu::create(returnButton, nullptr);
-    menu->setPosition(Vec2::ZERO);
-    resultLayer->addChild(menu);
-
-    CCLOG("Game ended. Winner: %s", isPlayer1Win ? "Player 1" : "Player 2");
-}
-
-std::vector<Area>Battlefield::getDeployarea()
-{
-
-    std::vector<Area>t{ enemyArea3 };
-    if (BattleManager::getInstance()->getEnemyLeftPrincessAlive())
-    {
-        t.push_back(enemyArea1);
-        t.push_back(bridgeArea1);
-        t.push_back(riverArea1);
-        t.push_back(riverArea2);
-    }
-    if (BattleManager::getInstance()->getEnemyRightPrincessAlive())
-    {
-        t.push_back(enemyArea2);
-        t.push_back(bridgeArea2);
-        t.push_back(riverArea3);
-        t.push_back(riverArea4);
-    }
-    return t;
-}
 
 /*测试DataManager, 由于容易编码错误，log日志生成到项目根目录（需要请自行去掉注释）
 void BattleScene::testDataManager() {

@@ -101,7 +101,7 @@ void ManaBar::drawFillByPercent(float percent)
     _fillNode->drawSolidRect(
         Vec2(0, 0),
         Vec2(fillWidth, _height),
-        Color4F(180 / 255.0f, 100 / 255.0f, 255 / 255.0f, 1.0f)
+        Color4F(211 / 255.0f, 21 / 255.0f, 221 / 255.0f, 1.0f)
     );
 
 }

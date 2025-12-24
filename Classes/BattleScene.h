@@ -23,6 +23,7 @@ private:
     void setupUI();
     void setupInput();
     void startGame();
+    void setupTime(float _time) { _gameTime = _time; }
     void endGame(bool isPlayer1Win);
 
     // 输入处理 - 修改函数签名
@@ -46,6 +47,7 @@ private:
     bool _gameEnded;
     float _gameTime;
     float _totalGameTime;
+    bool _changeGameMode;
     // 玩家信息
     int _playerCrowns[2];
     bool _isPlayer1;

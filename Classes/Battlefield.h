@@ -48,6 +48,13 @@ public:
     std::vector<Area>getEnemyarea() { return enemyArea; }
     std::vector<Area>getDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
+
+    // 添加游戏结束UI显示方法
+    void showGameEndUI(bool isPlayer1Win);
+
+    // 添加事件屏蔽方法
+    void createEventBlocker();
+    void removeEventBlocker();
 private:
     void createBackground();
     void createDebugLayer();
@@ -58,7 +65,8 @@ private:
 
     Grid* getGrid(int row, int col);
     const Grid* getGrid(int row, int col) const;
-    
+    // 添加回调设置
+    void setupGameEndCallback();
 private:
     cocos2d::Size _mapSize;
     cocos2d::Size _gridSize;
@@ -78,6 +86,10 @@ private:
     cocos2d::DrawNode* _debugDrawNode = nullptr;
 
     bool _debugEnabled = false;
+
+    cocos2d::EventListener* _touchListener;
+    cocos2d::Layer* _eventBlocker;
+
 };
 
 #endif // BATTLEFIELD_H
