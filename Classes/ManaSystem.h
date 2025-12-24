@@ -10,12 +10,14 @@ public:
     {
         NORMAL = 0,
         DOUBLE = 1,
-        SUDDEN_DEATH = 2
+        TRIPLE = 3
     };
 
     // 获取单例
     static ManaSystem* getInstance();
+    static ManaSystem* getEnemyInstance();
     static void destroyInstance();
+    static void destroyEnemyInstance();
 
     // 初始化
     void init(float initialMana = 5.0f, float maxMana = 10.0f, float regenRate = 0.8f);
@@ -64,7 +66,7 @@ private:
 
 private:
     static ManaSystem* _instance;
-
+    static ManaSystem* _enemyInstance;
     float _currentMana;
     float _maxMana;
     float _baseRegenRate;

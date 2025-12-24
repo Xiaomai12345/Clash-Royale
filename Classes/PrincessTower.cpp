@@ -53,6 +53,6 @@ void PrincessTower::setupComponents()
     }
     else
     {
-        CCLOG("公主塔图片加载失败");
+        //CCLOG("公主塔图片加载失败");
     }
 }
