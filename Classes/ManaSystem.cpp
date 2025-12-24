@@ -4,12 +4,21 @@ USING_NS_CC;
 
 // 静态成员初始化
 ManaSystem* ManaSystem::_instance = nullptr;
-
+ManaSystem* ManaSystem::_enemyInstance = nullptr;
 ManaSystem* ManaSystem::getInstance()
 {
     if (!_instance)
     {
         _instance = new ManaSystem();
+    }
+    return _instance;
+}
+
+ManaSystem* ManaSystem::getEnemyInstance()
+{
+    if (!_enemyInstance)
+    {
+        _enemyInstance = new ManaSystem();
     }
     return _instance;
 }
@@ -23,6 +32,14 @@ void ManaSystem::destroyInstance()
     }
 }
 
+void ManaSystem::destroyEnemyInstance()
+{
+    if (_enemyInstance)
+    {
+        delete _enemyInstance;
+        _enemyInstance = nullptr;
+    }
+}
 ManaSystem::ManaSystem()
     : _currentMana(50.0f)
     , _maxMana(100.0f)
@@ -34,7 +51,7 @@ ManaSystem::ManaSystem()
     // 初始化模式倍率
     _modeMultipliers[ManaMode::NORMAL] = 1.0f;
     _modeMultipliers[ManaMode::DOUBLE] = 2.0f;
-    _modeMultipliers[ManaMode::SUDDEN_DEATH] = 2.0f;
+    _modeMultipliers[ManaMode::TRIPLE] = 3.0f;
 }
 
 ManaSystem::~ManaSystem()

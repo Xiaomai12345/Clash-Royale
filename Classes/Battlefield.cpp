@@ -62,10 +62,8 @@ void Battlefield::setupBattlefield(int level)
     buildRegions();
 
 
-
-
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
-
+    setupGameEndCallback();
     
     //auto card = CardFactory::createKnightCard();
     //card->setPosition(Vec2(100, 80));
@@ -534,4 +532,136 @@ std::vector<Area>Battlefield::getDeployarea()
     }
     return t;
 
+}
+void Battlefield::setupGameEndCallback()
+{
+    auto battleManager = BattleManager::getInstance();
+
+    // 设置游戏结束回调
+    battleManager->setGameEndCallback([this](int winner) {
+        // winner: 0=平局, 1=玩家1胜利, 2=玩家2胜利
+        bool isPlayer1Win = (winner == 1);
+        this->showGameEndUI(isPlayer1Win);
+        });
+}
+
+void Battlefield::showGameEndUI(bool isPlayer1Win)
+{
+    // ========== 1. 先创建事件屏蔽层 ==========
+    createEventBlocker();
+    // =======================================
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+
+    // 创建半透明背景层
+    auto resultLayer = LayerColor::create(Color4B(0, 0, 0, 180),
+        visibleSize.width,
+        visibleSize.height);
+    resultLayer->setTag(999);  // 设置tag以便移除
+    this->addChild(resultLayer, 1000);
+
+    // 结果文本
+    std::string resultText;
+    cocos2d::Color4B textColor;
+
+    if (isPlayer1Win)
+    {
+        resultText = "Victory!";
+        textColor = Color4B::GREEN;
+    }
+    else
+    {
+        resultText = "Defeat!";
+        textColor = Color4B::RED;
+    }
+
+    auto resultLabel = Label::createWithSystemFont(resultText, "Arial", 72);
+    resultLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 100);
+    resultLabel->setTextColor(textColor);
+    resultLayer->addChild(resultLabel);
+
+    // 获取皇冠数显示
+    auto battleManager = BattleManager::getInstance();
+    std::string crownText = StringUtils::format("Crowns: %d - %d",
+        battleManager->getPlayerCrowns(0),  // 玩家1（我方）
+        battleManager->getPlayerCrowns(1)); // 玩家2（敌方）
+
+    auto crownLabel = Label::createWithSystemFont(crownText, "Arial", 36);
+    crownLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+    crownLabel->setTextColor(Color4B::WHITE);
+    resultLayer->addChild(crownLabel);
+
+    // 返回按钮 - 需要允许点击
+    auto returnButton = MenuItemLabel::create(
+        Label::createWithSystemFont("Return to Menu", "Arial", 32),
+        [this](Ref* sender) {
+            // 移除事件屏蔽层
+            this->removeEventBlocker();
+
+            // 移除结束UI
+            this->removeChildByTag(999);
+
+            Director::getInstance()->popScene();
+        }
+    );
+    returnButton->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 100);
+
+    auto menu = Menu::create(returnButton, nullptr);
+    menu->setPosition(Vec2::ZERO);
+    resultLayer->addChild(menu);
+
+    CCLOG("Game ended. Winner: %s", isPlayer1Win ? "Player 1" : "Player 2");
+}
+void Battlefield::createEventBlocker()
+{
+    // 创建一个全屏透明的层来拦截所有触摸事件
+    _eventBlocker = Layer::create();
+    _eventBlocker->setContentSize(Director::getInstance()->getVisibleSize());
+    _eventBlocker->setPosition(Vec2::ZERO);
+
+    // ========== 创建正确的触摸监听器 ==========
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->setSwallowTouches(true);  // 吞噬触摸事件，不向下传递
+
+    touchListener->onTouchBegan = [](Touch* touch, Event* event) {
+        CCLOG("a");
+        return true;  // 返回true表示处理了这个触摸，阻止进一步传递
+        };
+
+    touchListener->onTouchMoved = [](Touch* touch, Event* event) {
+        return true;  // 继续吞噬移动事件
+        };
+
+    touchListener->onTouchEnded = [](Touch* touch, Event* event) {
+        return true;  // 继续吞噬结束事件
+        };
+
+    touchListener->onTouchCancelled = [](Touch* touch, Event* event) {
+        return true;  // 继续吞噬取消事件
+        };
+    // =========================================
+
+    // 注册到事件分发器
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(
+        touchListener, _eventBlocker);
+
+    this->addChild(_eventBlocker, 9999);  // 最高层级
+    CCLOG("事件屏蔽层已创建");
+}
+
+void Battlefield::removeEventBlocker()
+{
+    if (_eventBlocker)
+    {
+        // 移除监听器
+        if (_touchListener)
+        {
+            Director::getInstance()->getEventDispatcher()->removeEventListener(_touchListener);
+            _touchListener = nullptr;
+        }
+
+        _eventBlocker->removeFromParent();
+        _eventBlocker = nullptr;
+        CCLOG("事件屏蔽层已移除");
+    }
 }

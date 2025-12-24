@@ -24,7 +24,7 @@ bool MainMenuScene::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
     // 创建开始游戏按钮
-    auto startButton = MenuItemLabel::create(Label::createWithTTF("开始游戏", "fonts/arial.ttf", 24), CC_CALLBACK_1(MainMenuScene::onStartGame, this));
+    auto startButton = MenuItemLabel::create(Label::createWithTTF("game started", "fonts/arial.ttf", 24), CC_CALLBACK_1(MainMenuScene::onStartGame, this));
     startButton->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 
     auto menu = Menu::create(startButton, nullptr);
