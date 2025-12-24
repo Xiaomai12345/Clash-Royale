@@ -1,7 +1,8 @@
 #include "AppDelegate.h"
 #include "DataManager.h" 
 #include "BattleScene.h"
-
+#include"MainMenuScene.h"
+#include"LoadingScene.h"
 // 如果使用预编译头，请包含它
 // #include "AppDelegate.h"
 
@@ -38,10 +39,9 @@ bool AppDelegate::applicationDidFinishLaunching()
     // 设置FPS
     _director->setAnimationInterval(1.0f / 60);
 
-    // 创建第一个场景
-    auto scene = BattleScene::createScene();
+    // 创建第一个场景（主界面）
+    auto scene = LoadingScene::createScene();
     _director->runWithScene(scene);
-
     return true;
 }
 
