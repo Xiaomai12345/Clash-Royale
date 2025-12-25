@@ -102,9 +102,6 @@ private:
 
     cocos2d::EventListener* _touchListener;
     cocos2d::Layer* _eventBlocker;
-
-    cocos2d::EventListener* _touchListener;
-    cocos2d::Layer* _eventBlocker;
     cocos2d::DrawNode* _highlightNode = nullptr;
 };
 

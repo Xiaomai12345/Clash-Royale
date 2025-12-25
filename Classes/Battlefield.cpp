@@ -522,7 +522,7 @@ bool Battlefield::hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& 
     return false;
 }
 
-std::vector<Area>Battlefield::getDeployarea()
+std::vector<Area>Battlefield::getUnDeployarea()
 {
 
     std::vector<Area>t{ enemyArea3 };
