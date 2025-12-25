@@ -14,17 +14,17 @@ bool ManaBar::init()
 
 void ManaBar::createUI()
 {
-    // === ²ÎÊı£¨Î¨Ò»³ß´çÀ´Ô´£© ===
+    // === å‚æ•°ï¼ˆå”¯ä¸€å°ºå¯¸æ¥æºï¼‰ ===
     _width = 600.0f;
     _height = 50.0f;
 
-    // === ±³¾°½Úµã£¨×ø±êÔ­µã = ×óÏÂ½Ç£© ===
+    // === èƒŒæ™¯èŠ‚ç‚¹ï¼ˆåæ ‡åŸç‚¹ = å·¦ä¸‹è§’ï¼‰ ===
     _background = Node::create();
     _background->setAnchorPoint(Vec2::ZERO);
     _background->setPosition(Vec2::ZERO);
     addChild(_background);
 
-    // === ±³¾°É« ===
+    // === èƒŒæ™¯è‰² ===
     auto bg = LayerColor::create(
         Color4B(231, 213, 237, 255),
         _width,
@@ -33,16 +33,16 @@ void ManaBar::createUI()
     bg->setAnchorPoint(Vec2::ZERO);
     _background->addChild(bg, 0);
 
-    // === Ìî³ä²ã£¨½ø¶ÈÌõ£© ===
+    // === å¡«å……å±‚ï¼ˆè¿›åº¦æ¡ï¼‰ ===
     _fillNode = DrawNode::create();
     _background->addChild(_fillNode, 1);
 
-    // === ·Ö¸îÏß ===
+    // === åˆ†å‰²çº¿ ===
     _lineNode = DrawNode::create();
     _background->addChild(_lineNode, 2);
     addDivisionLines(_width, _height);
 
-    // === ÎÄ±¾ ===
+    // === æ–‡æœ¬ ===
     _label = Label::createWithSystemFont("5/ 10", "Arial", 20);
     _label->setPosition(Vec2(_width / 2, _height / 2));
     _label->setTextColor(Color4B::WHITE);
@@ -85,7 +85,7 @@ void ManaBar::update(float dt)
             StringUtils::format("%.1f / %.1f", manaSystem->getCurrentMana(), manaSystem->getMaxMana())
         );
     }
-    // ·ÀÖ¹ÎŞÒâÒåÖØ¸´»æÖÆ
+    // é˜²æ­¢æ— æ„ä¹‰é‡å¤ç»˜åˆ¶
     if (fabs(percent - _currentPercent) < 0.001f)
         return;
 
@@ -101,7 +101,7 @@ void ManaBar::drawFillByPercent(float percent)
     _fillNode->drawSolidRect(
         Vec2(0, 0),
         Vec2(fillWidth, _height),
-        Color4F(180 / 255.0f, 100 / 255.0f, 255 / 255.0f, 1.0f)
+        Color4F(211 / 255.0f, 21 / 255.0f, 221 / 255.0f, 1.0f)
     );
 
 }

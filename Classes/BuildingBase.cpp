@@ -1,4 +1,4 @@
-﻿#include "BuildingBase.h"
+#include "BuildingBase.h"
 #include "BuildingAI.h"
 #include "MoveComponent.h"
 #include "AttackComponent.h"
@@ -15,7 +15,7 @@ BuildingBase::BuildingBase()  // ✅ 修正：构造函数名拼写
     , _attack(nullptr)
     , _sprite(nullptr)
     , _debugDraw(nullptr)
-    , _showDebugBounds(true)
+    , _showDebugBounds(0)
     , _hpBarNode(nullptr)
     , _hpBarBg(nullptr)
     , _hpBarFg(nullptr)
@@ -28,7 +28,7 @@ BuildingBase::~BuildingBase()  // ✅ 修正：析构函数名拼写
 {
 }
 
-bool BuildingBase::init()  // ✅ 修正：函数名拼写
+bool BuildingBase::init()  // 
 {
     if (!Node::init())
         return false;
@@ -154,6 +154,8 @@ void BuildingBase::die()
 {
     if (_isDying)
         return;
+
+    CCLOG("BuildingBase::die() called for object %p", this);
 
     _isDying = true;
     unscheduleUpdate();

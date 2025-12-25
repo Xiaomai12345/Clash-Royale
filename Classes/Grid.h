@@ -22,16 +22,16 @@ public:
     {
     };
 
-    // ×ø±ê
+    // åæ ‡
     int getRow() const { return _row; }
     int getCol() const { return _col; }
     cocos2d::Vec2 getWorldPos() const { return _worldPos; }
 
-    // ÇøÓòÓïÒå
+    // åŒºåŸŸè¯­ä¹‰
     void setRegionType(RegionType type) { _regionType = type; }
     RegionType getRegionType() const { return _regionType; }
 
-    // ĞĞÎªÊôĞÔ
+    // è¡Œä¸ºå±æ€§
     bool isWalkable() const { return _walkable; }
     bool isDeployable() const { return _deployable; }
 

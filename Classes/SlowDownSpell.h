@@ -13,20 +13,20 @@ public:
 
     virtual bool init() override;
 
-    // Ê©·Å¼õËÙ·¨Êõ
+    // æ–½æ”¾å‡é€Ÿæ³•æœ¯
     virtual void cast(const Vec2& worldPos, ECamp casterCamp) override;
 
 protected:
-    // ²éÕÒ²¢Ê©¼Ó¼õËÙĞ§¹û
+    // æŸ¥æ‰¾å¹¶æ–½åŠ å‡é€Ÿæ•ˆæœ
     void applySlow();
 
-    // µ÷ÊÔÏÔÊ¾¼õËÙ·¶Î§
+    // è°ƒè¯•æ˜¾ç¤ºå‡é€ŸèŒƒå›´
     void drawDebugRange();
 
 protected:
-    float _radius = 120.0f;      // Ó°Ïì°ë¾¶
-    float _slowRatio = 0.5f;     // ¼õËÙ±ÈÀı£¨0.5 = 50% ËÙ¶È£©
-    float _duration = 2.0f;      // ³ÖĞøÊ±¼ä£¨Ãë£©
+    float _radius = 120.0f;      // å½±å“åŠå¾„
+    float _slowRatio = 0.5f;     // å‡é€Ÿæ¯”ä¾‹ï¼ˆ0.5 = 50% é€Ÿåº¦ï¼‰
+    float _duration = 2.0f;      // æŒç»­æ—¶é—´ï¼ˆç§’ï¼‰
 
     DrawNode* _debugDraw = nullptr;
 };

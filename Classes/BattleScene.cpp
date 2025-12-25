@@ -1,4 +1,4 @@
-﻿#include "BattleScene.h"
+#include "BattleScene.h"
 #include "Battlefield.h"
 #include "TowerBase.h"
 #include "Card.h"
@@ -32,12 +32,13 @@ bool BattleScene::init()
     _gameStarted = false;
     _gameEnded = false;
     _gameTime = 0.0f;
-    _totalGameTime = 70.0f;
+    _totalGameTime = 10.0f;
     _playerCrowns[0] = _playerCrowns[1] = 0;
     _isPlayer1 = true;
     _selectedCard = nullptr;
     _cardGhost = nullptr;
     _deployDrawNode = nullptr;
+    _changeGameMode = false;
     // 创建战场
     _battlefield = Battlefield::create();
     _battlefield->setupBattlefield(1);
@@ -54,7 +55,7 @@ bool BattleScene::init()
 
     // 初始化圣水系统
     ManaSystem::getInstance()->init(5.0f, 10.0f, 0.3333f);
-
+    ManaSystem::getEnemyInstance()->init(5.0f, 10.0f, 0.3333f);
     // 初始化卡牌管理器
     CardManager::getInstance()->init();
 
@@ -110,20 +111,20 @@ void BattleScene::initHandCards()
     auto cards = CardManager::getInstance()->getHandCards();
     for (auto card : cards)
     {
-        this->addChild(card,200);
+        this->addChild(card, 200);
         card->setVisible(false);   // 先全部隐藏
     }
 
     // 只画 4 个槽位框
     for (int i = 0; i < 4; i++)
     {
-        auto slot = LayerColor::create(Color4B(0, 0, 155, 255),120,160);
+        auto slot = LayerColor::create(Color4B(0, 0, 155, 255), 120, 160);
 
         slot->setPosition(Vec2(250 + 150 * i, 60));
         addChild(slot, 50);
 
     }
-    
+
     refreshHandLayout();
 }
 
@@ -153,7 +154,7 @@ void BattleScene::refreshHandLayout()
 //滑动补牌动画
 void BattleScene::onCardUsed(Card* card)
 {
-  
+
     _handLocked = true;
     Card* nextCard = CardManager::getInstance()->getNextCard();
     if (!nextCard) return;
@@ -195,8 +196,8 @@ void BattleScene::setupUI()
     // 创建倒计时标签
     auto countdownLabel = Label::create("Time Left :", "fonts/Clash_Regular.otf", 20);
     auto countdown = Label::createWithSystemFont("3:00", "fonts/Clash_Regular.otf", 48);
-    countdown->setPosition(visibleSize.width-80, visibleSize.height - 70);
-    countdownLabel->setPosition(visibleSize.width-80, visibleSize.height-35);
+    countdown->setPosition(visibleSize.width - 80, visibleSize.height - 70);
+    countdownLabel->setPosition(visibleSize.width - 80, visibleSize.height - 35);
     countdown->setTextColor(Color4B::WHITE);
     countdownLabel->setTextColor(Color4B::WHITE);
     countdown->setTag(1001);
@@ -209,13 +210,13 @@ void BattleScene::setupUI()
     drawNode->drawSolidRect(
         Vec2(visibleSize.width - 140, visibleSize.height - 95),           // 左下角
         Vec2(visibleSize.width - 20, visibleSize.height - 20),           // 右上角
-        Color4F(0, 0, 0,0.5f )  // 50%黑色填充
+        Color4F(0, 0, 0, 0.5f)  // 50%黑色填充
     );
 
     // 绘制边框
     drawNode->drawRect(
         Vec2(visibleSize.width - 140, visibleSize.height - 95),           // 左下角
-        Vec2(visibleSize.width-20, visibleSize.height - 20),           // 右上角
+        Vec2(visibleSize.width - 20, visibleSize.height - 20),           // 右上角
         Color4F(0, 0, 0, 1.0f)    // 黑色边框
     );
 
@@ -224,9 +225,9 @@ void BattleScene::setupUI()
     //绘制圣水倍率"X1"
     auto closeLabel = Label::createWithSystemFont("\\", "Arial Bold", 48);
     auto closeLabe2 = Label::createWithSystemFont("/", "Arial Bold", 48);
-    closeLabel->setTextColor(Color4B(128,0,128,255));
+    closeLabel->setTextColor(Color4B(128, 0, 128, 255));
     closeLabel->setPosition(visibleSize.width - 90, visibleSize.height - 120);
-    addChild(closeLabel,100);
+    addChild(closeLabel, 100);
     closeLabe2->setTextColor(Color4B(128, 0, 128, 255));
     closeLabe2->setPosition(visibleSize.width - 90, visibleSize.height - 120);
     addChild(closeLabe2, 100);
@@ -386,7 +387,7 @@ void BattleScene::showDeployPosition()
         // 绘制透明填充矩形（浅红色）
         _deployDrawNode->drawSolidRect(
             Vec2(80 + area.leftBottom.x * _battlefield->getGridSize().width, 280 + area.leftBottom.y * _battlefield->getGridSize().height),
-            Vec2(80 + (area.rightTop.x+1) * _battlefield->getGridSize().width, 280 + (area.rightTop.y+1) * _battlefield->getGridSize().height),
+            Vec2(80 + (area.rightTop.x + 1) * _battlefield->getGridSize().width, 280 + (area.rightTop.y + 1) * _battlefield->getGridSize().height),
             Color4F(1.0f, 0.0f, 0.0f, 0.4f)  // 40%透明红色
         );
     }
@@ -422,28 +423,23 @@ void BattleScene::update(float delta)
 
     if (minutes >= 0 && minutes < 1)
     {
-        auto _manaMutiple = Label::createWithSystemFont("2", "Arial Bold", 48);
-        _manaMutiple->setTextColor(Color4B(128, 0, 128, 255));
-        _manaMutiple->setPosition(visibleSize.width - 60, visibleSize.height - 120);
-        addChild(_manaMutiple, 100);
-
         auto _mana = dynamic_cast<Label*>(this->getChildByTag(20));
         if (_mana)
         {
-            _mana->setString(StringUtils::format("%d", 2));
+            if (_changeGameMode == false)
+            {
+                _mana->setString(StringUtils::format("%d", 2));
+            }
+            else
+            {
+                _mana->setString(StringUtils::format("%d", 3));
+            }
         }
     }
     auto countdownLabel = dynamic_cast<Label*>(getChildByTag(1001));
     if (countdownLabel)
     {
         countdownLabel->setString(StringUtils::format("%2d:%02d", minutes, seconds));
-    }
-
-    // 检查游戏结束条件
-    if (remainingTime <= 0)
-    {
-        endGame(_playerCrowns[0] > _playerCrowns[1]);
-        return;
     }
 
     // 更新圣水系统
@@ -454,21 +450,13 @@ void BattleScene::update(float delta)
 
     // 更新卡牌管理器
     CardManager::getInstance()->update(delta);
-    //refreshHandLayout();
-    //refreshNextCard();
 
-
-    static int lastHandSize = 4;
-    int currentSize = CardManager::getInstance()->getHandCards().size();
-    CCLOG("dddddddd %d", currentSize);
-    if (currentSize != lastHandSize)
+    //改变模式后更新倒计时
+    if (BattleManager::getInstance()->getCurrentGameMode() == "sudden_death" && _changeGameMode == false)
     {
-        //initHandCards();      // 确保新卡进 Scene
-        //refreshHandLayout();  // 重排
-        lastHandSize = currentSize;
+        _gameTime = 0.0f;
+        _changeGameMode = true;
     }
-
-
     // 更新皇冠显示
     for (int i = 0; i < 2; i++)
     {
@@ -484,45 +472,9 @@ void BattleScene::update(float delta)
     }
 }
 
-void BattleScene::endGame(bool isPlayer1Win)
-{
-    if (_gameEnded)
-        return;
 
-    _gameEnded = true;
-    _gameStarted = false;
 
-    // 显示游戏结束界面
-    auto visibleSize = Director::getInstance()->getVisibleSize();
 
-    auto resultLayer = LayerColor::create(Color4B(0, 0, 0, 180),
-        visibleSize.width,
-        visibleSize.height);
-    addChild(resultLayer, 1000);
-
-    // 结果文本
-    std::string resultText = isPlayer1Win ? "Player 1 Wins!" : "Player 2 Wins!";
-    auto resultLabel = Label::createWithSystemFont(resultText, "Arial", 72);
-    resultLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 100);
-    resultLabel->setTextColor(Color4B::YELLOW);
-    resultLayer->addChild(resultLabel);
-
-    // 返回按钮
-    auto returnButton = MenuItemLabel::create(
-        Label::createWithSystemFont("Return to Menu", "Arial", 32),
-        [](Ref* sender) {
-            Director::getInstance()->popScene();
-        }
-    );
-
-    returnButton->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 100);
-
-    auto menu = Menu::create(returnButton, nullptr);
-    menu->setPosition(Vec2::ZERO);
-    resultLayer->addChild(menu);
-
-    CCLOG("Game ended. Winner: %s", isPlayer1Win ? "Player 1" : "Player 2");
-}
 
 /*测试DataManager, 由于容易编码错误，log日志生成到项目根目录（需要请自行去掉注释）
 void BattleScene::testDataManager() {
@@ -539,7 +491,7 @@ void BattleScene::testDataManager() {
     char buffer[256];
     sprintf(buffer, "Card Total Number: %d\n\n", cardCount);
     logContent += buffer;
-    log(buffer); 
+    log(buffer);
     // 2. 检查ID=1的卡牌
     logContent += "--- Check Card ID=1 ---\n";
     log("--- Check Card ID=1 ---");

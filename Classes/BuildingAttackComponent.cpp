@@ -28,13 +28,23 @@ void BuildingAttackComponent::doAttack(IAttackable* owner)
         int damage = _damage;
         auto target = _target; // C++11 capture safe
         
-        auto projectile = Projectile::create(target, damage, _projectileSpeed, [target, damage]() {
-            // 命中回调
-            if (target && !target->isDead())
+        auto projectile = Projectile::create(
+            _target,
+            damage,
+            _projectileSpeed,
+            [this, damage]()
             {
-                target->takeDamage(damage);
-            }
-        });
+                if (!_target)
+                    return;
+
+                if (_target->isDead())
+                {
+                    _target = nullptr;
+                    return;
+                }
+
+                _target->takeDamage(damage);
+            });
 
         if (projectile)
         {

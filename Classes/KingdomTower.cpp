@@ -1,7 +1,7 @@
 #include "KingdomTower.h"
 #include "BuildingAttackComponent.h"
 #include "SimpleBuildingAI.h"
-
+#include"BattleManager.h"
 USING_NS_CC;
 
 KingdomTower::KingdomTower(float maxHp, float attackRange, float attackInterval, int attackDamage)
@@ -27,7 +27,6 @@ bool KingdomTower::init()
     _hp = _maxHp;
 
     setupComponents();
-
     return true;
 }
 
@@ -54,4 +53,34 @@ void KingdomTower::setupComponents()
     {
         CCLOG("ERROR: Could not load Images/towers/king_tower_red.png");
     }
+}void KingdomTower::die()
+{
+    if (_isDying)
+        return;
+
+    _isDying = true;
+
+    int playerID = (getCamp() == ECamp::LEFT) ? 0 : 1;
+    float x = getPositionX();
+
+    if (playerID == 0)
+    {
+		BattleManager::getInstance()->setMyKingAlive(false);
+    }
+    else
+    {
+        BattleManager::getInstance()->setEnemyKingAlive(false);
+    }
+
+    stopAllActions();
+    unscheduleUpdate();
+
+    _ai = nullptr;
+    _attack = nullptr;
+
+    runAction(Sequence::create(
+        FadeOut::create(0.3f),
+        RemoveSelf::create(true),
+        nullptr
+    ));
 }

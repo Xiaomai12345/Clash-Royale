@@ -2,7 +2,7 @@
 #define __SKELETON_TOMBSTONE_H__
 
 #include "BuildingBase.h"
-#include "SkeletonLegion.h"  // ÒıÈë¾üÍÅÉú³ÉÀà
+#include "SkeletonLegion.h"  // å¼•å…¥å†›å›¢ç”Ÿæˆç±»
 
 class SkeletonTombstone : public BuildingBase
 {
@@ -10,21 +10,21 @@ public:
     SkeletonTombstone();
     virtual ~SkeletonTombstone();
     void setWorld(IWalkableWorld* world);
-    virtual bool init() override;  // ³õÊ¼»¯
+    virtual bool init() override;  // åˆå§‹åŒ–
 
-    CREATE_FUNC(SkeletonTombstone); // ÓÃÓÚ´´½¨ÊµÀı
+    CREATE_FUNC(SkeletonTombstone); // ç”¨äºåˆ›å»ºå®ä¾‹
 
 protected:
-    void spawnSkeletons(float dt);  // ¶¨Ê±Éú³É÷¼÷Ã
-    void takeDamageOverTime(float dt);  // ¶¨Ê±¿ÛÑª
+    void spawnSkeletons(float dt);  // å®šæ—¶ç”Ÿæˆéª·é«…
+    void takeDamageOverTime(float dt);  // å®šæ—¶æ‰£è¡€
 
 private:
     IWalkableWorld* _world = nullptr;
-    float _damageInterval = 3.0f;  // ¿ÛÑªÊ±¼ä¼ä¸ô
-    int _damagePerTick = 5;        // Ã¿´Î¿ÛÑªµÄÁ¿
-    float _spawnInterval = 1.f;   // Éú³É÷¼÷ÃµÄ¼ä¸ô
-    int _skeletonCount = 1;        // Ã¿´ÎÉú³ÉµÄ÷¼÷ÃÊı
-    float _spawnRadius = 50.f;     // ÷¼÷ÃÉú³ÉµÄÉ¢²¼°ë¾¶
+    float _damageInterval = 3.0f;  // æ‰£è¡€æ—¶é—´é—´éš”
+    int _damagePerTick = 5;        // æ¯æ¬¡æ‰£è¡€çš„é‡
+    float _spawnInterval = 1.f;   // ç”Ÿæˆéª·é«…çš„é—´éš”
+    int _skeletonCount = 1;        // æ¯æ¬¡ç”Ÿæˆçš„éª·é«…æ•°
+    float _spawnRadius = 50.f;     // éª·é«…ç”Ÿæˆçš„æ•£å¸ƒåŠå¾„
 };
 
 #endif // __SKELETON_TOMBSTONE_H__

@@ -1,4 +1,4 @@
-﻿#include "BattleManager.h"
+#include "BattleManager.h"
 #include "Battlefield.h"
 #include"UnitType.h"
 #include"AllCards.h"
@@ -31,14 +31,16 @@ BattleManager::BattleManager()
     , _gameEnded(false)
     , _gameTime(0.0f)
     , _currentGameMode("normal")
-    ,myCrown(0),myKingAlive(true),myLeftPrincessAlive(true),myRightPrincessAlive(true)
-    ,enemyCrown(0),enemyKingAlive(true),enemyLeftPrincessAlive(false),enemyRightPrincessAlive(true)
+    ,myKingAlive(true),myLeftPrincessAlive(true),myRightPrincessAlive(true)
+    ,enemyKingAlive(true),enemyLeftPrincessAlive(false),enemyRightPrincessAlive(true)
 {
     _manaSystem = ManaSystem::getInstance();
-
+    _enemyManaSystem = ManaSystem::getEnemyInstance();
     // 初始化玩家数据
     _playerCrowns[1] = 0;
     _playerCrowns[2] = 0;
+    myTower = { true,true,true };
+    enemyTower= { true,true,true };
 }
 
 BattleManager::~BattleManager()
@@ -50,7 +52,7 @@ void BattleManager::init(Battlefield* battlefield)
     _battlefield = battlefield;
     _gameActive = true;
     _gameEnded = false;
-    _gameTime = 0.0f;
+    _gameTime = 170.0f;
 
     CCLOG("BattleManager initialized");
 }
@@ -61,16 +63,38 @@ void BattleManager::update(float delta)
         return;
 
     _gameTime += delta;
+    addCrown();
+    checkGameEnded();
 
-    // 检查游戏模式切换
-    if (_gameTime >= 60.0f && _currentGameMode == "normal")
+    if (_gameEnded)
     {
-        setGameMode("double_elixir");
+        if (_gameEndCallback)
+        {
+            _gameEndCallback(_playerCrowns[0]>_playerCrowns[1]?1:2);
+        }
+        return;
     }
-    else if (_gameTime >= 180.0f && _currentGameMode == "double_elixir")
+    // 检查游戏模式切换
+    if (_gameTime >= 180.0f && _playerCrowns[0] == _playerCrowns[1] && _currentGameMode == "normal")
     {
+        _gameTime = 170.0f;
         setGameMode("sudden_death");
     }
+
+    if (_gameTime >= 120.0f )
+    {
+        if (_currentGameMode == "normal")
+        {
+            _manaSystem->setManaMode(ManaSystem::ManaMode::DOUBLE);
+            _enemyManaSystem->setManaMode(ManaSystem::ManaMode::DOUBLE);
+        }
+        else if (_currentGameMode == "sudden_death")
+        {
+            _manaSystem->setManaMode(ManaSystem::ManaMode::TRIPLE);
+            _enemyManaSystem->setManaMode(ManaSystem::ManaMode::TRIPLE);
+        }
+    }
+
 }
 
 void BattleManager::deployUnit(int unitType,
@@ -197,15 +221,41 @@ void BattleManager::deployUnit(int unitType,
     }
 }
 
-
-void BattleManager::addCrown(int playerId, int crowns)
+void BattleManager::addCrown()
 {
-    auto it = _playerCrowns.find(playerId);
-    if (it != _playerCrowns.end())
+    if (myLeftPrincessAlive == false && myTower[0] == true)
     {
-        it->second += crowns;
-        CCLOG("Player %d now has %d crowns", playerId, it->second);
+        _playerCrowns[1] += 1;
+        myTower[0] = false;
     }
+    if (myRightPrincessAlive == false && myTower[1] == true)
+    {
+        _playerCrowns[1] += 1;
+        myTower[1] = false;
+    }
+    if (myKingAlive == false && myTower[2] == true)
+    {
+        _playerCrowns[1] += 3;
+        myTower[1] = false;
+    }
+
+    if(enemyLeftPrincessAlive==false&&enemyTower[0]==true)
+    { 
+        _playerCrowns[0] += 1;
+        enemyTower[0] = false;
+    }
+    if (enemyRightPrincessAlive == false && enemyTower[1] == true)
+    {
+        _playerCrowns[0] += 1;
+        enemyTower[1] = false;
+    }
+    if (enemyKingAlive == false && enemyTower[2] == true)
+    {
+        _playerCrowns[0] += 3;
+        enemyTower[2] = false;
+    }
+    _playerCrowns[0] = _playerCrowns[0] >= 3 ? 3 : _playerCrowns[0];
+    _playerCrowns[1] = _playerCrowns[1] >= 3 ? 3 : _playerCrowns[1];
 }
 
 int BattleManager::getPlayerCrowns(int playerId) const
@@ -236,26 +286,28 @@ void BattleManager::reset()
     CCLOG("BattleManager reset");
 }
 
-void BattleManager::setGameMode(const std::string& mode)
+void BattleManager::checkGameEnded()
 {
-    if (_currentGameMode == mode)
-        return;
-
-    _currentGameMode = mode;
-
-    if (mode == "double_elixir")
+    if (_currentGameMode == "normal")
     {
-        _manaSystem->setManaMode(ManaSystem::ManaMode::DOUBLE);
-        CCLOG("Game mode changed to: DOUBLE ELIXIR");
+        if (_gameTime >= 180.0f && _playerCrowns[0] != _playerCrowns[1])
+        {
+            _gameEnded = true;
+            return;
+        }
+        if (_playerCrowns[0]==3|| _playerCrowns[1]==3)
+        {
+            _gameEnded = true;
+            return;
+        }
     }
-    else if (mode == "sudden_death")
+    else if (_currentGameMode == "sudden_death")
     {
-        _manaSystem->setManaMode(ManaSystem::ManaMode::SUDDEN_DEATH);
-        CCLOG("Game mode changed to: SUDDEN DEATH");
-    }
-    else
-    {
-        _manaSystem->setManaMode(ManaSystem::ManaMode::NORMAL);
-        CCLOG("Game mode changed to: NORMAL");
+        if (_playerCrowns[0] != _playerCrowns[1]|| _gameTime >= 180.0f)
+        {
+            _gameEnded = true;
+            return;
+        }
     }
 }
+

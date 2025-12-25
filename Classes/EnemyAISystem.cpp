@@ -16,12 +16,7 @@ bool EnemyAISystem::init()
 {
     if (!Node::init())
         return false;
-
     CCLOG("[EnemyAI] init %p", this);
-
-    // ======================
-    // 单位池（简单策略）
-    // ======================
     _lowCostUnits =
     {
         UNIT_SKELETON,
@@ -36,10 +31,6 @@ bool EnemyAISystem::init()
         UNIT_DRAGONBABY,
         UNIT_SKELETON_LEGION
     };
-
-    // ======================
-    // 敌方圣水系统（独立）
-    // ======================
     _enemyMana = new EnemyManaSystem();
     _enemyMana->init(5.0f, 10.0f, 0.8f);
 
@@ -59,7 +50,6 @@ void EnemyAISystem::setBattlefield(Battlefield* battlefield)
 
 void EnemyAISystem::startAI()
 {
-    // ⚠️ 关键：防止重复 start
     if (_isActive)
     {
         CCLOG("[EnemyAI] startAI ignored (already active)");
@@ -83,14 +73,8 @@ void EnemyAISystem::update(float dt)
     if (!_isActive || !_battleManager || !_battlefield || !_enemyMana)
         return;
 
-    // ===== Debug 核心日志 =====
-    CCLOG("AI %p | dt=%.3f think=%.3f",
-        this, dt, _thinkTimer);
-
-    // 1️⃣ 更新敌方圣水
     _enemyMana->update(dt);
 
-    // 2️⃣ 累加思考时间（⚠️ 这里不会被重置）
     _thinkTimer += dt;
 
     if (_thinkTimer >= _nextThinkInterval)
@@ -118,7 +102,6 @@ void EnemyAISystem::tryDeployTroop()
     _battleManager->deployUnit(unitType, deployPos, 2);
     _enemyMana->consumeMana(kDeployCost);
 
-    // ⚠️ 只有这里才 reset
     _thinkTimer = 0.0f;
     _nextThinkInterval = RandomHelper::random_real(2.0f, 5.0f);
 

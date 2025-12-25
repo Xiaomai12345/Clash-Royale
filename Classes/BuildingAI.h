@@ -1,4 +1,4 @@
-﻿#ifndef __BUILDING_AI_COMPONENT_H__
+#ifndef __BUILDING_AI_COMPONENT_H__
 #define __BUILDING_AI_COMPONENT_H__
 
 #include "BuildingBase.h"

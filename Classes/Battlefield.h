@@ -40,6 +40,8 @@ public:
     cocos2d::Vec2 projectToBridge(const cocos2d::Vec2& desiredPos) const;
     float getNearestBridgeX(const cocos2d::Vec2& currentPos) const override;
     float getNearestBridgeY(const cocos2d::Vec2& currentPos) const override;
+    bool hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& p2) const override;
+
     bool worldToGrid(const cocos2d::Vec2& worldPos, int& outRow, int& outCol) const;
     cocos2d::Vec2 gridToWorld(int row, int col) const;
 
@@ -51,6 +53,13 @@ public:
     const std::vector<Area>getEnemyarea() { return enemyArea; }
     std::vector<Area>getDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
+
+    // ������Ϸ����UI��ʾ����
+    void showGameEndUI(bool isPlayer1Win);
+
+    // �����¼����η���
+    void createEventBlocker();
+    void removeEventBlocker();
 private:
     void createBackground();
     void createDebugLayer();
@@ -61,7 +70,8 @@ private:
 
     Grid* getGrid(int row, int col);
     const Grid* getGrid(int row, int col) const;
-    
+    // ���ӻص�����
+    void setupGameEndCallback();
 private:
     cocos2d::Size _mapSize;
     cocos2d::Size _gridSize;
@@ -82,6 +92,10 @@ private:
 
     bool _debugEnabled = false;
     EnemyAISystem* _enemyAI = nullptr;
+
+
+    cocos2d::EventListener* _touchListener;
+    cocos2d::Layer* _eventBlocker;
 };
 
 #endif // BATTLEFIELD_H

@@ -1,9 +1,9 @@
-//ËùÓĞ¿¨ÅÆµÄÍ·ÎÄ¼ş
+//æ‰€æœ‰å¡ç‰Œçš„å¤´æ–‡ä»¶
 #include"FireBallSpell.h"
 #include"SlowDownSpell.h"
 
 
-//Ê¿±ø
+//å£«å…µ
 #include"KnightTroop.h"
 #include"ArcherTroop.h"
 #include"DragonBaby.h"
@@ -14,7 +14,7 @@
 #include "ValkyrieTroop.h"
 
 
-//½¨Öş
+//å»ºç­‘
 #include"KingdomTower.h"
 #include"PrincessTower.h"
 #include "Cannon.h"

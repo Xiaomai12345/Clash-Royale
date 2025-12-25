@@ -5,17 +5,17 @@
 
 // Giant
 // -----------
-// ¾ŞÈËµ¥Î»
-// ÓÃÓÚ²âÊÔ AI / Move / Attack ÊÇ·ñÄÜÕı³£¹¤×÷
+// å·¨äººå•ä½
+// ç”¨äºæµ‹è¯• AI / Move / Attack æ˜¯å¦èƒ½æ­£å¸¸å·¥ä½œ
 //
 class Giant : public TroopBase
 {
 public:
-    Giant();  // ÉùÃ÷¹¹Ôìº¯Êı
+    Giant();  // å£°æ˜æ„é€ å‡½æ•°
     ~Giant();
     virtual bool init() override;
 
-    CREATE_FUNC(Giant);  // ºê£¬ÓÃÓÚ¼ò»¯´´½¨¶ÔÏó
+    CREATE_FUNC(Giant);  // å®ï¼Œç”¨äºç®€åŒ–åˆ›å»ºå¯¹è±¡
 
 };
 

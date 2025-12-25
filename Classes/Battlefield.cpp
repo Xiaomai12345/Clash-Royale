@@ -64,37 +64,38 @@ void Battlefield::setupBattlefield(int level)
 
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
   
-    auto building = PrincessTower::create();
-    building->setPosition(Vec2(300, 1024));
-    building->setCamp(ECamp::RIGHT);
-    this->addChild(building);
+    auto EnemyLeft = PrincessTower::create();
+    EnemyLeft->setPosition(Vec2(300, 1024));
+    EnemyLeft->setCamp(ECamp::RIGHT);
+    this->addChild(EnemyLeft);
 
  
-    auto building1 = PrincessTower::create();
-    building1->setPosition(Vec2(500, 1024));
-    building1->setCamp(ECamp::RIGHT);
-    this->addChild(building1);
+    auto EnemyRight = PrincessTower::create();
+    EnemyRight->setPosition(Vec2(500, 1024));
+    EnemyRight->setCamp(ECamp::RIGHT);
+    this->addChild(EnemyRight);
 
-    auto building2 = KingdomTower::create();
-    building2->setPosition(Vec2(450, 1200));
-    building2->setCamp(ECamp::RIGHT);
-    this->addChild(building2);
+    auto EnemyKing = KingdomTower::create();
+    EnemyKing->setPosition(Vec2(450, 1200));
+    EnemyKing->setCamp(ECamp::RIGHT);
+   
+    this->addChild(EnemyKing);
 
 
-    auto buildingleft = PrincessTower::create();
-    buildingleft->setPosition(Vec2(200, 500));
-    buildingleft->setCamp(ECamp::LEFT);
-    this->addChild(buildingleft);
+    auto MyLeft = PrincessTower::create();
+    MyLeft->setPosition(Vec2(200, 500));
+    MyLeft->setCamp(ECamp::LEFT);
+    this->addChild(MyLeft);
 
-    auto building1left = PrincessTower::create();
-    building1left->setPosition(Vec2(650, 500));
-    building1left->setCamp(ECamp::LEFT);
-    this->addChild(building1left);
+    auto MyRight = PrincessTower::create();
+    MyRight->setPosition(Vec2(650, 500));
+    MyRight->setCamp(ECamp::LEFT);
+    this->addChild(MyRight);
 
-    auto building2left = KingdomTower::create();
-    building2left->setPosition(Vec2(450, 300));
-    building2left->setCamp(ECamp::LEFT);
-    this->addChild(building2left);
+    auto MyKing = KingdomTower::create();
+    MyKing->setPosition(Vec2(450, 300));
+    MyKing->setCamp(ECamp::LEFT);
+    this->addChild(MyKing);
 
 
 
@@ -466,6 +467,40 @@ float Battlefield::getNearestBridgeY(const cocos2d::Vec2& currentPos) const
 
     return targetY;
 }
+
+bool Battlefield::hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& p2) const
+{
+    int r1, c1, r2, c2;
+    if (!worldToGrid(p1, r1, c1) || !worldToGrid(p2, r2, c2))
+    {
+        // 如果有坐标不在网格内（例如飞出地图），保守起见认为没有河（或者直接走直线）
+        return false;
+    }
+
+    // 河流区域是 row 15 和 16
+    // Side A: row <= 14
+    // Side B: row >= 17
+    
+    // 我们定义两个区域：Bottom (row <= 14) 和 Top (row >= 17)
+    // 如果一个在 Bottom 一个在 Top，则有河。
+    // 如果其中一个在 River (15, 16) 中，我们认为它已经在“桥”或“河”上了，不需要寻桥逻辑介入
+    // (因为寻桥逻辑是把人引导到桥口，如果已经在河区域，说明已经在过桥了)
+    
+    bool p1Bottom = (r1 <= 14);
+    bool p1Top    = (r1 >= 17);
+    
+    bool p2Bottom = (r2 <= 14);
+    bool p2Top    = (r2 >= 17);
+
+    // 如果一个在下半区，一个在上半区，说明中间隔着河
+    if ((p1Bottom && p2Top) || (p1Top && p2Bottom))
+    {
+        return true;
+    }
+    
+    return false;
+}
+
 std::vector<Area>Battlefield::getDeployarea()
 {
 
@@ -486,4 +521,136 @@ std::vector<Area>Battlefield::getDeployarea()
     }
     return t;
 
+}
+void Battlefield::setupGameEndCallback()
+{
+    auto battleManager = BattleManager::getInstance();
+
+    // 设置游戏结束回调
+    battleManager->setGameEndCallback([this](int winner) {
+        // winner: 0=平局, 1=玩家1胜利, 2=玩家2胜利
+        bool isPlayer1Win = (winner == 1);
+        this->showGameEndUI(isPlayer1Win);
+        });
+}
+
+void Battlefield::showGameEndUI(bool isPlayer1Win)
+{
+    // ========== 1. 先创建事件屏蔽层 ==========
+    createEventBlocker();
+    // =======================================
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+
+    // 创建半透明背景层
+    auto resultLayer = LayerColor::create(Color4B(0, 0, 0, 180),
+        visibleSize.width,
+        visibleSize.height);
+    resultLayer->setTag(999);  // 设置tag以便移除
+    this->addChild(resultLayer, 1000);
+
+    // 结果文本
+    std::string resultText;
+    cocos2d::Color4B textColor;
+
+    if (isPlayer1Win)
+    {
+        resultText = "Victory!";
+        textColor = Color4B::GREEN;
+    }
+    else
+    {
+        resultText = "Defeat!";
+        textColor = Color4B::RED;
+    }
+
+    auto resultLabel = Label::createWithSystemFont(resultText, "Arial", 72);
+    resultLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 100);
+    resultLabel->setTextColor(textColor);
+    resultLayer->addChild(resultLabel);
+
+    // 获取皇冠数显示
+    auto battleManager = BattleManager::getInstance();
+    std::string crownText = StringUtils::format("Crowns: %d - %d",
+        battleManager->getPlayerCrowns(0),  // 玩家1（我方）
+        battleManager->getPlayerCrowns(1)); // 玩家2（敌方）
+
+    auto crownLabel = Label::createWithSystemFont(crownText, "Arial", 36);
+    crownLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+    crownLabel->setTextColor(Color4B::WHITE);
+    resultLayer->addChild(crownLabel);
+
+    // 返回按钮 - 需要允许点击
+    auto returnButton = MenuItemLabel::create(
+        Label::createWithSystemFont("Return to Menu", "Arial", 32),
+        [this](Ref* sender) {
+            // 移除事件屏蔽层
+            this->removeEventBlocker();
+
+            // 移除结束UI
+            this->removeChildByTag(999);
+
+            Director::getInstance()->popScene();
+        }
+    );
+    returnButton->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 100);
+
+    auto menu = Menu::create(returnButton, nullptr);
+    menu->setPosition(Vec2::ZERO);
+    resultLayer->addChild(menu);
+
+    CCLOG("Game ended. Winner: %s", isPlayer1Win ? "Player 1" : "Player 2");
+}
+void Battlefield::createEventBlocker()
+{
+    // 创建一个全屏透明的层来拦截所有触摸事件
+    _eventBlocker = Layer::create();
+    _eventBlocker->setContentSize(Director::getInstance()->getVisibleSize());
+    _eventBlocker->setPosition(Vec2::ZERO);
+
+    // ========== 创建正确的触摸监听器 ==========
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->setSwallowTouches(true);  // 吞噬触摸事件，不向下传递
+
+    touchListener->onTouchBegan = [](Touch* touch, Event* event) {
+        CCLOG("a");
+        return true;  // 返回true表示处理了这个触摸，阻止进一步传递
+        };
+
+    touchListener->onTouchMoved = [](Touch* touch, Event* event) {
+        return true;  // 继续吞噬移动事件
+        };
+
+    touchListener->onTouchEnded = [](Touch* touch, Event* event) {
+        return true;  // 继续吞噬结束事件
+        };
+
+    touchListener->onTouchCancelled = [](Touch* touch, Event* event) {
+        return true;  // 继续吞噬取消事件
+        };
+    // =========================================
+
+    // 注册到事件分发器
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(
+        touchListener, _eventBlocker);
+
+    this->addChild(_eventBlocker, 9999);  // 最高层级
+    CCLOG("事件屏蔽层已创建");
+}
+
+void Battlefield::removeEventBlocker()
+{
+    if (_eventBlocker)
+    {
+        // 移除监听器
+        if (_touchListener)
+        {
+            Director::getInstance()->getEventDispatcher()->removeEventListener(_touchListener);
+            _touchListener = nullptr;
+        }
+
+        _eventBlocker->removeFromParent();
+        _eventBlocker = nullptr;
+        CCLOG("事件屏蔽层已移除");
+    }
 }

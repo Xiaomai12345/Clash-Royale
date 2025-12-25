@@ -2,27 +2,28 @@
 #include "SimpleTroopAIComponent.h"
 #include "GroundMoveComponent.h"
 #include "MeleeAttackComponent.h"
+#include "AnimationComponent.h"
 
 KnightTroop::KnightTroop()
 {
-    // ÔÚ¹¹Ôìº¯ÊıÖĞ¸ø»ùÀàºÍ³ÉÔ±±äÁ¿¸³Öµ
-    _moveSpeed = 100.0f;  // Éè¶¨ÆïÊ¿µÄ»ù´¡ÒÆ¶¯ËÙ¶È
-    _maxHp = 100;         // Éè¶¨ÆïÊ¿µÄ×î´óÑªÁ¿
-    _alertRange = 200.f;   // ÉèÖÃ¾¯½ä·¶Î§
-    _bodyRadius = 15.f;    // ÉèÖÃÅö×²°ë¾¶
-    _camp = ECamp::LEFT;   // ÉèÖÃÕóÓªÎª×ó²à
+    // åœ¨æ„é€ å‡½æ•°ä¸­ç»™åŸºç±»å’Œæˆå‘˜å˜é‡èµ‹å€¼
+    _moveSpeed = 100.0f;  // è®¾å®šéª‘å£«çš„åŸºç¡€ç§»åŠ¨é€Ÿåº¦
+    _maxHp = 100;         // è®¾å®šéª‘å£«çš„æœ€å¤§è¡€é‡
+    _alertRange = 200.f;   // è®¾ç½®è­¦æˆ’èŒƒå›´
+    _bodyRadius = 15.f;    // è®¾ç½®ç¢°æ’åŠå¾„
+    _camp = ECamp::LEFT;   // è®¾ç½®é˜µè¥ä¸ºå·¦ä¾§
 
     _attacktype = AttackType::Both; // 
-    _moveAttack = MoveAttack::Ground;  // ÉèÖÃ¿É¹¥»÷µØÃæºÍ¿ÕÖĞµÄÄ¿±ê
-    _moveAttacked = MoveAttack::Both; // ÉèÖÃ¿É±»¹¥»÷µØÃæºÍ¿ÕÖĞµÄÄ¿±ê
-    _moveType = MoveType::Ground;    // ÉèÖÃÎªµØÃæÒÆ¶¯
+    _moveAttack = MoveAttack::Ground;  // è®¾ç½®å¯æ”»å‡»åœ°é¢å’Œç©ºä¸­çš„ç›®æ ‡
+    _moveAttacked = MoveAttack::Both; // è®¾ç½®å¯è¢«æ”»å‡»åœ°é¢å’Œç©ºä¸­çš„ç›®æ ‡
+    _moveType = MoveType::Ground;    // è®¾ç½®ä¸ºåœ°é¢ç§»åŠ¨
 
-    _isDying = false;  // ³õÊ¼»¯ËÀÍö×´Ì¬
+    _isDying = false;  // åˆå§‹åŒ–æ­»äº¡çŠ¶æ€
 }
 
 KnightTroop::~KnightTroop()
 {
-    // Èç¹ûÓĞ´´½¨µÄ×é¼ş£¬ÊÖ¶¯ÇåÀí£¨ÕâÀïÊ¹ÓÃÁË new ´´½¨×é¼ş£¬ËùÒÔÒª delete£©
+    // å¦‚æœæœ‰åˆ›å»ºçš„ç»„ä»¶ï¼Œæ‰‹åŠ¨æ¸…ç†ï¼ˆè¿™é‡Œä½¿ç”¨äº† new åˆ›å»ºç»„ä»¶ï¼Œæ‰€ä»¥è¦ deleteï¼‰
     if (_ai) delete _ai;
     if (_move) delete _move;
     if (_attack) delete _attack;
@@ -30,46 +31,113 @@ KnightTroop::~KnightTroop()
 
 bool KnightTroop::init()
 {
-    if (!TroopBase::init())  // ³õÊ¼»¯»ùÀà (TroopBase)
+    if (!TroopBase::init())  // åˆå§‹åŒ–åŸºç±» (TroopBase)
         return false;
 
     // =========================
-    // 1. ´´½¨²¢°ó¶¨×é¼ş
+    // 1. åˆ›å»ºå¹¶ç»‘å®šç»„ä»¶
     // =========================
 
-    // ´´½¨²¢°ó¶¨AI×é¼ş£¨¼òµ¥µÄAIÂß¼­£©
+    // åˆ›å»ºå¹¶ç»‘å®šAIç»„ä»¶ï¼ˆç®€å•çš„AIé€»è¾‘ï¼‰
     auto ai = new SimpleTroopAIComponent();
     setAIComponent(ai);
 
-    // ´´½¨²¢°ó¶¨µØÃæÒÆ¶¯×é¼ş£¨ÓÃÓÚ¿ØÖÆÆïÊ¿µÄÒÆ¶¯£©
+    // åˆ›å»ºå¹¶ç»‘å®šåœ°é¢ç§»åŠ¨ç»„ä»¶ï¼ˆç”¨äºæ§åˆ¶éª‘å£«çš„ç§»åŠ¨ï¼‰
     auto move = new GroundMoveComponent();
     setMoveComponent(move);
 
-    // ´´½¨²¢°ó¶¨½üÕ½¹¥»÷×é¼ş£¨ÆïÊ¿µÄ½üÕ½¹¥»÷£©
+    // åˆ›å»ºå¹¶ç»‘å®šè¿‘æˆ˜æ”»å‡»ç»„ä»¶ï¼ˆéª‘å£«çš„è¿‘æˆ˜æ”»å‡»ï¼‰
     auto attack = new MeleeAttackComponent(
-        25.0f,   // ¹¥»÷·¶Î§
-        1.0f,     // ¹¥»÷¼ä¸ô
-        100      // ÉËº¦Öµ
+        25.0f,   // æ”»å‡»èŒƒå›´
+        1.0f,     // æ”»å‡»é—´éš”
+        100      // ä¼¤å®³å€¼
     );
     setAttackComponent(attack);
 
     // =========================
-    // 2. Ìí¼ÓÍ¼Æ¬×÷ÎªÊ¿±ø±íÏÖ
+    // 2. æ·»åŠ å›¾ç‰‡ä½œä¸ºå£«å…µè¡¨ç°
     // =========================
 
-    // ´´½¨Ê¿±øµÄSprite£¨ÆïÊ¿µÄÍ¼Æ¬£©
-    _sprite = Sprite::create("Images/troops/knight.webp");
+    // åˆ›å»ºå£«å…µçš„Spriteï¼ˆéª‘å£«çš„å›¾ç‰‡ï¼‰
+    _sprite = Sprite::create("Images/troops/Knight.png"); // ä½¿ç”¨ PNG ç³»åˆ—
     if (_sprite)
     {
 		CCLOG("KnightTroop: Sprite loaded successfully.");
-        addChild(_sprite);  // ½«Í¼Æ¬Ìí¼Óµ½µ±Ç°½Úµã
-        _sprite->setScale(0.05f);  // ¸ù¾İĞèÒªµ÷ÕûËõ·Å
+        addChild(_sprite);  // å°†å›¾ç‰‡æ·»åŠ åˆ°å½“å‰èŠ‚ç‚¹
+        _sprite->setScale(1.f);  // ä¿æŒç¼©æ”¾
     }
     else
     {
-        CCLOG("KnightTroop: Sprite load failed!");  // ¼ÓÔØÍ¼Æ¬Ê§°ÜÊ±Êä³öÈÕÖ¾
+        CCLOG("KnightTroop: Sprite load failed!");
     }
 
-    // ÑªÌõ³õÊ¼»¯£¨È·±£Ö»³õÊ¼»¯Ò»´Î£©
+    // =========================
+    // 3. ç»‘å®šåŠ¨ç”»ç»„ä»¶
+    // =========================
+    auto anim = new AnimationComponent();
+    setAnimationComponent(anim);
+    
+    // è®¾ç½®é»˜è®¤è´´å›¾
+    anim->setDefaultTexture("Images/troops/Knight.png");
+
+    // åŸºç¡€ç¼©æ”¾å€¼
+    const float baseScale = 1.f; 
+
+    // 1. å¾…æœºåŠ¨ç”» (IDLE): å‘¼å¸
+    // ----------------------------------------------------------------
+    auto breath = Sequence::create(
+        ScaleTo::create(1.0f, baseScale * 1.05f), 
+        ScaleTo::create(1.0f, baseScale * 0.95f),
+        nullptr
+    );
+    // å¾…æœºæ—¶åªåšå‘¼å¸ï¼Œä¸æ—‹è½¬
+    anim->addAction(State::IDLE, RepeatForever::create(breath));
+
+
+    // 2. ç§»åŠ¨åŠ¨ç”» (FOLLOWING): éª‘å£«ç§»åŠ¨å›¾å¾ªç¯
+    // ----------------------------------------------------------------
+    {
+        Vector<SpriteFrame*> walkFrames;
+        
+        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Knight.png");
+        auto tex2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightMove.png");
+        
+        if (tex1 && tex2)
+        {
+            auto frame1 = SpriteFrame::createWithTexture(tex1, Rect(0, 0, tex1->getContentSize().width, tex1->getContentSize().height));
+            auto frame2 = SpriteFrame::createWithTexture(tex2, Rect(0, 0, tex2->getContentSize().width, tex2->getContentSize().height));
+            
+            walkFrames.pushBack(frame1);
+            walkFrames.pushBack(frame2);
+            
+            // åˆ›å»ºåŠ¨ç”»: æ¯å¸§ 0.2 ç§’
+            auto walkAnim = Animation::createWithSpriteFrames(walkFrames, 0.2f);
+            anim->addAnimation(State::FOLLOWING, walkAnim);
+        }
+    }
+
+    // 3. æ”»å‡»åŠ¨ç”» (ATTACKING): æ”»å‡»1ã€2å¾ªç¯
+    // ----------------------------------------------------------------
+    {
+        Vector<SpriteFrame*> attackFrames;
+        
+        auto texAtt1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightAttack1.png");
+        auto texAtt2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightAttack2.png");
+        
+        if (texAtt1 && texAtt2)
+        {
+            auto att1 = SpriteFrame::createWithTexture(texAtt1, Rect(0, 0, texAtt1->getContentSize().width, texAtt1->getContentSize().height));
+            auto att2 = SpriteFrame::createWithTexture(texAtt2, Rect(0, 0, texAtt2->getContentSize().width, texAtt2->getContentSize().height));
+        
+            attackFrames.pushBack(att1);
+            attackFrames.pushBack(att2);
+            
+            // æ”»å‡»é€Ÿåº¦ç¨å¾®å¿«ä¸€ç‚¹ï¼Œ0.15ç§’ä¸€å¸§
+            auto attackAnim = Animation::createWithSpriteFrames(attackFrames, 0.15f);
+            anim->addAnimation(State::ATTACKING, attackAnim);
+        }
+    }
+
+    // è¡€æ¡åˆå§‹åŒ–ï¼ˆç¡®ä¿åªåˆå§‹åŒ–ä¸€æ¬¡ï¼‰
     return true;
 }

@@ -8,7 +8,7 @@ class TroopAIComponent
 public:
     virtual ~TroopAIComponent() = default;
 
-    // AI 每帧决策（只下命令）
+    // AI 姣忓抚鍐崇瓥锛堝彧涓嬪懡浠わ級
     virtual void update(TroopBase* owner, float dt) = 0;
 
     void setTarget(IAttackable* target) { _target = target; }
