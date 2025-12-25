@@ -1,7 +1,7 @@
 #include "KingdomTower.h"
 #include "BuildingAttackComponent.h"
 #include "SimpleBuildingAI.h"
-
+#include"BattleManager.h"
 USING_NS_CC;
 
 KingdomTower::KingdomTower(float maxHp, float attackRange, float attackInterval, int attackDamage)
@@ -9,43 +9,41 @@ KingdomTower::KingdomTower(float maxHp, float attackRange, float attackInterval,
     , _attackInterval(attackInterval)
     , _attackDamage(attackDamage)
 {
-    _maxHp = maxHp;  // 设置最大血量
-    _hp = _maxHp;    // 当前血量与最大血量一致
-    _bodyRadius = 30.0f;  // 设置碰撞半径（比公主塔大）
-    _camp = ECamp::LEFT;  // 设置阵营
+    _maxHp = maxHp;
+    _hp = _maxHp;
+    _bodyRadius = 30.0f;
+    _camp = ECamp::LEFT;
     _moveAttack = MoveAttack::Both;
     _moveAttacked = MoveAttack::Both;
-    _isDying = false;  // 初始化死亡状态
+    _isDying = false;
 }
 
 bool KingdomTower::init()
 {
-    if (!BuildingBase::init())  // 初始化父类
+    if (!BuildingBase::init())
         return false;
 
-    setupComponents();  // 初始化组件
+    if (_maxHp <= 0) _maxHp = 2000;
+    _hp = _maxHp;
 
-    CCLOG("KingdomTower 初始化完成，位置：(%.0f, %.0f)", getPositionX(), getPositionY());
-
+    setupComponents();
     return true;
 }
 
 void KingdomTower::setupComponents()
 {
-    // 设置AI组件
     auto ai = new SimpleBuildingAI();
     setAIComponent(ai);
 
-    // 设置攻击组件
     auto attack = new BuildingAttackComponent(
-        _attackRange,    // 攻击范围
-        _attackInterval, // 攻击间隔
-        _attackDamage    // 单次伤害
+        _attackRange,
+        _attackInterval,
+        _attackDamage,
+        500.0f
     );
     setAttackComponent(attack);
 
-    // 设置外观（精灵）
-    _sprite = Sprite::create("Images/towers/king_tower_red.png");  // 请替换为你的图像路径
+    _sprite = Sprite::create("Images/towers/king_tower_red.png");
     if (_sprite)
     {
         addChild(_sprite);
@@ -53,6 +51,36 @@ void KingdomTower::setupComponents()
     }
     else
     {
-        CCLOG("KingdomTower 图片加载失败");
+        CCLOG("ERROR: Could not load Images/towers/king_tower_red.png");
     }
+}void KingdomTower::die()
+{
+    if (_isDying)
+        return;
+
+    _isDying = true;
+
+    int playerID = (getCamp() == ECamp::LEFT) ? 0 : 1;
+    float x = getPositionX();
+
+    if (playerID == 0)
+    {
+		BattleManager::getInstance()->setMyKingAlive(false);
+    }
+    else
+    {
+        BattleManager::getInstance()->setEnemyKingAlive(false);
+    }
+
+    stopAllActions();
+    unscheduleUpdate();
+
+    _ai = nullptr;
+    _attack = nullptr;
+
+    runAction(Sequence::create(
+        FadeOut::create(0.3f),
+        RemoveSelf::create(true),
+        nullptr
+    ));
 }

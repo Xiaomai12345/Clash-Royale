@@ -51,11 +51,22 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
 
     if (bridgeTarget && _bridgeState == BridgeState::None)
     {
-        _bridgeState = BridgeState::ToBridge;
-        _cachedBridgePos = Vec2(
-            world->getNearestBridgeX(ownerPos),
-            world->getNearestBridgeY(ownerPos)
-        );
+        // 关键修复：检查是否真的需要过河
+        // 只有当“我”和“目标”之间隔着河时，才进入 ToBridge 状态
+        // 否则直接走直线（例如已经投放在敌方区域）
+        if (world->hasRiverBetween(ownerPos, targetPos))
+        {
+            _bridgeState = BridgeState::ToBridge;
+            _cachedBridgePos = Vec2(
+                world->getNearestBridgeX(ownerPos),
+                world->getNearestBridgeY(ownerPos)
+            );
+        }
+        else
+        {
+            // 在同侧，不需要过桥逻辑
+            // 保持 None 状态，后续会直接朝 targetPos 移动
+        }
     }
 
 
@@ -101,13 +112,16 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
     }
 
     Vec2 newPos = ownerPos + moveDir * moveDist;
-    Vec2 bodyOffset = moveDir * ownerRadius;
+
+    float ySign = (moveDir.y >= 0.f) ? 1.f : -1.f;
+    Vec2 bodyOffset = Vec2(0, ySign) * ownerRadius;
 
     Vec2 finalPos = world->constrainPosition(newPos, ownerPos);
 
     // =========================
     // 河道 / 桥口滑行
     // =========================
+
     if (!world->canWalk(newPos + bodyOffset) &&
         _bridgeState != BridgeState::OnBridge)
     {
@@ -185,49 +199,83 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
             finalPos = micro;
     }
 
+
+
+	Vec2 moveDirection = finalPos - ownerPos;
     owner->setPosition(finalPos);
+	moveDirection.normalize();
+
+
+
 
     // =========================
     // 碰撞推挤（单位之间）
     // =========================
+
+
+
     Node* parent = owner->getParent();
-    if (parent)
+    if (!parent)
+        return;
+
+    Vec2 selfPos = owner->getPosition();
+    Vec2 desiredDir = moveDirection;
+
+
+    for (Node* node : parent->getChildren())
     {
-        Vec2 selfPos = owner->getPosition();
-        for (Node* node : parent->getChildren())
+        auto target = dynamic_cast<IAttackable*>(node);
+        if (!target || target == owner || target->isDead())
+            continue;
+
+        if (owner->getMoveType() != target->getMoveType())
+            continue;
+
+        Vec2 targetPos = target->getPosition();
+        float targetRadius = target->getBodyRadius();
+
+        float dist = selfPos.distance(targetPos);
+        float hitRange = ownerRadius + targetRadius;
+
+        if (dist <= hitRange && dist > 0.001f)
         {
-            auto target = dynamic_cast<IAttackable*>(node);
-            if (!target || target == owner || target->isDead())
-                continue;
+            // =========================
+            // 1️⃣ 法线方向（分离）
+            // =========================
+            Vec2 normal = (selfPos - targetPos).getNormalized();
 
-            // 不同移动类型不碰撞（如空军与地面）
-            if (owner->getMoveType() != target->getMoveType())
-                continue;
+            float overlap = hitRange - dist;
+            float separateStrength = std::max(1.0f, overlap * 0.6f);
+            Vec2 separateOffset = normal * separateStrength;
 
-            float dist = selfPos.distance(target->getPosition());
-            float hitRange = ownerRadius + target->getBodyRadius();
+            // =========================
+            // 2️⃣ 切线方向（滑动）
+            // =========================
+            Vec2 tangent(-normal.y, normal.x);
 
-            if (dist <= hitRange && dist > 0.001f)
+            // 根据当前移动方向决定切线正负
+            if (tangent.dot(desiredDir) < 0)
+                tangent = -tangent;
+
+            float slideStrength = separateStrength * 0.8f;
+            Vec2 slideOffset = tangent * slideStrength;
+
+            // =========================
+            // 3️⃣ 合成位移
+            // =========================
+            Vec2 candidatePos = selfPos + separateOffset + slideOffset;
+
+            // =========================
+            // 4️⃣ 安全校验
+            // =========================
+            Vec2 safePos = world->constrainPosition(candidatePos, selfPos);
+
+            if (world->canWalk(safePos))
             {
-                Vec2 pushDir = (selfPos - target->getPosition()).getNormalized();
-
-                // 计算重叠量，给予一个推力
-                float overlap = hitRange - dist;
-                float pushStrength = std::max(1.0f, overlap * 0.5f);
-
-                // 计算推挤后的新位置
-                Vec2 newSelfPos = selfPos + pushDir * pushStrength;
-
-                // 确保推挤后的位置合法（不会被推到河里）
-                Vec2 safeSelfPos = world->constrainPosition(newSelfPos, selfPos);
-
-                if (world->canWalk(safeSelfPos))
-                {
-                    owner->setPosition(safeSelfPos);
-                    // 更新 selfPos 以便后续循环使用最新位置
-                    selfPos = safeSelfPos;
-                }
+                owner->setPosition(safePos);
+                selfPos = safePos;
             }
         }
     }
+
 }

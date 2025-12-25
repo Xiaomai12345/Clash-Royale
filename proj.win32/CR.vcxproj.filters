@@ -1,11 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="win32">
       <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="resource">
-      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes">
       <UniqueIdentifier>{a22b6cab-5a63-4cbb-9ae2-f013dd69e579}</UniqueIdentifier>
@@ -27,9 +24,6 @@
     </Filter>
     <Filter Include="Classes\Entities\Tower">
       <UniqueIdentifier>{95c3e5ad-9cd6-4d07-871a-b7e44720ee07}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Entities\Projectile">
-      <UniqueIdentifier>{a547ac33-fbbf-412f-b1ec-7629b65481ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\Managers">
       <UniqueIdentifier>{74f60622-43cb-44f2-8017-7212d97495b8}</UniqueIdentifier>
@@ -112,6 +106,12 @@
     <Filter Include="Classes\Entities\AllCards\Troops\Ground\Else">
       <UniqueIdentifier>{eb31bccc-eeaa-4594-a7e5-76661cb2dfec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="win32\resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Entities\Animation">
+      <UniqueIdentifier>{686381ae-6892-4bf9-b37a-2120bbfb2660}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -146,9 +146,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\TowerBase.cpp">
       <Filter>Classes\Entities\Tower</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Projectile.cpp">
-      <Filter>Classes\Entities\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\BattleManager.cpp">
       <Filter>Classes\Managers</Filter>
@@ -285,11 +282,19 @@
     <ClCompile Include="..\Classes\CardFactory.cpp">
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LoadingScene.cpp">
-      <Filter>Classes\Scenes</Filter>
+    <ClCompile Include="..\Classes\DataManager.cpp" />
+    <ClCompile Include="..\Classes\EnemyAISystem.cpp">
+      <Filter>Classes\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\DataManager.cpp">
-      <Filter>Classes\Managers</Filter>
+    <ClCompile Include="..\Classes\Projectile.cpp">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\EnemyManaSystem.cpp">
+      <Filter>Classes\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LoadingScene.cpp" />
+    <ClCompile Include="..\Classes\AnimationComponent.cpp">
+      <Filter>Classes\Entities\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,9 +330,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\TowerBase.h">
       <Filter>Classes\Entities\Tower</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Projectile.h">
-      <Filter>Classes\Entities\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\BattleManager.h">
       <Filter>Classes\Managers</Filter>
@@ -488,8 +490,21 @@
     <ClInclude Include="..\Classes\IWalkableWorld.h">
       <Filter>Classes\Entities\Troop\MoveComponent</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\DataManager.h">
-      <Filter>Classes\Managers</Filter>
+    <ClInclude Include="..\Classes\DataManager.h" />
+    <ClInclude Include="..\Classes\EnemyAISystem.h">
+      <Filter>Classes\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Projectile.h">
+      <Filter>Classes\Entities\Attack\TroopAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\EnemyManaSystem.h">
+      <Filter>Classes\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LoadingScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AnimationComponent.h">
+      <Filter>Classes\Entities\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LoadingScene.h">
       <Filter>Classes\Scenes</Filter>
@@ -497,7 +512,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
-      <Filter>resource</Filter>
+      <Filter>win32\resource</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

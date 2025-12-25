@@ -1,7 +1,7 @@
 #include "PrincessTower.h"
 #include "BuildingAttackComponent.h"
 #include "SimpleBuildingAI.h"
-
+#include"BattleManager.h"
 USING_NS_CC;
 
 PrincessTower::PrincessTower(float maxHp, float attackRange, float attackInterval, int attackDamage)
@@ -9,42 +9,59 @@ PrincessTower::PrincessTower(float maxHp, float attackRange, float attackInterva
     , _attackInterval(attackInterval)
     , _attackDamage(attackDamage)
 {
-    _maxHp = maxHp;  // 设置最大血量
-    _hp = _maxHp;    // 当前血量与最大血量一致
-    _bodyRadius = 25.0f;  // 设置碰撞半径
-    _camp = ECamp::LEFT;  // 设置阵营
+    // 构造函数中初始化
+    _maxHp = maxHp;
+    _hp = _maxHp;
+    _bodyRadius = 25.0f;
+    _camp = ECamp::LEFT;
     _moveAttack = MoveAttack::Both;
     _moveAttacked = MoveAttack::Both;
-    _isDying = false;  // 初始化死亡状态
+    _isDying = false;
 }
 
 bool PrincessTower::init()
 {
-    if (!BuildingBase::init())  // 初始化父类
+    if (!BuildingBase::init())
+    {
+        CCLOG("PrincessTower::init - BuildingBase::init failed");
         return false;
+    }
 
-    setupComponents();  // 初始化组件
+    // 再次确保血量正确 (防止基类覆盖)
+    if (_maxHp <= 0) _maxHp = 1200;
+    _hp = _maxHp;
 
-    CCLOG("公主塔初始化完成，位置：(%.0f, %.0f)", getPositionX(), getPositionY());
+    setupComponents();
+
+    if (!_sprite)
+    {
+        CCLOG("PrincessTower::init - Sprite creation failed!");
+    }
+    else
+    {
+        CCLOG("PrincessTower created at (%.1f, %.1f), HP: %d/%d", getPositionX(), getPositionY(), _hp, _maxHp);
+    }
 
     return true;
 }
 
+
 void PrincessTower::setupComponents()
 {
-    // 设置AI组件
+    // 1. AI
     auto ai = new SimpleBuildingAI();
     setAIComponent(ai);
 
-    // 设置攻击组件
+    // 2. Attack
     auto attack = new BuildingAttackComponent(
-        _attackRange,    // 攻击范围
-        _attackInterval, // 攻击间隔
-        _attackDamage    // 单次伤害
+        _attackRange,
+        _attackInterval,
+        _attackDamage,
+        500.0f
     );
     setAttackComponent(attack);
 
-    // 设置外观（精灵）
+    // 3. Sprite
     _sprite = Sprite::create("Images/towers/princess_tower_red.png");
     if (_sprite)
     {
@@ -53,6 +70,41 @@ void PrincessTower::setupComponents()
     }
     else
     {
-        //CCLOG("公主塔图片加载失败");
+        CCLOG("ERROR: Could not load Images/towers/princess_tower_red.png");
     }
+}
+
+void PrincessTower::die()
+{
+    if (_isDying)
+        return;
+
+    _isDying = true;
+    int playerID = (getCamp() == ECamp::LEFT) ? 0 : 1;
+    float x = getPositionX();
+
+    if (playerID == 0)
+    {
+        (x < 450)
+            ? BattleManager::getInstance()->setMyLeftPrincessAlive(false)
+            : BattleManager::getInstance()->setMyRightPrincessAlive(false);
+    }
+    else
+    {
+        (x < 450)
+            ? BattleManager::getInstance()->setEnemyLeftPrincessAlive(false)
+            : BattleManager::getInstance()->setEnemyRightPrincessAlive(false);
+    }
+
+    stopAllActions();
+    unscheduleUpdate();
+
+    _ai = nullptr;
+    _attack = nullptr;
+
+    runAction(Sequence::create(
+        FadeOut::create(0.3f),
+        RemoveSelf::create(true),
+        nullptr
+    ));
 }

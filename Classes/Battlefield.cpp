@@ -4,6 +4,7 @@
 #include"BattleManager.h"
 #include"AllCards.h"
 #include"CardFactory.h"
+#include "EnemyAISystem.h"
 USING_NS_CC;
 
 bool Battlefield::init()//ch
@@ -61,103 +62,57 @@ void Battlefield::setupBattlefield(int level)
     createGrids();
     buildRegions();
 
-
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
-    setupGameEndCallback();
-    
-    //auto card = CardFactory::createKnightCard();
-    //card->setPosition(Vec2(100, 80));
-    //this->addChild(card); // 只是为了看见卡，不影响逻辑
-
-    //auto card1 = CardFactory::createArcherCard();
-    //card1->setPosition(Vec2(200, 80));
-    //this->addChild(card1);
-
-    //auto card2 = CardFactory::createGiantCard();
-    //card2->setPosition(Vec2(300, 80));
-    //this->addChild(card2);
-
-    //auto card3 = CardFactory::createValkyrieCard();
-    //card3->setPosition(Vec2(400, 80));
-    //this->addChild(card3);
-
-    //auto card4 = CardFactory::createDragonBabyCard();
-    //card4->setPosition(Vec2(500, 80));
-    //this->addChild(card4);
-
-    //auto card5 = CardFactory::createCannonCard();
-    //card5->setPosition(Vec2(600, 80)); // 设置位置
-    //this->addChild(card5);
-
-    //auto card6 = CardFactory::createSkeletonCard();
-    //card6->setPosition(Vec2(700, 80)); // 设置位置
-    //this->addChild(card6);
-
-    //auto card7 = CardFactory::createSkeletonLegionCard();
-    //card7->setPosition(Vec2(800, 80)); // 设置位置
-    //this->addChild(card7);
-
-    //auto card8 = CardFactory::createSkeletonTombstoneCard();
-    //this->addChild(card8);
-
-
-    //Vec2 testPos(300, 900);   // 你想让士兵出现的位置
-    //int playerId = 0;         // 测试用阵营
-
-
-    //card2->use(Vec2(600, 500), !playerId);
-
-
-
-    auto building = PrincessTower::create();
-    building->setPosition(Vec2(300, 1024));
-    building->setCamp(ECamp::RIGHT);
-    this->addChild(building);
+  
+    auto EnemyLeft = PrincessTower::create();
+    EnemyLeft->setPosition(Vec2(300, 1024));
+    EnemyLeft->setCamp(ECamp::RIGHT);
+    this->addChild(EnemyLeft);
 
  
+    auto EnemyRight = PrincessTower::create();
+    EnemyRight->setPosition(Vec2(500, 1024));
+    EnemyRight->setCamp(ECamp::RIGHT);
+    this->addChild(EnemyRight);
+
+    auto EnemyKing = KingdomTower::create();
+    EnemyKing->setPosition(Vec2(450, 1200));
+    EnemyKing->setCamp(ECamp::RIGHT);
+   
+    this->addChild(EnemyKing);
 
 
-    auto troop6 = Giant::create();
-    troop6->setPosition(Vec2(100, 300));
-    this->addChild(troop6);
+    auto MyLeft = PrincessTower::create();
+    MyLeft->setPosition(Vec2(200, 500));
+    MyLeft->setCamp(ECamp::LEFT);
+    this->addChild(MyLeft);
 
-    auto troop7 = SkeletonTroop::create();
-    troop7->setPosition(Vec2(50, 300));
-    this->addChild(troop7);
+    auto MyRight = PrincessTower::create();
+    MyRight->setPosition(Vec2(650, 500));
+    MyRight->setCamp(ECamp::LEFT);
+    this->addChild(MyRight);
 
-
- 
-
-    auto building1 = PrincessTower::create();
-    building1->setPosition(Vec2(500, 1024));
-    building1->setCamp(ECamp::RIGHT);
-    this->addChild(building1);
-
-    auto building2 = KingdomTower::create();
-    building2->setPosition(Vec2(450, 1200));
-    building2->setCamp(ECamp::RIGHT);
-    this->addChild(building2);
-
-
-    auto buildingleft = PrincessTower::create();
-    buildingleft->setPosition(Vec2(200, 500));
-    buildingleft->setCamp(ECamp::LEFT);
-    this->addChild(buildingleft);
-
-    auto building1left = PrincessTower::create();
-    building1left->setPosition(Vec2(650, 500));
-    building1left->setCamp(ECamp::LEFT);
-    this->addChild(building1left);
-
-    auto building2left = KingdomTower::create();
-    building2left->setPosition(Vec2(450, 300));
-    building2left->setCamp(ECamp::LEFT);
-    this->addChild(building2left);
+    auto MyKing = KingdomTower::create();
+    MyKing->setPosition(Vec2(450, 300));
+    MyKing->setCamp(ECamp::LEFT);
+    this->addChild(MyKing);
 
 
 
     if (_debugEnabled)
         createDebugLayer();
+    
+    // 初始化敌人AI
+    _enemyAI = EnemyAISystem::create();
+    if (_enemyAI)
+    {
+        addChild(_enemyAI);
+        _enemyAI->setBattleManager(BattleManager::getInstance());
+        _enemyAI->setBattlefield(this);
+        _enemyAI->startAI();
+        CCLOG("Enemy AI System started.");
+    }
+
     CCLOG("Setup battlefield level %d", level);
 
 }
@@ -533,7 +488,41 @@ float Battlefield::getNearestBridgeY(const cocos2d::Vec2& currentPos) const
 
     return targetY;
 }
-std::vector<Area>Battlefield::getUnDeployarea()
+
+bool Battlefield::hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& p2) const
+{
+    int r1, c1, r2, c2;
+    if (!worldToGrid(p1, r1, c1) || !worldToGrid(p2, r2, c2))
+    {
+        // 如果有坐标不在网格内（例如飞出地图），保守起见认为没有河（或者直接走直线）
+        return false;
+    }
+
+    // 河流区域是 row 15 和 16
+    // Side A: row <= 14
+    // Side B: row >= 17
+    
+    // 我们定义两个区域：Bottom (row <= 14) 和 Top (row >= 17)
+    // 如果一个在 Bottom 一个在 Top，则有河。
+    // 如果其中一个在 River (15, 16) 中，我们认为它已经在“桥”或“河”上了，不需要寻桥逻辑介入
+    // (因为寻桥逻辑是把人引导到桥口，如果已经在河区域，说明已经在过桥了)
+    
+    bool p1Bottom = (r1 <= 14);
+    bool p1Top    = (r1 >= 17);
+    
+    bool p2Bottom = (r2 <= 14);
+    bool p2Top    = (r2 >= 17);
+
+    // 如果一个在下半区，一个在上半区，说明中间隔着河
+    if ((p1Bottom && p2Top) || (p1Top && p2Bottom))
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+std::vector<Area>Battlefield::getDeployarea()
 {
 
     std::vector<Area>t{ enemyArea3 };

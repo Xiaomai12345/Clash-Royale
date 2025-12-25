@@ -75,7 +75,8 @@ bool BattleScene::init()
 void BattleScene::initNextCard()
 {
 
-    auto slot = LayerColor::create(Color4B(86,59,41, 255), 90, 120);
+
+    auto slot = LayerColor::create(Color4B(86, 59, 41, 255), 90, 120);
 
     slot->setPosition(Vec2(50, 40));
     addChild(slot, 50);
@@ -111,20 +112,19 @@ void BattleScene::initHandCards()
     auto cards = CardManager::getInstance()->getHandCards();
     for (auto card : cards)
     {
-        this->addChild(card,200);
+        this->addChild(card, 200);
         card->setVisible(false);   // 先全部隐藏
     }
 
     // 只画 4 个槽位框
     for (int i = 0; i < 4; i++)
     {
-        auto slot = LayerColor::create(Color4B(86,59,41, 255),120,160);
-
+        auto slot = LayerColor::create(Color4B(86, 59, 41, 255), 120, 160);
         slot->setPosition(Vec2(250 + 150 * i, 60));
         addChild(slot, 50);
 
     }
-    
+
     refreshHandLayout();
 }
 
@@ -154,7 +154,7 @@ void BattleScene::refreshHandLayout()
 //滑动补牌动画
 void BattleScene::onCardUsed(Card* card)
 {
-  
+
     _handLocked = true;
     Card* nextCard = CardManager::getInstance()->getNextCard();
     if (!nextCard) return;
@@ -195,9 +195,9 @@ void BattleScene::setupUI()
 
     // 创建倒计时标签
     auto countdownLabel = Label::create("Time Left :", "fonts/Clash_Regular.otf", 20);
-    auto countdown = Label::createWithSystemFont("3:00", "fonts/Clash_Bold.otf", 48);
-    countdown->setPosition(visibleSize.width-80, visibleSize.height - 70);
-    countdownLabel->setPosition(visibleSize.width-80, visibleSize.height-35);
+    auto countdown = Label::createWithSystemFont("3:00", "fonts/Clash_Regular.otf", 48);
+    countdown->setPosition(visibleSize.width - 80, visibleSize.height - 70);
+    countdownLabel->setPosition(visibleSize.width - 80, visibleSize.height - 35);
     countdown->setTextColor(Color4B::WHITE);
     countdownLabel->setTextColor(Color4B::WHITE);
     countdown->setTag(1001);
@@ -210,13 +210,13 @@ void BattleScene::setupUI()
     drawNode->drawSolidRect(
         Vec2(visibleSize.width - 140, visibleSize.height - 95),           // 左下角
         Vec2(visibleSize.width - 20, visibleSize.height - 20),           // 右上角
-        Color4F(0, 0, 0,0.5f )  // 50%黑色填充
+        Color4F(0, 0, 0, 0.5f)  // 50%黑色填充
     );
 
     // 绘制边框
     drawNode->drawRect(
         Vec2(visibleSize.width - 140, visibleSize.height - 95),           // 左下角
-        Vec2(visibleSize.width-20, visibleSize.height - 20),           // 右上角
+        Vec2(visibleSize.width - 20, visibleSize.height - 20),           // 右上角
         Color4F(0, 0, 0, 1.0f)    // 黑色边框
     );
 
@@ -225,9 +225,9 @@ void BattleScene::setupUI()
     //绘制圣水倍率"X1"
     auto closeLabel = Label::createWithSystemFont("\\", "Arial Bold", 48);
     auto closeLabe2 = Label::createWithSystemFont("/", "Arial Bold", 48);
-    closeLabel->setTextColor(Color4B(128,0,128,255));
+    closeLabel->setTextColor(Color4B(128, 0, 128, 255));
     closeLabel->setPosition(visibleSize.width - 90, visibleSize.height - 120);
-    addChild(closeLabel,100);
+    addChild(closeLabel, 100);
     closeLabe2->setTextColor(Color4B(128, 0, 128, 255));
     closeLabe2->setPosition(visibleSize.width - 90, visibleSize.height - 120);
     addChild(closeLabe2, 100);
@@ -281,13 +281,13 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
     if (!_selectedCard)
         return false;
 
-    // 2️⃣设置选中状态（放大 + 高亮）
+    // 设置选中状态（放大 + 高亮）
     _selectedCard->setSelected(true);
 
-    // 3️⃣提升层级，保证拖拽时在最上面
+    // 提升层级，保证拖拽时在最上面
     _selectedCard->setLocalZOrder(1000);
 
-    // 4️⃣创建拖拽虚影（只创建一次）
+    // 创建拖拽虚影（只创建一次）
     if (!_cardGhost)
     {
         _cardGhost = Sprite::create();
@@ -417,7 +417,7 @@ void BattleScene::showDeployPosition()
         // 绘制透明填充矩形（浅红色）
         _deployDrawNode->drawSolidRect(
             Vec2(80 + area.leftBottom.x * _battlefield->getGridSize().width, 280 + area.leftBottom.y * _battlefield->getGridSize().height),
-            Vec2(80 + (area.rightTop.x+1) * _battlefield->getGridSize().width, 280 + (area.rightTop.y+1) * _battlefield->getGridSize().height),
+            Vec2(80 + (area.rightTop.x + 1) * _battlefield->getGridSize().width, 280 + (area.rightTop.y + 1) * _battlefield->getGridSize().height),
             Color4F(1.0f, 0.0f, 0.0f, 0.4f)  // 40%透明红色
         );
     }
@@ -527,7 +527,7 @@ void BattleScene::testDataManager() {
     char buffer[256];
     sprintf(buffer, "Card Total Number: %d\n\n", cardCount);
     logContent += buffer;
-    log(buffer); 
+    log(buffer);
     // 2. 检查ID=1的卡牌
     logContent += "--- Check Card ID=1 ---\n";
     log("--- Check Card ID=1 ---");

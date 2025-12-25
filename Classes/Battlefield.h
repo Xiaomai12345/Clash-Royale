@@ -20,12 +20,15 @@ struct Area
     Area(int x1, int y1, int x2, int y2) :leftBottom(x1, y1), rightTop(x2, y2) {}
     Area() : leftBottom(0, 0), rightTop(0, 0) {}
 };
+#include "EnemyAISystem.h"
+
 class Battlefield : public cocos2d::Node, public IWalkableWorld
 {
 public:
     CREATE_FUNC(Battlefield);
     virtual bool init() override;
 
+    // å§‹
     void setupBattlefield(int level = 1);
 
     bool isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const;
@@ -37,6 +40,8 @@ public:
     cocos2d::Vec2 projectToBridge(const cocos2d::Vec2& desiredPos) const;
     float getNearestBridgeX(const cocos2d::Vec2& currentPos) const override;
     float getNearestBridgeY(const cocos2d::Vec2& currentPos) const override;
+    bool hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& p2) const override;
+
     bool worldToGrid(const cocos2d::Vec2& worldPos, int& outRow, int& outCol) const;
     cocos2d::Vec2 gridToWorld(int row, int col) const;
 
@@ -49,18 +54,18 @@ public:
     std::vector<Area>getUnDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
 
-    // Ìí¼ÓÓÎÏ·½áÊøUIÏÔÊ¾·½·¨
+    // æ·»åŠ æ¸¸æˆç»“æŸUIæ˜¾ç¤ºæ–¹æ³•
     void showGameEndUI(bool isPlayer1Win);
 
-    // Ìí¼ÓÊÂ¼şÆÁ±Î·½·¨
+    // æ·»åŠ äº‹ä»¶å±è”½æ–¹æ³•
     void createEventBlocker();
     void removeEventBlocker();
 
     void highlightGrid(int row, int col, bool valid);
     void clearHighlight();
 
-    void expandMyDeployArea(bool lane);//0±íÊ¾×óËşµôÁË£¬1±íÊ¾ÓÒËşµôÁË
-    void expandEnemyDeployArea(bool lane);//0±íÊ¾×óËşµôÁË£¬1±íÊ¾ÓÒËşµôÁË
+    void expandMyDeployArea(bool lane);//0è¡¨ç¤ºå·¦å¡”æ‰äº†ï¼Œ1è¡¨ç¤ºå³å¡”æ‰äº†
+    void expandEnemyDeployArea(bool lane);//0è¡¨ç¤ºå·¦å¡”æ‰äº†ï¼Œ1è¡¨ç¤ºå³å¡”æ‰äº†
 private:
     void createBackground();
     void createDebugLayer();
@@ -71,7 +76,7 @@ private:
 
     Grid* getGrid(int row, int col);
     const Grid* getGrid(int row, int col) const;
-    // Ìí¼Ó»Øµ÷ÉèÖÃ
+    // æ·»åŠ å›è°ƒè®¾ç½®
     void setupGameEndCallback();
 private:
     cocos2d::Size _mapSize;
@@ -92,6 +97,11 @@ private:
     cocos2d::DrawNode* _debugDrawNode = nullptr;
 
     bool _debugEnabled = false;
+    EnemyAISystem* _enemyAI = nullptr;
+
+
+    cocos2d::EventListener* _touchListener;
+    cocos2d::Layer* _eventBlocker;
 
     cocos2d::EventListener* _touchListener;
     cocos2d::Layer* _eventBlocker;

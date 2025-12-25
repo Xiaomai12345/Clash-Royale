@@ -11,5 +11,7 @@ public:
     virtual cocos2d::Vec2 constrainPosition(const cocos2d::Vec2& desired, const cocos2d::Vec2& current) const = 0;
     virtual float getNearestBridgeX(const cocos2d::Vec2& currentPos) const = 0;
     virtual float getNearestBridgeY(const cocos2d::Vec2& currentPos) const = 0;
+    
+    virtual bool hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& p2) const = 0;
 
 };

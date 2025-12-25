@@ -9,23 +9,27 @@ Cannon::Cannon(float maxHp, float attackRange, float attackInterval, int attackD
     , _attackInterval(attackInterval)
     , _attackDamage(attackDamage)
 {
-    _maxHp = maxHp;  // 设置最大血量
-    _hp = _maxHp;    // 当前血量与最大血量一致
-    _bodyRadius = 20.0f;  // 设置碰撞半径
-    _camp = ECamp::LEFT;  // 设置阵营
-    _moveAttack = MoveAttack::Ground;
+    _maxHp = maxHp;
+    _hp = _maxHp;
+    _bodyRadius = 20.0f;
+    _camp = ECamp::LEFT;
+    _moveAttack = MoveAttack::Ground; // 只能攻击地面
     _moveAttacked = MoveAttack::Both;
-    _isDying = false;  // 初始化死亡状态
+    _isDying = false;
 }
 
 bool Cannon::init()
 {
-    if (!BuildingBase::init())  // 初始化父类
+    if (!BuildingBase::init())
         return false;
 
-    setupComponents();  // 初始化组件
+    // 确保血量正确
+    if (_maxHp <= 0) _maxHp = 1500;
+    _hp = _maxHp;
 
-    CCLOG("Cannon 初始化完成，位置：(%.0f, %.0f)", getPositionX(), getPositionY());
+    setupComponents();
+
+    CCLOG("Cannon 初始化完成，位置：(%.0f, %.0f) HP: %d", getPositionX(), getPositionY(), _hp);
 
     return true;
 }
@@ -40,12 +44,13 @@ void Cannon::setupComponents()
     auto attack = new BuildingAttackComponent(
         _attackRange,    // 攻击范围
         _attackInterval, // 攻击间隔
-        100    // 单次伤害
+        _attackDamage,   // 攻击伤害 (使用成员变量)
+        500.0f           // 弹道速度
     );
     setAttackComponent(attack);
 
-    // 设置外观（精灵）
-    _sprite = Sprite::create("Images/Buildings/Cannon.jpg");  // 请替换为你的图像路径
+    // 设置外观
+    _sprite = Sprite::create("Images/Buildings/Cannon.jpg");
     if (_sprite)
     {
         addChild(_sprite);

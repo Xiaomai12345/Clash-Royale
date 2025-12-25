@@ -8,14 +8,13 @@
 #include <algorithm>
 USING_NS_CC;
 
-// ǰ������������ͷ�ļ���ϣ�
+
 class TroopAIComponent;
 class MoveComponent;
 class AttackComponent;
+class AnimationComponent; // 前向声明
 class Battlefield;
-// =========================
-// ��Ӫö��
-// =========================
+
 
 // =========================
 // TroopBase
@@ -30,19 +29,15 @@ public:
     virtual bool init() override;
     CREATE_FUNC(TroopBase);
 
-    // ÿ֡���£����ĵ��ȣ�
     virtual void update(float dt) override;
 
-    // ���˲�����Ѫ��
     void takeDamage(int damage);
     void showDamageNumber(int damage);
     void updateHpBar();
 
-    // ����Ƿ�����
     bool isDead() const { return _hp <= 0; }
     bool isAlive() const { return _hp > 0; }
 
-    // ��������
     void die();
 
     DrawNode* getDebugDraw()
@@ -52,33 +47,30 @@ public:
 
 
 public:
-    // =========================
-    // ���������ӿڣ������ʹ�ã�
-    // =========================
 
-    // �ƶ��ٶȣ����� / �룩
-    float getMoveSpeed() const { return _currentSpeed; } //��ȡ�ٶ�
-    void  setCurrentSpeed(float speed) {  _currentSpeed = std::max(0.0f, speed);};//���õ�ǰ�ٶ�
-    void  resetMoveSpeed() { _currentSpeed = _moveSpeed;};//�����ٶ�
-    virtual void applySlow(float ratio, float duration) override;//��ǰʿ���ܵ�����
-    // ��ǰ����ֵ
+
+
+    float getMoveSpeed() const { return _currentSpeed; } //
+    void  setCurrentSpeed(float speed) {  _currentSpeed = std::max(0.0f, speed);};//
+    void  resetMoveSpeed() { _currentSpeed = _moveSpeed;};//
+    virtual void applySlow(float ratio, float duration) override;//
+
     int getHp() const { return _hp; }
 
-    // ��ײ�뾶�����ھ��� / �����жϣ�
     float getBodyRadius() const { return _bodyRadius; }
-    void setAlertRange(float range) { _alertRange = range;}//���þ��䷶Χ
-    float getAlertRange() const {return _alertRange;}      //��ȡ���䷶Χ
+    void setAlertRange(float range) { _alertRange = range;}//
+    float getAlertRange() const {return _alertRange;}      //
 
 
 
     // �������ȡһЩ��Ҫ�Ķ���
     void setCamp(ECamp camp) { _camp = camp; }
     ECamp getCamp() const { return _camp; }
-    void setAttackType(AttackType attacktype) { _attacktype = attacktype; }//�������ȡ��������
+    void setAttackType(AttackType attacktype) { _attacktype = attacktype; }//
     AttackType getAttackType()const { return _attacktype; }
-    void setState(State state) { _state = state;}//����״̬
-    State getState() const { return _state; }//����״̬
-    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }//����
+    void setState(State state) { _state = state;}//
+    State getState() const { return _state; }//
+    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }//
     MoveAttack getMoveAttack()const { return _moveAttack; }//���Է���
     void setMoveAttacked(MoveAttack moveAttacked) { _moveAttacked = moveAttacked; }//����
     MoveAttack getMoveAttacked()const { return _moveAttacked; }//���Է���
@@ -95,10 +87,15 @@ public:
     void setAIComponent(TroopAIComponent* ai);
     void setMoveComponent(MoveComponent* move);
     void setAttackComponent(AttackComponent* attack);
+    void setAnimationComponent(AnimationComponent* anim); // 设置动画组件
 
     TroopAIComponent* getAIComponent() const { return _ai; }
     MoveComponent* getMoveComponent() const { return _move; }
     AttackComponent* getAttackComponent() const { return _attack; }
+    AnimationComponent* getAnimationComponent() const { return _anim; } // 获取动画组件
+    
+    // 获取显示精灵（供动画组件使用）
+    Sprite* getSprite() const { return _sprite; }
 
 protected:
     // =========================
@@ -126,6 +123,7 @@ protected:
     TroopAIComponent* _ai = nullptr;
     MoveComponent* _move = nullptr;
     AttackComponent* _attack = nullptr;
+    AnimationComponent* _anim = nullptr; // 动画组件指针
 
 protected:
     // =========================

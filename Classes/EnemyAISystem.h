@@ -1,0 +1,68 @@
+#ifndef __ENEMY_AI_SYSTEM_H__
+#define __ENEMY_AI_SYSTEM_H__
+
+#include "cocos2d.h"
+#include <vector>
+
+class BattleManager;
+class Battlefield;
+class EnemyManaSystem;
+
+class EnemyAISystem : public cocos2d::Node
+{
+public:
+    CREATE_FUNC(EnemyAISystem);
+
+    virtual bool init() override;
+    virtual void update(float dt) override;
+    EnemyAISystem()
+        : _battleManager(nullptr)
+        , _battlefield(nullptr)
+        , _enemyMana(nullptr)
+        , _isActive(false)
+        , _thinkTimer(0.0f)
+        , _nextThinkInterval(3.0f)
+    {
+    }
+
+    virtual ~EnemyAISystem();
+
+    // 外部依赖注入
+    void setBattleManager(BattleManager* manager);
+    void setBattlefield(Battlefield* battlefield);
+
+    // AI 控制
+    void startAI();
+    void stopAI();
+
+private:
+    // ======================
+    // AI 核心逻辑
+    // ======================
+    void tryDeployTroop();
+    int  selectUnitByStrategy() const;
+    cocos2d::Vec2 getRandomDeployPosition() const;
+
+private:
+    // ======================
+    // AI 状态
+    // ======================
+    bool  _isActive = false;
+    float _thinkTimer = 0.0f;
+    float _nextThinkInterval = -0.1f;
+
+    // ======================
+    // 系统依赖
+    // ======================
+    BattleManager* _battleManager = nullptr;
+    Battlefield* _battlefield = nullptr;
+    EnemyManaSystem* _enemyMana = nullptr;
+
+    // ======================
+    // 敌方卡池（基础）
+    // ======================
+    std::vector<int> _lowCostUnits;   // 低费
+    std::vector<int> _highCostUnits;  // 高费
+};
+
+#endif // __ENEMY_AI_SYSTEM_H__

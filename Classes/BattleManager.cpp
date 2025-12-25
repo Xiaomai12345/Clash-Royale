@@ -52,7 +52,7 @@ void BattleManager::init(Battlefield* battlefield)
     _battlefield = battlefield;
     _gameActive = true;
     _gameEnded = false;
-    _gameTime = 0.0f;
+    _gameTime = 170.0f;
 
     CCLOG("BattleManager initialized");
 }

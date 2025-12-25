@@ -2,6 +2,7 @@
 #include "TroopAIComponent.h"
 #include "MoveComponent.h"
 #include "AttackComponent.h"
+#include "AnimationComponent.h"
 
 USING_NS_CC;
 
@@ -18,9 +19,10 @@ TroopBase::TroopBase()
     , _ai(nullptr)
     , _move(nullptr)
     , _attack(nullptr)
+    , _anim(nullptr)
     , _sprite(nullptr)
     , _debugDraw(nullptr)
-    , _showDebugBounds(1)
+    , _showDebugBounds(0)
     , _hpBarNode(nullptr)
     , _hpBarBg(nullptr)
     , _hpBarFg(nullptr)
@@ -31,7 +33,13 @@ TroopBase::TroopBase()
 
 TroopBase::~TroopBase()
 {
+    // 如果组件是自己 new 出来的，原则上应该 delete，
+    // 但如果遵循“谁创建谁销毁”或者依赖 cocos2d 的 autorelease，需要注意。
+    // 之前代码里没有 delete，这里保持一致，或者在 destroy 中处理。
+    // 如果 _anim 是 new 出来的普通 C++ 类，需要手动 delete。
+    CC_SAFE_DELETE(_anim);
 }
+
 
 bool TroopBase::init()
 {
@@ -77,10 +85,14 @@ void TroopBase::update(float dt)
         _attack->update(this, dt);
     }
 
+    if (_anim)
+    {
+        _anim->update(this, dt);
+    }
+
 
     if (_showDebugBounds && _debugDraw)
     {
-		CCLOG("绘制调试范围");
         _debugDraw->clear();
 
         // 碰撞半径
@@ -134,6 +146,15 @@ void TroopBase::setMoveComponent(MoveComponent* move)
 void TroopBase::setAttackComponent(AttackComponent* attack)
 {
     _attack = attack;
+}
+
+void TroopBase::setAnimationComponent(AnimationComponent* anim)
+{
+    _anim = anim;
+    if (_anim && _sprite)
+    {
+        _anim->setTargetSprite(_sprite);
+    }
 }
 
 // =========================

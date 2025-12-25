@@ -1,4 +1,4 @@
-#ifndef __ARCHER_TROOP_H__
+﻿#ifndef __ARCHER_TROOP_H__
 #define __ARCHER_TROOP_H__
 
 #include "TroopBase.h"
@@ -15,6 +15,9 @@
 class ArcherTroop : public TroopBase
 {
 public:
+    ArcherTroop();        // ✅ 声明构造函数
+    virtual ~ArcherTroop(); // ✅ 声明析构函数
+
     virtual bool init() override;
 
     CREATE_FUNC(ArcherTroop);
