@@ -75,7 +75,8 @@ bool BattleScene::init()
 void BattleScene::initNextCard()
 {
 
-    auto slot = LayerColor::create(Color4B(0, 0, 155, 255), 90, 120);
+
+    auto slot = LayerColor::create(Color4B(86, 59, 41, 255), 90, 120);
 
     slot->setPosition(Vec2(50, 40));
     addChild(slot, 50);
@@ -118,8 +119,7 @@ void BattleScene::initHandCards()
     // 只画 4 个槽位框
     for (int i = 0; i < 4; i++)
     {
-        auto slot = LayerColor::create(Color4B(0, 0, 155, 255), 120, 160);
-
+        auto slot = LayerColor::create(Color4B(86, 59, 41, 255), 120, 160);
         slot->setPosition(Vec2(250 + 150 * i, 60));
         addChild(slot, 50);
 
@@ -471,7 +471,6 @@ void BattleScene::update(float delta)
         }
     }
 }
-
 
 
 
