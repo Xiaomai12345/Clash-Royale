@@ -28,7 +28,7 @@ public:
     CREATE_FUNC(Battlefield);
     virtual bool init() override;
 
-    // ʼ
+    // 始
     void setupBattlefield(int level = 1);
 
     bool isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const;
@@ -50,16 +50,22 @@ public:
 	void addUnit(cocos2d::Node* unit);
 
     std::vector<Area>getMyarea() { return myArea; }
-    const std::vector<Area>getEnemyarea() { return enemyArea; }
-    std::vector<Area>getDeployarea();
+    std::vector<Area>getEnemyarea() { return enemyArea; }
+    std::vector<Area>getUnDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
 
-    // ������Ϸ����UI��ʾ����
+    // 添加游戏结束UI显示方法
     void showGameEndUI(bool isPlayer1Win);
 
-    // �����¼����η���
+    // 添加事件屏蔽方法
     void createEventBlocker();
     void removeEventBlocker();
+
+    void highlightGrid(int row, int col, bool valid);
+    void clearHighlight();
+
+    void expandMyDeployArea(bool lane);//0表示左塔掉了，1表示右塔掉了
+    void expandEnemyDeployArea(bool lane);//0表示左塔掉了，1表示右塔掉了
 private:
     void createBackground();
     void createDebugLayer();
@@ -70,7 +76,7 @@ private:
 
     Grid* getGrid(int row, int col);
     const Grid* getGrid(int row, int col) const;
-    // ���ӻص�����
+    // 添加回调设置
     void setupGameEndCallback();
 private:
     cocos2d::Size _mapSize;
@@ -96,6 +102,10 @@ private:
 
     cocos2d::EventListener* _touchListener;
     cocos2d::Layer* _eventBlocker;
+
+    cocos2d::EventListener* _touchListener;
+    cocos2d::Layer* _eventBlocker;
+    cocos2d::DrawNode* _highlightNode = nullptr;
 };
 
 #endif // BATTLEFIELD_H

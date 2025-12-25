@@ -32,7 +32,7 @@ bool BattleScene::init()
     _gameStarted = false;
     _gameEnded = false;
     _gameTime = 0.0f;
-    _totalGameTime = 10.0f;
+    _totalGameTime = 180.0f;
     _playerCrowns[0] = _playerCrowns[1] = 0;
     _isPlayer1 = true;
     _selectedCard = nullptr;
@@ -281,13 +281,13 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
     if (!_selectedCard)
         return false;
 
-    // 2️⃣设置选中状态（放大 + 高亮）
+    // 设置选中状态（放大 + 高亮）
     _selectedCard->setSelected(true);
 
-    // 3️⃣提升层级，保证拖拽时在最上面
+    // 提升层级，保证拖拽时在最上面
     _selectedCard->setLocalZOrder(1000);
 
-    // 4️⃣创建拖拽虚影（只创建一次）
+    // 创建拖拽虚影（只创建一次）
     if (!_cardGhost)
     {
         _cardGhost = Sprite::create();
@@ -304,32 +304,60 @@ bool BattleScene::onTouchBegan(Touch* touch, Event* event)
 
 void BattleScene::onTouchMoved(Touch* touch, Event* event)
 {
-    if (_cardGhost)
+    // 没有选中卡牌 / 没有虚影，直接返回
+    if (!_selectedCard || !_cardGhost)
+        return;
+
+    showDeployPosition();
+    // 当前触摸的世界坐标
+    Vec2 touchPos = touch->getLocation();
+
+    // 虚影跟随鼠标
+    _cardGhost->setPosition(touchPos);
+
+    // 判断整体是否为可部署区域
+    bool isValid = _battlefield->isValidDeployPosition(
+        touchPos,
+        _isPlayer1 ? 1 : 2
+    );
+
+    // 根据是否合法，修改“卡牌虚影”的颜色
+    if (!_cardGhost->getChildren().empty())
     {
-        showDeployPosition();
-        Vec2 touchPos = touch->getLocation();
-        _cardGhost->setPosition(touchPos);
+        auto layerColor =
+            dynamic_cast<LayerColor*>(_cardGhost->getChildren().at(0));
 
-        // 检查部署位置是否有效
-        bool isValid = _battlefield->isValidDeployPosition(touchPos, _isPlayer1 ? 1 : 2);
-
-        // 改变虚影颜色表示有效性
-        auto layerColor = dynamic_cast<LayerColor*>(_cardGhost->getChildren().at(0));
         if (layerColor)
         {
             if (isValid)
             {
-                layerColor->setColor(Color3B(100, 255, 100));
+                layerColor->setColor(Color3B(100, 255, 100)); // 绿色
                 layerColor->setOpacity(150);
             }
             else
             {
-                layerColor->setColor(Color3B(255, 100, 100));
+                layerColor->setColor(Color3B(255, 100, 100)); // 红色
                 layerColor->setOpacity(100);
             }
         }
     }
+
+    // 高亮当前鼠标所在的“格子”
+    int row = -1;
+    int col = -1;
+
+    if (_battlefield->worldToGrid(touchPos, row, col))
+    {
+        // 在地图格子范围内 → 高亮该格子
+        _battlefield->highlightGrid(row, col, isValid);
+    }
+    else
+    {
+        // 不在地图内 → 清除高亮
+        _battlefield->clearHighlight();
+    }
 }
+
 
 void BattleScene::onTouchEnded(Touch* touch, Event* event)
 {
@@ -366,12 +394,14 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
         _selectedCard = nullptr;
         _cardGhost->setVisible(false);
     }
+    clearDeployPosition();
+    _battlefield->clearHighlight();
     refreshHandLayout();
 }
 
 void BattleScene::showDeployPosition()
 {
-    std::vector<Area>unDeployarea = _battlefield->getDeployarea();
+    std::vector<Area>unDeployarea = _battlefield->getUnDeployarea();
     // 检查是否已经创建了 DrawNode，如果没有则创建
     if (!_deployDrawNode)
     {
@@ -472,6 +502,13 @@ void BattleScene::update(float delta)
     }
 }
 
+void BattleScene::clearDeployPosition()
+{
+    if (_deployDrawNode)
+    {
+        _deployDrawNode->clear();
+    }
+}
 
 
 

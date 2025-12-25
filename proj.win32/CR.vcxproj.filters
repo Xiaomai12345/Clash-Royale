@@ -506,6 +506,9 @@
     <ClInclude Include="..\Classes\AnimationComponent.h">
       <Filter>Classes\Entities\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\LoadingScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

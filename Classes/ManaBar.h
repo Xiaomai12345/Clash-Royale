@@ -27,7 +27,7 @@ private:
     cocos2d::DrawNode* _fillNode = nullptr;
     cocos2d::DrawNode* _lineNode = nullptr;
     cocos2d::Label* _label = nullptr;
-
+    cocos2d::Label* _label1 = nullptr;
     float _currentPercent = 0.0f;
     int   _segments = 10;
     float _width = 600.0f;

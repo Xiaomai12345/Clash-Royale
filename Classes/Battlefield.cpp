@@ -142,6 +142,9 @@ void Battlefield::createBackground()
     lavenderRect->setPosition(0, _mapSize.height * 0.8 - 50);
     this->addChild(lavenderRect);
 
+    auto slot = LayerColor::create(Color4B(142,111,84,255), _mapSize.width * 0.8 * 0.85, 229);
+    slot->setPosition(0, 0);
+    this->addChild(slot);
     //auto drawNode = cocos2d::DrawNode::create();
     //this->addChild(drawNode, 2000);
 
@@ -213,7 +216,7 @@ void Battlefield::buildRegions()
             if (x >= area.leftBottom.x && y >= area.leftBottom.y && x <= area.rightTop.x && y <= area.rightTop.y)
             {
                 grid.setRegionType(Grid::RegionType::BRIDGE);
-                grid.setDeployable(false);
+                grid.setDeployable(true);
                 grid.setWalkable(true);
                 break;
             }
@@ -271,10 +274,28 @@ bool Battlefield::isValidDeployPosition(const Vec2& worldPos, int playerId) cons
         return false;
 
     if (playerId == 1)
-        return grid->getRegionType() == Grid::RegionType::PLAYER;
+    {
+        for (auto& area : myArea)
+        {
+            if (grid->getCol() >= area.leftBottom.x && grid->getRow() >= area.leftBottom.y
+                && grid->getCol() <= area.rightTop.x && grid->getRow() <= area.rightTop.y)
+            {
+                return true;
+            }
+        }
+    }
 
     if (playerId == 2)
-        return grid->getRegionType() == Grid::RegionType::ENEMY;
+    {
+        for (auto& area : enemyArea)
+        {
+            if (grid->getCol() >= area.leftBottom.x && grid->getRow() >= area.leftBottom.y
+                && grid->getCol() <= area.rightTop.x && grid->getRow() <= area.rightTop.y)
+            {
+                return true;
+            }
+        }
+    }
 
     return false;
 }
@@ -652,5 +673,61 @@ void Battlefield::removeEventBlocker()
         _eventBlocker->removeFromParent();
         _eventBlocker = nullptr;
         CCLOG("事件屏蔽层已移除");
+    }
+}
+
+void Battlefield::highlightGrid(int row, int col, bool valid)
+{
+    if (!_highlightNode)
+    {
+        _highlightNode = DrawNode::create();
+        addChild(_highlightNode, 999);
+    }
+
+    _highlightNode->clear();
+
+    Vec2 lb = gridToWorld(row, col);
+    Vec2 rt = lb + getGridSize();
+    lb.x = lb.x - _gridSize.width * 0.5f;
+    lb.y = lb.y - _gridSize.height * 0.5f;
+    rt.x = rt.x - _gridSize.width * 0.5f;
+    rt.y = rt.y - _gridSize.height * 0.5f;
+    Color4F color = valid
+        ? Color4F(0.f, 1.f, 0.f, 0.25f)   // 绿色
+        : Color4F(1.f, 0.f, 0.f, 0.25f);  // 红色
+
+    _highlightNode->drawSolidRect(lb, rt, color);
+}
+
+void Battlefield::clearHighlight()
+{
+    if (_highlightNode)
+        _highlightNode->clear();
+}
+
+void Battlefield::expandMyDeployArea(bool lane)
+{
+    if (lane == false)
+    {
+        myArea.push_back(bridgeArea1);
+        myArea.push_back(enemyArea1);
+    }
+    else
+    {
+        myArea.push_back(bridgeArea2);
+        myArea.push_back(enemyArea2);
+    }
+}
+void Battlefield::expandEnemyDeployArea(bool lane)
+{
+    if (lane == false)
+    {
+        enemyArea.push_back(bridgeArea1);
+        enemyArea.push_back(myArea1);
+    }
+    else
+    {
+        enemyArea.push_back(bridgeArea2);
+        enemyArea.push_back(myArea2);
     }
 }

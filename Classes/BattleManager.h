@@ -74,12 +74,12 @@ private:
     float _gameTime;
     std::vector<bool>myTower;
     std::vector<bool>enemyTower;
-    bool myLeftPrincessAlive=true;
-    bool enemyLeftPrincessAlive=true;
-    bool myRightPrincessAlive=true;
-    bool enemyRightPrincessAlive=true;
-    bool myKingAlive=true;
-    bool enemyKingAlive=true;
+    bool myLeftPrincessAlive;
+    bool enemyLeftPrincessAlive;
+    bool myRightPrincessAlive;
+    bool enemyRightPrincessAlive;
+    bool myKingAlive;
+    bool enemyKingAlive;
     std::string _currentGameMode;
     // 添加回调成员
     GameEndCallback _gameEndCallback;
