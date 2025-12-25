@@ -37,6 +37,9 @@ private:
     void refreshHandLayout();  // 重新排布手牌（可多次调用）
     void onCardUsed(Card* card);
     void showDeployPosition();
+    void clearDeployPosition();
+
+
 private:
     Battlefield* _battlefield;
     ManaBar* _manaBar;

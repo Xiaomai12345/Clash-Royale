@@ -48,8 +48,8 @@ public:
 	void addUnit(cocos2d::Node* unit);
 
     std::vector<Area>getMyarea() { return myArea; }
-    const std::vector<Area>getEnemyarea() { return enemyArea; }
-    std::vector<Area>getDeployarea();
+    std::vector<Area>getEnemyarea() { return enemyArea; }
+    std::vector<Area>getUnDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
 
     // ������Ϸ����UI��ʾ����
@@ -58,6 +58,12 @@ public:
     // �����¼����η���
     void createEventBlocker();
     void removeEventBlocker();
+
+    void highlightGrid(int row, int col, bool valid);
+    void clearHighlight();
+
+    void expandMyDeployArea(bool lane);//0��ʾ�������ˣ�1��ʾ��������
+    void expandEnemyDeployArea(bool lane);//0��ʾ�������ˣ�1��ʾ��������
 private:
     void createBackground();
     void createDebugLayer();
@@ -90,6 +96,10 @@ private:
 
     bool _debugEnabled = false;
     EnemyAISystem* _enemyAI = nullptr;
+
+    cocos2d::EventListener* _touchListener;
+    cocos2d::Layer* _eventBlocker;
+    cocos2d::DrawNode* _highlightNode = nullptr;
 };
 
 #endif // BATTLEFIELD_H
