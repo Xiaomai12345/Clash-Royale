@@ -511,34 +511,6 @@ void BattleScene::clearDeployPosition()
 }
 
 
-    auto resultLayer = LayerColor::create(Color4B(0, 0, 0, 180),
-        visibleSize.width,
-        visibleSize.height);
-    addChild(resultLayer, 1000);
-
-    // 结果文本
-    std::string resultText = isPlayer1Win ? "Player 1 Wins!" : "Player 2 Wins!";
-    auto resultLabel = Label::createWithSystemFont(resultText, "Arial", 72);
-    resultLabel->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 100);
-    resultLabel->setTextColor(Color4B::YELLOW);
-    resultLayer->addChild(resultLabel);
-
-    // 返回按钮
-    auto returnButton = MenuItemLabel::create(
-        Label::createWithSystemFont("Return to Menu", "Arial", 32),
-        [](Ref* sender) {
-            Director::getInstance()->popScene();
-        }
-    );
-
-    returnButton->setPosition(visibleSize.width / 2, visibleSize.height / 2 - 100);
-
-    auto menu = Menu::create(returnButton, nullptr);
-    menu->setPosition(Vec2::ZERO);
-    resultLayer->addChild(menu);
-
-    CCLOG("Game ended. Winner: %s", isPlayer1Win ? "Player 1" : "Player 2");
-}
 
 /*测试DataManager, 由于容易编码错误，log日志生成到项目根目录（需要请自行去掉注释）
 void BattleScene::testDataManager() {
