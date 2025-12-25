@@ -41,6 +41,7 @@ void SimpleTroopAIComponent::update(TroopBase* owner, float dt)
     else
     {
         // 不在范围 → 追击
+		owner->setState(State::FOLLOWING);//设置状态为跟随
         move->followTarget(_target, attack->getAttackRange());
     }
 }

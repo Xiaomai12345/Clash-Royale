@@ -1,4 +1,4 @@
-#include "AttackComponent.h"
+Ôªø#include "AttackComponent.h"
 
 AttackComponent::AttackComponent(float range, float interval)
     : _attackRange(range)
@@ -28,15 +28,15 @@ void AttackComponent::update(IAttackable* owner, float dt)
         return;
     }
 
-    // ¿‰»¥µ›ºı
+ 
     if (_cooldown > 0.f)
         _cooldown -= dt;
 
-    // æ‡¿Î≈–∂®
+ 
     if (!isTargetInRange(owner))
         return;
 
-    // π•ª˜
+
     if (_cooldown <= 0.f)
     {
         doAttack(owner);
@@ -51,7 +51,6 @@ bool AttackComponent::isTargetInRange(IAttackable* owner) const
 
     float dist = from.distance(to);
 
-    // À´∑Ω∞Îæ∂“ª∆À„£®∑«≥£πÿº¸£©
     float effectiveRange =
         _attackRange +
         _target->getBodyRadius();

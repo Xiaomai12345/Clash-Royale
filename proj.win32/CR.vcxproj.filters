@@ -109,6 +109,9 @@
     <Filter Include="win32\resource">
       <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Entities\Animation">
+      <UniqueIdentifier>{686381ae-6892-4bf9-b37a-2120bbfb2660}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -492,6 +495,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\EnemyManaSystem.h">
       <Filter>Classes\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LoadingScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AnimationComponent.h">
+      <Filter>Classes\Entities\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LoadingScene.h">
       <Filter>Classes\Scenes</Filter>

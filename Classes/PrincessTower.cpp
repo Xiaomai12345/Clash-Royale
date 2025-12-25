@@ -1,7 +1,7 @@
 #include "PrincessTower.h"
 #include "BuildingAttackComponent.h"
 #include "SimpleBuildingAI.h"
-
+#include"BattleManager.h"
 USING_NS_CC;
 
 PrincessTower::PrincessTower(float maxHp, float attackRange, float attackInterval, int attackDamage)
@@ -45,6 +45,7 @@ bool PrincessTower::init()
     return true;
 }
 
+
 void PrincessTower::setupComponents()
 {
     // 1. AI
@@ -71,4 +72,39 @@ void PrincessTower::setupComponents()
     {
         CCLOG("ERROR: Could not load Images/towers/princess_tower_red.png");
     }
+}
+
+void PrincessTower::die()
+{
+    if (_isDying)
+        return;
+
+    _isDying = true;
+    int playerID = (getCamp() == ECamp::LEFT) ? 0 : 1;
+    float x = getPositionX();
+
+    if (playerID == 0)
+    {
+        (x < 450)
+            ? BattleManager::getInstance()->setMyLeftPrincessAlive(false)
+            : BattleManager::getInstance()->setMyRightPrincessAlive(false);
+    }
+    else
+    {
+        (x < 450)
+            ? BattleManager::getInstance()->setEnemyLeftPrincessAlive(false)
+            : BattleManager::getInstance()->setEnemyRightPrincessAlive(false);
+    }
+
+    stopAllActions();
+    unscheduleUpdate();
+
+    _ai = nullptr;
+    _attack = nullptr;
+
+    runAction(Sequence::create(
+        FadeOut::create(0.3f),
+        RemoveSelf::create(true),
+        nullptr
+    ));
 }

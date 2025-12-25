@@ -14,7 +14,6 @@ protected:
     virtual void onUpdateMove(TroopBase* owner, float dt) override;
 
 private:
-    // ===== 桥状态管理 =====
     enum class BridgeState
     {
         None,
@@ -25,8 +24,6 @@ private:
     BridgeState _bridgeState = BridgeState::None;
     cocos2d::Vec2 _cachedBridgePos;
 
-    // ===== 河岸滑行 =====
     cocos2d::Vec2 _riverDir;
 };
-
 #endif

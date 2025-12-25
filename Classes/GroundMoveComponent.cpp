@@ -51,11 +51,22 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
 
     if (bridgeTarget && _bridgeState == BridgeState::None)
     {
-        _bridgeState = BridgeState::ToBridge;
-        _cachedBridgePos = Vec2(
-            world->getNearestBridgeX(ownerPos),
-            world->getNearestBridgeY(ownerPos)
-        );
+        // 关键修复：检查是否真的需要过河
+        // 只有当“我”和“目标”之间隔着河时，才进入 ToBridge 状态
+        // 否则直接走直线（例如已经投放在敌方区域）
+        if (world->hasRiverBetween(ownerPos, targetPos))
+        {
+            _bridgeState = BridgeState::ToBridge;
+            _cachedBridgePos = Vec2(
+                world->getNearestBridgeX(ownerPos),
+                world->getNearestBridgeY(ownerPos)
+            );
+        }
+        else
+        {
+            // 在同侧，不需要过桥逻辑
+            // 保持 None 状态，后续会直接朝 targetPos 移动
+        }
     }
 
 

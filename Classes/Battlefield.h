@@ -28,42 +28,44 @@ public:
     CREATE_FUNC(Battlefield);
     virtual bool init() override;
 
-    // ʼ
+    // 始
     void setupBattlefield(int level = 1);
 
     bool isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const;
     bool isWalkable(const cocos2d::Vec2& worldPos) const;
     bool isBridge(const cocos2d::Vec2& worldPos) const;
-    bool canWalk(const cocos2d::Vec2& worldPos) const ;
+    bool canWalk(const cocos2d::Vec2& worldPos) const;
     cocos2d::Vec2 constrainPosition(const cocos2d::Vec2& desired, const cocos2d::Vec2& current) const;
     const Area* findBridgeArea(const cocos2d::Vec2& worldPos) const;
     cocos2d::Vec2 projectToBridge(const cocos2d::Vec2& desiredPos) const;
     float getNearestBridgeX(const cocos2d::Vec2& currentPos) const override;
     float getNearestBridgeY(const cocos2d::Vec2& currentPos) const override;
+    bool hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& p2) const override;
+
     bool worldToGrid(const cocos2d::Vec2& worldPos, int& outRow, int& outCol) const;
     cocos2d::Vec2 gridToWorld(int row, int col) const;
 
     void enableDebugDraw(bool enable);
     bool isDebugDrawEnabled() const { return _debugEnabled; }
-	void addUnit(cocos2d::Node* unit);
+    void addUnit(cocos2d::Node* unit);
 
     std::vector<Area>getMyarea() { return myArea; }
     std::vector<Area>getEnemyarea() { return enemyArea; }
     std::vector<Area>getUnDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
-
-    // ������Ϸ����UI��ʾ����
+    std::vector<Area>getDeployarea();
+    // 添加游戏结束UI显示方法
     void showGameEndUI(bool isPlayer1Win);
 
-    // �����¼����η���
+    // 添加事件屏蔽方法
     void createEventBlocker();
     void removeEventBlocker();
 
     void highlightGrid(int row, int col, bool valid);
     void clearHighlight();
 
-    void expandMyDeployArea(bool lane);//0��ʾ�������ˣ�1��ʾ��������
-    void expandEnemyDeployArea(bool lane);//0��ʾ�������ˣ�1��ʾ��������
+    void expandMyDeployArea(bool lane);//0表示左塔掉了，1表示右塔掉了
+    void expandEnemyDeployArea(bool lane);//0表示左塔掉了，1表示右塔掉了
 private:
     void createBackground();
     void createDebugLayer();
@@ -74,7 +76,7 @@ private:
 
     Grid* getGrid(int row, int col);
     const Grid* getGrid(int row, int col) const;
-    // ���ӻص�����
+    // 添加回调设置
     void setupGameEndCallback();
 private:
     cocos2d::Size _mapSize;

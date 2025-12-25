@@ -41,8 +41,20 @@ public:
     void setGameMode(const std::string& mode) { _currentGameMode = mode; }
     std::string getCurrentGameMode() const { return _currentGameMode; }
 
-    bool getEnemyLeftPrincessAlive()const { return enemyLeftPrincessAlive; }
-    bool getEnemyRightPrincessAlive()const { return enemyRightPrincessAlive; }
+    // 获取塔的存活状态
+    bool getEnemyLeftPrincessAlive() const { return enemyLeftPrincessAlive; }
+    bool getEnemyRightPrincessAlive() const { return enemyRightPrincessAlive; }
+
+
+	// 设置塔的存活状态
+    void setEnemyLeftPrincessAlive(bool alive) { enemyLeftPrincessAlive = alive; CCLOG("敌方左塔被毁int%d ", enemyLeftPrincessAlive); };
+	void setEnemyRightPrincessAlive(bool alive) { enemyRightPrincessAlive = alive; CCLOG("敌人右塔被毁int%d ", enemyRightPrincessAlive);};
+    void setEnemyKingAlive(bool alive) { enemyKingAlive = alive; CCLOG("敌方国王被毁"); };
+	void setMyLeftPrincessAlive(bool alive) { myLeftPrincessAlive = alive; CCLOG("我方左塔被毁int%d ", myLeftPrincessAlive);};
+	void setMyRightPrincessAlive(bool alive) { myRightPrincessAlive = alive; CCLOG("我方右塔被毁int%d ", myRightPrincessAlive);};
+    void setMyKingAlive(bool alive) { myKingAlive = alive; CCLOG("我方国王被毁"); };
+    
+
 private:
     BattleManager();
     ~BattleManager();

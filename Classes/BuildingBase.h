@@ -35,7 +35,7 @@ public:
     bool isAlive() const { return _hp > 0; }
 
     // 死亡处理
-    void die();
+    virtual void die();
 
     DrawNode* getDebugDraw()
     {

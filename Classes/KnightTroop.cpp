@@ -2,6 +2,7 @@
 #include "SimpleTroopAIComponent.h"
 #include "GroundMoveComponent.h"
 #include "MeleeAttackComponent.h"
+#include "AnimationComponent.h"
 
 KnightTroop::KnightTroop()
 {
@@ -58,16 +59,83 @@ bool KnightTroop::init()
     // =========================
 
     // 创建士兵的Sprite（骑士的图片）
-    _sprite = Sprite::create("Images/troops/knight.webp");
+    _sprite = Sprite::create("Images/troops/Knight.png"); // 使用 PNG 系列
     if (_sprite)
     {
 		CCLOG("KnightTroop: Sprite loaded successfully.");
         addChild(_sprite);  // 将图片添加到当前节点
-        _sprite->setScale(0.05f);  // 根据需要调整缩放
+        _sprite->setScale(1.f);  // 保持缩放
     }
     else
     {
-        CCLOG("KnightTroop: Sprite load failed!");  // 加载图片失败时输出日志
+        CCLOG("KnightTroop: Sprite load failed!");
+    }
+
+    // =========================
+    // 3. 绑定动画组件
+    // =========================
+    auto anim = new AnimationComponent();
+    setAnimationComponent(anim);
+    
+    // 设置默认贴图
+    anim->setDefaultTexture("Images/troops/Knight.png");
+
+    // 基础缩放值
+    const float baseScale = 1.f; 
+
+    // 1. 待机动画 (IDLE): 呼吸
+    // ----------------------------------------------------------------
+    auto breath = Sequence::create(
+        ScaleTo::create(1.0f, baseScale * 1.05f), 
+        ScaleTo::create(1.0f, baseScale * 0.95f),
+        nullptr
+    );
+    // 待机时只做呼吸，不旋转
+    anim->addAction(State::IDLE, RepeatForever::create(breath));
+
+
+    // 2. 移动动画 (FOLLOWING): 骑士移动图循环
+    // ----------------------------------------------------------------
+    {
+        Vector<SpriteFrame*> walkFrames;
+        
+        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Knight.png");
+        auto tex2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightMove.png");
+        
+        if (tex1 && tex2)
+        {
+            auto frame1 = SpriteFrame::createWithTexture(tex1, Rect(0, 0, tex1->getContentSize().width, tex1->getContentSize().height));
+            auto frame2 = SpriteFrame::createWithTexture(tex2, Rect(0, 0, tex2->getContentSize().width, tex2->getContentSize().height));
+            
+            walkFrames.pushBack(frame1);
+            walkFrames.pushBack(frame2);
+            
+            // 创建动画: 每帧 0.2 秒
+            auto walkAnim = Animation::createWithSpriteFrames(walkFrames, 0.2f);
+            anim->addAnimation(State::FOLLOWING, walkAnim);
+        }
+    }
+
+    // 3. 攻击动画 (ATTACKING): 攻击1、2循环
+    // ----------------------------------------------------------------
+    {
+        Vector<SpriteFrame*> attackFrames;
+        
+        auto texAtt1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightAttack1.png");
+        auto texAtt2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightAttack2.png");
+        
+        if (texAtt1 && texAtt2)
+        {
+            auto att1 = SpriteFrame::createWithTexture(texAtt1, Rect(0, 0, texAtt1->getContentSize().width, texAtt1->getContentSize().height));
+            auto att2 = SpriteFrame::createWithTexture(texAtt2, Rect(0, 0, texAtt2->getContentSize().width, texAtt2->getContentSize().height));
+        
+            attackFrames.pushBack(att1);
+            attackFrames.pushBack(att2);
+            
+            // 攻击速度稍微快一点，0.15秒一帧
+            auto attackAnim = Animation::createWithSpriteFrames(attackFrames, 0.15f);
+            anim->addAnimation(State::ATTACKING, attackAnim);
+        }
     }
 
     // 血条初始化（确保只初始化一次）

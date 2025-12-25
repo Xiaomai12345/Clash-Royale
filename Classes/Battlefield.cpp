@@ -63,44 +63,45 @@ void Battlefield::setupBattlefield(int level)
     buildRegions();
 
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
-  
-    auto building = PrincessTower::create();
-    building->setPosition(Vec2(300, 1024));
-    building->setCamp(ECamp::RIGHT);
-    this->addChild(building);
 
- 
-    auto building1 = PrincessTower::create();
-    building1->setPosition(Vec2(500, 1024));
-    building1->setCamp(ECamp::RIGHT);
-    this->addChild(building1);
-
-    auto building2 = KingdomTower::create();
-    building2->setPosition(Vec2(450, 1200));
-    building2->setCamp(ECamp::RIGHT);
-    this->addChild(building2);
+    auto EnemyLeft = PrincessTower::create();
+    EnemyLeft->setPosition(Vec2(300, 1024));
+    EnemyLeft->setCamp(ECamp::RIGHT);
+    this->addChild(EnemyLeft);
 
 
-    auto buildingleft = PrincessTower::create();
-    buildingleft->setPosition(Vec2(200, 500));
-    buildingleft->setCamp(ECamp::LEFT);
-    this->addChild(buildingleft);
+    auto EnemyRight = PrincessTower::create();
+    EnemyRight->setPosition(Vec2(500, 1024));
+    EnemyRight->setCamp(ECamp::RIGHT);
+    this->addChild(EnemyRight);
 
-    auto building1left = PrincessTower::create();
-    building1left->setPosition(Vec2(650, 500));
-    building1left->setCamp(ECamp::LEFT);
-    this->addChild(building1left);
+    auto EnemyKing = KingdomTower::create();
+    EnemyKing->setPosition(Vec2(450, 1200));
+    EnemyKing->setCamp(ECamp::RIGHT);
 
-    auto building2left = KingdomTower::create();
-    building2left->setPosition(Vec2(450, 300));
-    building2left->setCamp(ECamp::LEFT);
-    this->addChild(building2left);
+    this->addChild(EnemyKing);
+
+
+    auto MyLeft = PrincessTower::create();
+    MyLeft->setPosition(Vec2(200, 500));
+    MyLeft->setCamp(ECamp::LEFT);
+    this->addChild(MyLeft);
+
+    auto MyRight = PrincessTower::create();
+    MyRight->setPosition(Vec2(650, 500));
+    MyRight->setCamp(ECamp::LEFT);
+    this->addChild(MyRight);
+
+    auto MyKing = KingdomTower::create();
+    MyKing->setPosition(Vec2(450, 300));
+    MyKing->setCamp(ECamp::LEFT);
+    this->addChild(MyKing);
 
 
 
     if (_debugEnabled)
         createDebugLayer();
-    
+
     // 初始化敌人AI
     _enemyAI = EnemyAISystem::create();
     if (_enemyAI)
@@ -135,13 +136,13 @@ void Battlefield::createBackground()
         originalSize.height * scaleY);
 
     _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // 设置锚点在顶部中间
-    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);  
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);
     addChild(_background, 0);
     auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
     lavenderRect->setPosition(0, _mapSize.height * 0.8 - 50);
     this->addChild(lavenderRect);
 
-    auto slot = LayerColor::create(Color4B(142,111,84,255), _mapSize.width * 0.8 * 0.85, 229);
+    auto slot = LayerColor::create(Color4B(142, 111, 84, 255), _mapSize.width * 0.8 * 0.85, 229);
     slot->setPosition(0, 0);
     this->addChild(slot);
     //auto drawNode = cocos2d::DrawNode::create();
@@ -487,7 +488,41 @@ float Battlefield::getNearestBridgeY(const cocos2d::Vec2& currentPos) const
 
     return targetY;
 }
-std::vector<Area>Battlefield::getUnDeployarea()
+
+bool Battlefield::hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& p2) const
+{
+    int r1, c1, r2, c2;
+    if (!worldToGrid(p1, r1, c1) || !worldToGrid(p2, r2, c2))
+    {
+        // 如果有坐标不在网格内（例如飞出地图），保守起见认为没有河（或者直接走直线）
+        return false;
+    }
+
+    // 河流区域是 row 15 和 16
+    // Side A: row <= 14
+    // Side B: row >= 17
+
+    // 我们定义两个区域：Bottom (row <= 14) 和 Top (row >= 17)
+    // 如果一个在 Bottom 一个在 Top，则有河。
+    // 如果其中一个在 River (15, 16) 中，我们认为它已经在“桥”或“河”上了，不需要寻桥逻辑介入
+    // (因为寻桥逻辑是把人引导到桥口，如果已经在河区域，说明已经在过桥了)
+
+    bool p1Bottom = (r1 <= 14);
+    bool p1Top = (r1 >= 17);
+
+    bool p2Bottom = (r2 <= 14);
+    bool p2Top = (r2 >= 17);
+
+    // 如果一个在下半区，一个在上半区，说明中间隔着河
+    if ((p1Bottom && p2Top) || (p1Top && p2Bottom))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+std::vector<Area>Battlefield::getDeployarea()
 {
 
     std::vector<Area>t{ enemyArea3 };
