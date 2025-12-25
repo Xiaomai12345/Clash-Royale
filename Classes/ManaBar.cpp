@@ -43,12 +43,28 @@ void ManaBar::createUI()
     addDivisionLines(_width, _height);
 
     // === 文本 ===
-    _label = Label::createWithSystemFont("5/ 10", "Arial", 20);
-    _label->setPosition(Vec2(_width / 2, _height / 2));
+    _label = Label::createWithSystemFont("5", "fonts / Clash_Bold.otf", 36);
+    _label->setPosition(Vec2(50, _height / 2+5));
     _label->setTextColor(Color4B::WHITE);
     _label->enableOutline(Color4B::BLACK, 1);
     _background->addChild(_label, 3);
+
+    _label1 = Label::createWithSystemFont("Max:10", "fonts / Clash_Bold.otf", 16);
+    _label1->setPosition(Vec2(60, _height / 2 -15));
+    _label1->setTextColor(Color4B::WHITE);
+    _label1->enableOutline(Color4B::BLACK, 1);
+    _background->addChild(_label1, 3);
     
+    //圣水图标
+    auto manaIcon = Sprite::create("Images/background/mana.webp");
+    if (manaIcon)
+    {
+        manaIcon->setScale(0.7f);
+
+        manaIcon->setPosition(Vec2(0, 20));
+
+        _background->addChild(manaIcon, 100);
+    }
 }
 
 void ManaBar::addDivisionLines(float width, float height)
@@ -82,7 +98,7 @@ void ManaBar::update(float dt)
     if (_label)
     {
         _label->setString(
-            StringUtils::format("%.1f / %.1f", manaSystem->getCurrentMana(), manaSystem->getMaxMana())
+            StringUtils::format("%d", (int)manaSystem->getCurrentMana())
         );
     }
     // 防止无意义重复绘制

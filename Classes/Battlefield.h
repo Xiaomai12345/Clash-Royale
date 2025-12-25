@@ -46,7 +46,7 @@ public:
 
     std::vector<Area>getMyarea() { return myArea; }
     std::vector<Area>getEnemyarea() { return enemyArea; }
-    std::vector<Area>getDeployarea();
+    std::vector<Area>getUnDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
 
     // 添加游戏结束UI显示方法
@@ -55,6 +55,12 @@ public:
     // 添加事件屏蔽方法
     void createEventBlocker();
     void removeEventBlocker();
+
+    void highlightGrid(int row, int col, bool valid);
+    void clearHighlight();
+
+    void expandMyDeployArea(bool lane);//0表示左塔掉了，1表示右塔掉了
+    void expandEnemyDeployArea(bool lane);//0表示左塔掉了，1表示右塔掉了
 private:
     void createBackground();
     void createDebugLayer();
@@ -89,7 +95,7 @@ private:
 
     cocos2d::EventListener* _touchListener;
     cocos2d::Layer* _eventBlocker;
-
+    cocos2d::DrawNode* _highlightNode = nullptr;
 };
 
 #endif // BATTLEFIELD_H
