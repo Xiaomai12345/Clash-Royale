@@ -32,7 +32,7 @@ BattleManager::BattleManager()
     , _gameTime(0.0f)
     , _currentGameMode("normal")
     ,myKingAlive(true),myLeftPrincessAlive(true),myRightPrincessAlive(true)
-    ,enemyKingAlive(true),enemyLeftPrincessAlive(false),enemyRightPrincessAlive(true)
+    ,enemyKingAlive(true),enemyLeftPrincessAlive(true),enemyRightPrincessAlive(true)
 {
     _manaSystem = ManaSystem::getInstance();
     _enemyManaSystem = ManaSystem::getEnemyInstance();
@@ -52,7 +52,7 @@ void BattleManager::init(Battlefield* battlefield)
     _battlefield = battlefield;
     _gameActive = true;
     _gameEnded = false;
-    _gameTime = 170.0f;
+    _gameTime = 0.0f;
 
     CCLOG("BattleManager initialized");
 }
@@ -77,7 +77,7 @@ void BattleManager::update(float delta)
     // 检查游戏模式切换
     if (_gameTime >= 180.0f && _playerCrowns[0] == _playerCrowns[1] && _currentGameMode == "normal")
     {
-        _gameTime = 170.0f;
+        _gameTime = 0.0f;
         setGameMode("sudden_death");
     }
 
@@ -226,11 +226,13 @@ void BattleManager::addCrown()
 {
     if (myLeftPrincessAlive == false && myTower[0] == true)
     {
+        _battlefield->expandEnemyDeployArea(0);
         _playerCrowns[1] += 1;
         myTower[0] = false;
     }
     if (myRightPrincessAlive == false && myTower[1] == true)
     {
+        _battlefield->expandEnemyDeployArea(1);
         _playerCrowns[1] += 1;
         myTower[1] = false;
     }
@@ -242,11 +244,13 @@ void BattleManager::addCrown()
 
     if(enemyLeftPrincessAlive==false&&enemyTower[0]==true)
     { 
+        _battlefield->expandMyDeployArea(0);
         _playerCrowns[0] += 1;
         enemyTower[0] = false;
     }
     if (enemyRightPrincessAlive == false && enemyTower[1] == true)
     {
+        _battlefield->expandMyDeployArea(1);
         _playerCrowns[0] += 1;
         enemyTower[1] = false;
     }
