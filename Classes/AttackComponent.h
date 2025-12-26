@@ -37,6 +37,8 @@ public:
     // ====== 修正：将 isTargetInRange 移到 public ======
     bool isTargetInRange(IAttackable* owner) const;
 
+    IAttackable* getTarget() const { return _target; }
+
 protected:
     // 真正的攻击行为（子类实现）
     virtual void doAttack(IAttackable* owner) = 0;

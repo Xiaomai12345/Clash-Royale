@@ -14,6 +14,7 @@ public:
     KnightTroop();  // 声明构造函数
     ~KnightTroop();
     virtual bool init() override;
+    virtual void update(float dt) override; // 重写 update 以处理旋转
 
     CREATE_FUNC(KnightTroop);
 };

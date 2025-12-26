@@ -68,7 +68,7 @@ void AnimationComponent::addAction(State state, ActionInterval* action)
     _animations[state] = action;
 }
 
-void AnimationComponent::update(TroopBase* owner, float dt)
+void AnimationComponent::update(IAttackable* owner, float dt)
 {
     if (!_targetSprite || !owner) return;
 
@@ -123,6 +123,7 @@ void AnimationComponent::playAnimation(State state)
         {
             _targetSprite->setTexture(_defaultTextureFile);
         }
+        // 对于 Cannon 这种没有 IDLE 动画的，这里会停止 ATTACKING 动画并复位
     }
 }
 

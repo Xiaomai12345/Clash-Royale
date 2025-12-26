@@ -16,6 +16,7 @@ public:
     DragonBaby();  // 声明构造函数
     ~DragonBaby();
     virtual bool init() override;
+    virtual void update(float dt) override;
 
     CREATE_FUNC(DragonBaby);
 };

@@ -13,6 +13,7 @@ public:
     SkeletonTroop();  // 声明构造函数
     ~SkeletonTroop();
     virtual bool init() override;
+    virtual void update(float dt) override;
 
     CREATE_FUNC(SkeletonTroop);
 

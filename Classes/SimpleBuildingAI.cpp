@@ -61,9 +61,11 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
         {
             _target = newTarget;
             attackComponent->setTarget(newTarget);
+            owner->setState(State::ATTACKING);
         }
         else
         {
+            owner->setState(State::IDLE);
         }
 
         _searchCooldown = SEARCH_INTERVAL;

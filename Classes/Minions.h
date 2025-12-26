@@ -17,6 +17,7 @@ public:
     ~Minions();
 
     virtual bool init() override;
+    virtual void update(float dt) override;
 
     CREATE_FUNC(Minions);
 };

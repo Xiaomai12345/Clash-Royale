@@ -292,6 +292,10 @@
     <ClCompile Include="..\Classes\EnemyManaSystem.cpp">
       <Filter>Classes\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\LoadingScene.cpp" />
+    <ClCompile Include="..\Classes\AnimationComponent.cpp">
+      <Filter>Classes\Entities\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
