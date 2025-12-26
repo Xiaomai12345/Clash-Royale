@@ -63,7 +63,6 @@ void Battlefield::setupBattlefield(int level)
     buildRegions();
 
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
-
     auto EnemyLeft = PrincessTower::create();
     EnemyLeft->setPosition(Vec2(300, 1024));
     EnemyLeft->setCamp(ECamp::RIGHT);

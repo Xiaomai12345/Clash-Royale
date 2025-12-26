@@ -77,7 +77,7 @@ void BattleManager::update(float delta)
     // 检查游戏模式切换
     if (_gameTime >= 180.0f && _playerCrowns[0] == _playerCrowns[1] && _currentGameMode == "normal")
     {
-        _gameTime = 0.0f;
+        _gameTime = 170.0f;
         setGameMode("sudden_death");
     }
 
@@ -239,7 +239,7 @@ void BattleManager::addCrown()
     if (myKingAlive == false && myTower[2] == true)
     {
         _playerCrowns[1] += 3;
-        myTower[1] = false;
+        myTower[2] = false;
     }
 
     if(enemyLeftPrincessAlive==false&&enemyTower[0]==true)
@@ -308,7 +308,7 @@ void BattleManager::checkGameEnded()
     }
     else if (_currentGameMode == "sudden_death")
     {
-        if (_playerCrowns[0] != _playerCrowns[1]|| _gameTime >= 180.0f)
+        if ((_playerCrowns[0] != _playerCrowns[1])|| _gameTime >= 180.0f)
         {
             _gameEnded = true;
             return;

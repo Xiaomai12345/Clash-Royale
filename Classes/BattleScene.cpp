@@ -32,7 +32,7 @@ bool BattleScene::init()
     _gameStarted = false;
     _gameEnded = false;
     _gameTime = 0.0f;
-    _totalGameTime = 180.0f;
+    _totalGameTime = 10.0f;
     _playerCrowns[0] = _playerCrowns[1] = 0;
     _isPlayer1 = true;
     _selectedCard = nullptr;
@@ -58,6 +58,13 @@ bool BattleScene::init()
     ManaSystem::getEnemyInstance()->init(5.0f, 10.0f, 0.3333f);
     // 初始化卡牌管理器
     CardManager::getInstance()->init();
+
+    //初始化AI
+    _enemyAi = EnemyAISystem::getInstance();
+    _enemyAi->init();
+    _enemyAi->setBattlefield(_battlefield);
+    _enemyAi->setBattleManager(BattleManager::getInstance());
+    _enemyAi->startAI();
 
     // 初始化手牌显示
     initHandCards();
@@ -474,13 +481,15 @@ void BattleScene::update(float delta)
 
     // 更新圣水系统
     ManaSystem::getInstance()->update(delta);
-
+    ManaSystem::getEnemyInstance()->update(delta);
     // 更新战斗管理器
     BattleManager::getInstance()->update(delta);
 
     // 更新卡牌管理器
     CardManager::getInstance()->update(delta);
-
+    CardManager::getEnemyInstance()->update(delta);
+    //更新AI
+    EnemyAISystem::getInstance()->update(delta);
     //改变模式后更新倒计时
     if (BattleManager::getInstance()->getCurrentGameMode() == "sudden_death" && _changeGameMode == false)
     {

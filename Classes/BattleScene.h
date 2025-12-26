@@ -2,7 +2,7 @@
 #define BATTLE_SCENE_H
 
 #include "cocos2d.h"
-
+#include"EnemyAISystem.h"
 class Battlefield;
 class Card;
 class ManaBar;
@@ -44,7 +44,7 @@ private:
     Battlefield* _battlefield;
     ManaBar* _manaBar;
     cocos2d::DrawNode* _deployDrawNode;
-
+    EnemyAISystem* _enemyAi;
     // 游戏状态
     bool _gameStarted;
     bool _gameEnded;
