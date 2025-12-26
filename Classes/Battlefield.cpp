@@ -63,7 +63,7 @@ void Battlefield::setupBattlefield(int level)
     buildRegions();
 
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
-  
+    setupGameEndCallback();
     auto EnemyLeft = PrincessTower::create();
     EnemyLeft->setPosition(Vec2(300, 1024));
     EnemyLeft->setCamp(ECamp::RIGHT);
@@ -102,17 +102,7 @@ void Battlefield::setupBattlefield(int level)
     if (_debugEnabled)
         createDebugLayer();
     
-    // 初始化敌人AI
-    _enemyAI = EnemyAISystem::create();
-    if (_enemyAI)
-    {
-        addChild(_enemyAI);
-        _enemyAI->setBattleManager(BattleManager::getInstance());
-        _enemyAI->setBattlefield(this);
-        _enemyAI->startAI();
-        CCLOG("Enemy AI System started.");
-    }
-
+  
     CCLOG("Setup battlefield level %d", level);
 
 }
