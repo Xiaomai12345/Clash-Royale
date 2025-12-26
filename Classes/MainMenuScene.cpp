@@ -1,7 +1,7 @@
 #include "MainMenuScene.h"
 #include "BattleScene.h"
 #include "GameManager.h"
-
+#include"AudioManager.h"
 USING_NS_CC;
 
 MainMenuScene* MainMenuScene::create()
@@ -21,6 +21,9 @@ MainMenuScene* MainMenuScene::create()
 
 bool MainMenuScene::init()
 {
+     if (!Scene::init()) { 
+        return false;
+    }
     Size visibleSize = Director::getInstance()->getVisibleSize();
     createBackground();
     // 创建开始游戏按钮
@@ -31,12 +34,22 @@ bool MainMenuScene::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu);
 
+
+    //播放背景音乐
+    AudioManager::getInstance()->playBgMusic("music/sounds/menu_03.wav");
+
+    float bgVol = SimpleAudioEngine::getInstance()->getBackgroundMusicVolume();
+
+    //确认音量设置无异常
+    float effectVol = SimpleAudioEngine::getInstance()->getEffectsVolume();
+    CCLOG("背景音乐音量：%.2f，音效音量：%.2f", bgVol, effectVol);
     return true;
 }
 
 void MainMenuScene::onStartGame(Ref* sender)
 {
     // 切换到战斗场景
+    AudioManager::getInstance()->stopBgMusic();
     Director::getInstance()->replaceScene(BattleScene::create());
 }
 

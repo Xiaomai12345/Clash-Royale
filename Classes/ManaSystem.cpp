@@ -20,7 +20,7 @@ ManaSystem* ManaSystem::getEnemyInstance()
     {
         _enemyInstance = new ManaSystem();
     }
-    return _instance;
+    return _enemyInstance;
 }
 
 void ManaSystem::destroyInstance()

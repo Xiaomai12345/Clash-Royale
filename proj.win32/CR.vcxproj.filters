@@ -289,8 +289,9 @@
     <ClCompile Include="..\Classes\Projectile.cpp">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\EnemyManaSystem.cpp">
-      <Filter>Classes\Systems</Filter>
+    <ClCompile Include="..\Classes\LoadingScene.cpp" />
+    <ClCompile Include="..\Classes\AnimationComponent.cpp">
+      <Filter>Classes\Entities\Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\AnimationComponent.cpp">
@@ -496,9 +497,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Projectile.h">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\EnemyManaSystem.h">
-      <Filter>Classes\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LoadingScene.h">
       <Filter>Classes\Scenes</Filter>

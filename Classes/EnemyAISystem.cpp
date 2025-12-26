@@ -2,14 +2,26 @@
 #include "BattleManager.h"
 #include "Battlefield.h"
 #include "UnitType.h"
-#include "EnemyManaSystem.h"
-
+#include<random>
 USING_NS_CC;
 
-
-EnemyAISystem::~EnemyAISystem()
+EnemyAISystem* EnemyAISystem::_instance = nullptr;
+EnemyAISystem* EnemyAISystem::getInstance()
 {
-    CC_SAFE_DELETE(_enemyMana);
+    if (!_instance)
+    {
+        _instance = new EnemyAISystem();
+    }
+    return _instance;
+}
+
+void EnemyAISystem::destroyInstance()
+{
+    if (_instance)
+    {
+        delete _instance;
+        _instance = nullptr;
+    }
 }
 
 bool EnemyAISystem::init()
@@ -17,24 +29,11 @@ bool EnemyAISystem::init()
     if (!Node::init())
         return false;
     CCLOG("[EnemyAI] init %p", this);
-    _lowCostUnits =
-    {
-        UNIT_SKELETON,
-        UNIT_ARCHER
-    };
-
-    _highCostUnits =
-    {
-        UNIT_KNIGHT,
-        UNIT_VALKYRIE,
-        UNIT_GIANT,
-        UNIT_DRAGONBABY,
-        UNIT_SKELETON_LEGION
-    };
-    _enemyMana = new EnemyManaSystem();
-    _enemyMana->init(5.0f, 10.0f, 0.8f);
-
-    scheduleUpdate();
+    _enemyMana = ManaSystem::getEnemyInstance();
+    _enemyCard = CardManager::getEnemyInstance();
+    _enemyMana->init();
+    _enemyCard->init();
+    //scheduleUpdate();
     return true;
 }
 
@@ -70,13 +69,10 @@ void EnemyAISystem::stopAI()
 
 void EnemyAISystem::update(float dt)
 {
+
     if (!_isActive || !_battleManager || !_battlefield || !_enemyMana)
         return;
-
-    _enemyMana->update(dt);
-
     _thinkTimer += dt;
-
     if (_thinkTimer >= _nextThinkInterval)
     {
         tryDeployTroop();
@@ -93,36 +89,39 @@ void EnemyAISystem::tryDeployTroop()
         return;
     }
 
-    int unitType = selectUnitByStrategy();
+    int index = selectUnitByStrategy();
+
     Vec2 deployPos = getRandomDeployPosition();
 
     if (deployPos == Vec2::ZERO)
         return;
+    Card* card = _enemyCard->getHandCards()[index];
 
-    _battleManager->deployUnit(unitType, deployPos, 2);
-    _enemyMana->consumeMana(kDeployCost);
+    
+    _enemyMana->consumeMana(card->getManaCost());
+
+    // 真正部署单位（关键）
+    bool success = card->use(deployPos, /* enemyId */ 2);
+    if (!success)
+        return;
+
+    // ③ 从手牌移除 / 循环
+    _enemyCard->useCard(card);
+
 
     _thinkTimer = 0.0f;
     _nextThinkInterval = RandomHelper::random_real(2.0f, 5.0f);
 
-    CCLOG("[EnemyAI] Deploy %d | Mana %.1f%%",
-        unitType,
-        _enemyMana->getManaPercentage() * 100.0f);
 }
 
 int EnemyAISystem::selectUnitByStrategy() const
 {
-    float manaPercent = _enemyMana->getManaPercentage();
-
-    const std::vector<int>& pool =
-        (manaPercent > 0.6f) ? _highCostUnits : _lowCostUnits;
-
-    int index = RandomHelper::random_int(
-        0,
-        static_cast<int>(pool.size()) - 1
-    );
-
-    return pool[index];
+    // 随机打乱牌组
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::uniform_int_distribution<> dist(0, 3);  // 生成0-3的随机整数
+    int index = dist(g);
+    return index;
 }
 
 Vec2 EnemyAISystem::getRandomDeployPosition() const

@@ -1,5 +1,6 @@
 #include "LoadingScene.h"
 #include "MainMenuScene.h"
+#include"AudioManager.h"
 #include "ui/CocosGUI.h"
 #include <functional>
 USING_NS_CC;
@@ -15,14 +16,12 @@ bool LoadingScene::init()
         return false;
     }
 
-    
     // 创建加载背景
     createLoadingBackground();
     //创建进度条
     createLoadingBar();
     //预加载资源
     preloadResources();
-
 
     return true;
 }
@@ -58,8 +57,15 @@ void LoadingScene::preloadResources()
     Director::getInstance()->getTextureCache()->addImageAsync("Images/background/base.webp", std::bind(&LoadingScene::onResLoaded, std::placeholders::_1, this));
     // 预加载战斗场景背景图
     Director::getInstance()->getTextureCache()->addImageAsync("Images/background/battlefield.jpg", std::bind(&LoadingScene::onResLoaded, std::placeholders::_1, this));
+    //预加载音乐
+    AudioManager::getInstance()->initAudio();
+    loadedResCount++;
+    //更新进度条
+    float progress = (float)loadedResCount / totalResCount * 80;
+    loadingBar->setPercent(progress);
+    CCLOG("音频预加载完成，已加载数：%d", loadedResCount);
 
-    CCLOG("资源预加载完成！");
+    CCLOG("资源预加载开始！"); 
 }
 
 // 跳转到主界面，加淡入淡出动画
@@ -80,6 +86,8 @@ void LoadingScene::createLoadingBar() {
     }
     CCLOG("加载场景进度条加载成功");
 
+    totalResCount = 4;
+    loadedResCount = 0;
     // 锚点+位置
     loadingBar->setAnchorPoint(Vec2(0.5f, 0.5f));
     const Size winSize = Director::getInstance()->getVisibleSize();
@@ -93,14 +101,17 @@ void LoadingScene::createLoadingBar() {
 
     //制造滑动效果
     loadingBar->setPercent(0);
-    totalResCount = 3;
-    loadedResCount = 0;
+    
     this->addChild(loadingBarbg, 1);
     this->addChild(loadingBar,2);
 }
 
 //协调进度条
 void LoadingScene::onResLoaded(cocos2d::Texture2D* texture, LoadingScene* self) {
+    if (!self || !self->loadingBar) {
+        CCLOG("onResLoaded：self或loadingBar为空！");
+        return;
+    }
     self->loadedResCount++;
     float progress = (float)self->loadedResCount / (float)self->totalResCount * 80;
     self->loadingBar->setPercent(progress);
@@ -111,16 +122,24 @@ void LoadingScene::onResLoaded(cocos2d::Texture2D* texture, LoadingScene* self) 
             self->loadingBar->setPercent(80);
             });
         auto delay = DelayTime::create(1.0f);
+
+        auto playCompleteEffect = CallFunc::create([=]() {
+            AudioManager::getInstance()->playEffect("music/effect/scroll_loading_01.wav");
+            });
+
         auto progressTo100 = ProgressTo::create(0.5f, 100);
+        
         auto jumpToMenu = CallFunc::create([self]() {
             self->jumpToMainMenu(0.0f);
         });
+
         auto progressSeq = Sequence::create(
             set80Percent,  // 先设80%
             delay,       // 停1秒
+            playCompleteEffect,//播放加载音乐
             progressTo100, // 0.5秒渐变到100%
             DelayTime::create(0.5f), // 到100%后缓冲0.5秒
-            CallFunc::create([=]() { self->jumpToMainMenu(0.0f); }),
+            jumpToMenu,
             nullptr
         );
         self->loadingBar->runAction(progressSeq);

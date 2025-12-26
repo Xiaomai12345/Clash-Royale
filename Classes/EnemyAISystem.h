@@ -2,6 +2,8 @@
 #define __ENEMY_AI_SYSTEM_H__
 
 #include "cocos2d.h"
+#include"ManaSystem.h"
+#include"CardManager.h"
 #include <vector>
 
 class BattleManager;
@@ -13,19 +15,11 @@ class EnemyAISystem : public cocos2d::Node
 public:
     CREATE_FUNC(EnemyAISystem);
 
+    static EnemyAISystem* getInstance();
+    static void destroyInstance();
     virtual bool init() override;
     virtual void update(float dt) override;
-    EnemyAISystem()
-        : _battleManager(nullptr)
-        , _battlefield(nullptr)
-        , _enemyMana(nullptr)
-        , _isActive(false)
-        , _thinkTimer(0.0f)
-        , _nextThinkInterval(3.0f)
-    {
-    }
 
-    virtual ~EnemyAISystem();
 
     // 外部依赖注入
     void setBattleManager(BattleManager* manager);
@@ -54,15 +48,15 @@ private:
     // ======================
     // 系统依赖
     // ======================
+    static EnemyAISystem* _instance;
     BattleManager* _battleManager = nullptr;
     Battlefield* _battlefield = nullptr;
-    EnemyManaSystem* _enemyMana = nullptr;
-
+    ManaSystem* _enemyMana = nullptr;
+    CardManager* _enemyCard;
     // ======================
     // 敌方卡池（基础）
     // ======================
-    std::vector<int> _lowCostUnits;   // 低费
-    std::vector<int> _highCostUnits;  // 高费
+
 };
 
 #endif // __ENEMY_AI_SYSTEM_H__
