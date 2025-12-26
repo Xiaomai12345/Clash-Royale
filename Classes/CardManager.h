@@ -15,7 +15,8 @@ public:
     // 获取单例
     static CardManager* getInstance();
     static void destroyInstance();
-
+    static CardManager* getEnemyInstance();
+    static void destroyEnemyInstance();
     // 初始化
     void init();
     void initDeck();
@@ -45,7 +46,7 @@ private:
 
 private:
     static CardManager* _instance;
-
+    static CardManager* _enemyInstance;
     // 手牌
     std::vector<Card*> _handCards;
     std::vector<Card*> _deck;

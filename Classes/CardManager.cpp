@@ -1,9 +1,11 @@
 #include "CardManager.h"
-
+#include <algorithm>
+#include <random>     
 USING_NS_CC;
 
 // 静态成员初始化
 CardManager* CardManager::_instance = nullptr;
+CardManager* CardManager::_enemyInstance = nullptr;
 
 CardManager* CardManager::getInstance()
 {
@@ -20,6 +22,24 @@ void CardManager::destroyInstance()
     {
         delete _instance;
         _instance = nullptr;
+    }
+}
+
+CardManager* CardManager::getEnemyInstance()
+{
+    if (!_enemyInstance)
+    {
+        _enemyInstance = new CardManager();
+    }
+    return _enemyInstance;
+}
+
+void CardManager::destroyEnemyInstance()
+{
+    if (_enemyInstance)
+    {
+        delete _enemyInstance;
+        _enemyInstance = nullptr;
     }
 }
 
@@ -69,6 +89,11 @@ void CardManager::initDeck()
     _deck.push_back(cannon);
     _deck.push_back(skeleton);
     _deck.push_back(minions);
+
+    // 随机打乱牌组
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(_deck.begin(), _deck.end(), g);
 }
 void CardManager::initHandCards()
 {
