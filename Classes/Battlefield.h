@@ -34,7 +34,7 @@ public:
     bool isValidDeployPosition(const cocos2d::Vec2& worldPos, int playerId) const;
     bool isWalkable(const cocos2d::Vec2& worldPos) const;
     bool isBridge(const cocos2d::Vec2& worldPos) const;
-    bool canWalk(const cocos2d::Vec2& worldPos) const ;
+    bool canWalk(const cocos2d::Vec2& worldPos) const;
     cocos2d::Vec2 constrainPosition(const cocos2d::Vec2& desired, const cocos2d::Vec2& current) const;
     const Area* findBridgeArea(const cocos2d::Vec2& worldPos) const;
     cocos2d::Vec2 projectToBridge(const cocos2d::Vec2& desiredPos) const;
@@ -47,13 +47,13 @@ public:
 
     void enableDebugDraw(bool enable);
     bool isDebugDrawEnabled() const { return _debugEnabled; }
-	void addUnit(cocos2d::Node* unit);
+    void addUnit(cocos2d::Node* unit);
 
     std::vector<Area>getMyarea() { return myArea; }
     std::vector<Area>getEnemyarea() { return enemyArea; }
     std::vector<Area>getUnDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
-
+    std::vector<Area>getDeployarea();
     // 添加游戏结束UI显示方法
     void showGameEndUI(bool isPlayer1Win);
 
@@ -98,7 +98,6 @@ private:
 
     bool _debugEnabled = false;
     EnemyAISystem* _enemyAI = nullptr;
-
 
     cocos2d::EventListener* _touchListener;
     cocos2d::Layer* _eventBlocker;

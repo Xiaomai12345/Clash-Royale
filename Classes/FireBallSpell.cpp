@@ -35,15 +35,63 @@ void FireballSpell::cast(const Vec2& worldPos, ECamp casterCamp)
 
     CCLOG("Fireball cast at (%.1f, %.1f)", worldPos.x, worldPos.y);
 
-    drawDebugRange();
-    applyDamage();
+    // 1. 创建火球精灵 (起始位置在屏幕上方)
+    auto fireballSprite = Sprite::create("Images/cards/fireball.png"); // 暂时用卡牌图标代替，建议换成特效图
+    if (fireballSprite)
+    {
+        addChild(fireballSprite);
+        fireballSprite->setScale(0.5f);
+        
+        // 初始位置：目标点上方很高的地方
+        Vec2 startPos = Vec2(0, 400); 
+        fireballSprite->setPosition(startPos);
+        
+        // 2. 投掷动画：移动到目标点 (0,0)
+        float duration = 0.5f;
+        auto move = MoveTo::create(duration, Vec2::ZERO);
+        auto rotate = RotateBy::create(duration, 360); // 旋转效果
+        auto spawn = Spawn::create(move, rotate, nullptr);
+        
+        // 3. 落地后的回调
+        auto callback = CallFunc::create([this, fireballSprite]() {
+            // 隐藏火球
+            fireballSprite->setVisible(false);
+            
+            // 造成伤害
+            applyDamage();
+            
+            // 播放爆炸特效 (这里可以用粒子系统或帧动画，暂时用简单的缩放模拟)
+            auto explosion = Sprite::create("Images/cards/fireball.png"); // 临时用
+            if (explosion) {
+                this->addChild(explosion);
+                explosion->setScale(0.1f);
+                explosion->runAction(Sequence::create(
+                    ScaleTo::create(0.1f, 1.5f), // 快速膨胀
+                    FadeOut::create(0.2f),       // 渐隐消失
+                    RemoveSelf::create(),
+                    nullptr
+                ));
+            }
+            
+            // 绘制调试范围
+            drawDebugRange();
+        });
 
-    // 延迟移除，方便观察
-    runAction(Sequence::create(
-        DelayTime::create(0.2f),
-        RemoveSelf::create(),
-        nullptr
-    ));
+        // 4. 移除自身
+        auto remove = Sequence::create(DelayTime::create(0.5f), RemoveSelf::create(), nullptr);
+
+        fireballSprite->runAction(Sequence::create(spawn, callback, nullptr));
+        
+        // 注意：这里不要立即 RemoveSelf，要等动画播放完
+        runAction(remove);
+    }
+    else
+    {
+        // 如果没有图片，直接结算
+        drawDebugRange();
+        applyDamage();
+        runAction(Sequence::create(DelayTime::create(0.2f), RemoveSelf::create(), nullptr));
+    }
 }
 
 void FireballSpell::applyDamage()

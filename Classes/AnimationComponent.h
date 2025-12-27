@@ -13,7 +13,7 @@ public:
     ~AnimationComponent();
 
     // 每帧更新，检测状态变化
-    void update(TroopBase* owner, float dt);
+    void update(IAttackable* owner, float dt);
 
     // 注册基于帧的动画 (Cocos2d Animation)
     void addAnimation(State state, cocos2d::Animation* animation, bool loop = true);

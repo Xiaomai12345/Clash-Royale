@@ -32,7 +32,7 @@ BattleManager::BattleManager()
     , _gameTime(0.0f)
     , _currentGameMode("normal")
     ,myKingAlive(true),myLeftPrincessAlive(true),myRightPrincessAlive(true)
-    ,enemyKingAlive(true),enemyLeftPrincessAlive(true),enemyRightPrincessAlive(true)
+    ,enemyKingAlive(true),enemyLeftPrincessAlive(1),enemyRightPrincessAlive(1)
 {
     _manaSystem = ManaSystem::getInstance();
     _enemyManaSystem = ManaSystem::getEnemyInstance();
@@ -52,7 +52,7 @@ void BattleManager::init(Battlefield* battlefield)
     _battlefield = battlefield;
     _gameActive = true;
     _gameEnded = false;
-    _gameTime = 170.0f;
+    _gameTime = 0.0f;
 
     CCLOG("BattleManager initialized");
 }
@@ -65,7 +65,6 @@ void BattleManager::update(float delta)
     _gameTime += delta;
     addCrown();
     checkGameEnded();
-
     if (_gameEnded)
     {
         if (_gameEndCallback)

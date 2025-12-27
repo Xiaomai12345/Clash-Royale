@@ -9,7 +9,8 @@ public:
     // 使用构造函数进行赋值初始化
     KingdomTower(float maxHp = 2000, float attackRange = 400.0f, float attackInterval = 2.f, int attackDamage = 20);
     virtual bool init() override;  // 初始化
-    virtual void die() override; // 重写死亡处理函数
+    virtual void die() override;   // 重写死亡逻辑
+
     CREATE_FUNC(KingdomTower);  // 使用宏来创建实例
 
 private:

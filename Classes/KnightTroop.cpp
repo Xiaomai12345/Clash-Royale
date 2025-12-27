@@ -31,6 +31,10 @@ KnightTroop::~KnightTroop()
 
 bool KnightTroop::init()
 {
+	float AttackRangeClam = 25.0f;//攻击范围
+	float AttackClam = 1.0;//攻击间隔
+	float AttackDamageClam = 100;//攻击伤害
+
     if (!TroopBase::init())  // 初始化基类 (TroopBase)
         return false;
 
@@ -48,9 +52,9 @@ bool KnightTroop::init()
 
     // 创建并绑定近战攻击组件（骑士的近战攻击）
     auto attack = new MeleeAttackComponent(
-        25.0f,   // 攻击范围
-        1.0f,     // 攻击间隔
-        100      // 伤害值
+        AttackRangeClam,   // 攻击范围
+        AttackClam,   // 攻击间隔
+        AttackDamageClam      // 伤害值
     );
     setAttackComponent(attack);
 
@@ -59,12 +63,17 @@ bool KnightTroop::init()
     // =========================
 
     // 创建士兵的Sprite（骑士的图片）
-    _sprite = Sprite::create("Images/troops/Knight.png"); // 使用 PNG 系列
+    // 使用 Animations 文件夹下的图片作为初始图
+    _sprite = Sprite::create("Images/troops/Animations/KnightMove.png"); 
+    
+    // 基础缩放值 (参考 Giant 设置为 0.8f，假设资源规格一致)
+    const float baseScale = 0.8f; 
+
     if (_sprite)
     {
 		CCLOG("KnightTroop: Sprite loaded successfully.");
         addChild(_sprite);  // 将图片添加到当前节点
-        _sprite->setScale(1.f);  // 保持缩放
+        _sprite->setScale(baseScale);  // 保持缩放
     }
     else
     {
@@ -78,10 +87,7 @@ bool KnightTroop::init()
     setAnimationComponent(anim);
     
     // 设置默认贴图
-    anim->setDefaultTexture("Images/troops/Knight.png");
-
-    // 基础缩放值
-    const float baseScale = 1.f; 
+    anim->setDefaultTexture("Images/troops/Animations/KnightMove.png");
 
     // 1. 待机动画 (IDLE): 呼吸
     // ----------------------------------------------------------------
@@ -99,8 +105,9 @@ bool KnightTroop::init()
     {
         Vector<SpriteFrame*> walkFrames;
         
-        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Knight.png");
-        auto tex2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightMove.png");
+        // 加载移动帧 (路径改为 Animations 下)
+        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/KnightMove.png");
+        auto tex2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/KnightMove2.png");
         
         if (tex1 && tex2)
         {
@@ -111,8 +118,12 @@ bool KnightTroop::init()
             walkFrames.pushBack(frame2);
             
             // 创建动画: 每帧 0.2 秒
-            auto walkAnim = Animation::createWithSpriteFrames(walkFrames, 0.2f);
+            auto walkAnim = Animation::createWithSpriteFrames(walkFrames, 0.5f);
             anim->addAnimation(State::FOLLOWING, walkAnim);
+        }
+        else
+        {
+             CCLOG("KnightTroop: Failed to load move animation textures.");
         }
     }
 
@@ -121,8 +132,9 @@ bool KnightTroop::init()
     {
         Vector<SpriteFrame*> attackFrames;
         
-        auto texAtt1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightAttack1.png");
-        auto texAtt2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/KnightAttack2.png");
+        // 加载攻击帧 (路径改为 Animations 下)
+        auto texAtt1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/KnightAttack1.png");
+        auto texAtt2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/KnightAttack2.png");
         
         if (texAtt1 && texAtt2)
         {
@@ -132,12 +144,55 @@ bool KnightTroop::init()
             attackFrames.pushBack(att1);
             attackFrames.pushBack(att2);
             
-            // 攻击速度稍微快一点，0.15秒一帧
-            auto attackAnim = Animation::createWithSpriteFrames(attackFrames, 0.15f);
+            // 动态计算帧间隔：总攻击间隔 / 帧数
+            // 骑士攻击间隔 1.0s，2帧 -> 每帧 0.5s
+            float attackInterval = 1.0f; // 与 MeleeAttackComponent 中的值保持一致
+            float delayPerUnit = attackInterval / 2.0f;
+            
+            auto attackAnim = Animation::createWithSpriteFrames(attackFrames, delayPerUnit);
             anim->addAnimation(State::ATTACKING, attackAnim);
+        }
+        else
+        {
+            CCLOG("KnightTroop: Failed to load attack animation textures.");
         }
     }
 
     // 血条初始化（确保只初始化一次）
     return true;
+}
+
+void KnightTroop::update(float dt)
+{
+    // 1. 获取移动前位置
+    Vec2 oldPos = getPosition();
+
+    // 2. 调用基类更新（处理移动、AI、攻击等）
+    TroopBase::update(dt);
+
+    // 3. 获取移动后位置并计算方向
+    Vec2 newPos = getPosition();
+    Vec2 moveDir = newPos - oldPos;
+
+    // 4. 如果有移动，则更新朝向
+    if (moveDir.lengthSquared() > 0.1f) // 阈值防抖
+    {
+        moveDir.normalize();
+        
+        // 计算角度：
+        // Vec2::getAngle() 返回的是数学角度（弧度），X轴正向为0，逆时针为正。
+        // Sprite::setRotation() 接受的是角度（度数），顺时针为正。
+        // 我们的素材是朝向Y轴正向（上）的。
+        
+        // 数学角度转度数
+        float angleDeg = CC_RADIANS_TO_DEGREES(moveDir.getAngle());
+        
+        // 转换公式：TargetRotation = 90 - MathAngle
+        float rotation = 90.0f - angleDeg;
+        
+        if (_sprite)
+        {
+            _sprite->setRotation(rotation);
+        }
+    }
 }

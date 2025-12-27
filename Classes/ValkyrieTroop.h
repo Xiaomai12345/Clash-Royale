@@ -16,6 +16,7 @@ public:
     ~ValkyrieTroop();
 
     virtual bool init() override;
+    virtual void update(float dt) override;
 
     CREATE_FUNC(ValkyrieTroop);
 };

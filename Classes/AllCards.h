@@ -4,14 +4,14 @@
 
 
 //士兵
-#include"KnightTroop.h"
-#include"ArcherTroop.h"
-#include"DragonBaby.h"
-#include "Giant.h"
-#include "SkeletonTroop.h"
-#include"SkeletonLegion.h"
-#include "Minions.h"
-#include "ValkyrieTroop.h"
+#include"KnightTroop.h"//已有动画
+#include"ArcherTroop.h"//已有动画
+#include"DragonBaby.h"//已有动画
+#include "Giant.h"//已有动画
+#include "SkeletonTroop.h"//已有动画
+#include"SkeletonLegion.h"//已有动画
+#include "Minions.h"//已有动画
+#include "ValkyrieTroop.h"//已有动画
 
 
 //建筑

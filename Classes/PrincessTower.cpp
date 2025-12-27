@@ -17,6 +17,8 @@ PrincessTower::PrincessTower(float maxHp, float attackRange, float attackInterva
     _moveAttack = MoveAttack::Both;
     _moveAttacked = MoveAttack::Both;
     _isDying = false;
+    _shouldRotate = false; // 塔本身不旋转
+    _rooted = true;
 }
 
 bool PrincessTower::init()
@@ -61,16 +63,97 @@ void PrincessTower::setupComponents()
     );
     setAttackComponent(attack);
 
-    // 3. Sprite
-    _sprite = Sprite::create("Images/towers/princess_tower_red.png");
+    // 3. 资源加载 (Sprite & Animation)
+    updateAssets();
+}
+
+void PrincessTower::setCamp(ECamp camp)
+{
+    ECamp oldCamp = _camp;
+    BuildingBase::setCamp(camp); // 调用基类更新数据
+
+    // 如果阵营改变了，且组件已经初始化过（_sprite不为空），则刷新外观
+    if (oldCamp != camp && _sprite != nullptr)
+    {
+        updateAssets();
+    }
+}
+
+void PrincessTower::updateAssets()
+{
+    // 清理旧资源
+    if (_sprite) {
+        _sprite->removeFromParent();
+        _sprite = nullptr;
+    }
+    if (_princessSprite) {
+        _princessSprite->removeFromParent();
+        _princessSprite = nullptr;
+    }
+    // 注意：AnimationComponent 会在析构时释放，这里 setAnimationComponent 会覆盖旧的
+
+    // 1. Sprite (塔身)
+    std::string towerImage = (_camp == ECamp::LEFT) 
+        ? "Images/troops/Animations/BluePrincessTower.png" 
+        : "Images/troops/Animations/RedPrincessTower.png";
+
+    _sprite = Sprite::create(towerImage);
     if (_sprite)
     {
-        addChild(_sprite);
+        addChild(_sprite, 0); // 塔身在下层
         _sprite->setScale(1.0f);
     }
     else
     {
-        CCLOG("ERROR: Could not load Images/towers/princess_tower_red.png");
+        CCLOG("ERROR: Could not load tower image: %s", towerImage.c_str());
+        // Fallback
+        _sprite = Sprite::create("Images/towers/princess_tower_red.png");
+        addChild(_sprite, 0);
+    }
+
+    // 2. Princess (塔顶公主 - 负责攻击动画)
+    std::string princessImage = (_camp == ECamp::LEFT)
+        ? "Images/troops/Animations/BluePrincess.png"
+        : "Images/troops/Animations/RedPrincess.png";
+    
+    _princessSprite = Sprite::create(princessImage);
+    if (_princessSprite)
+    {
+        addChild(_princessSprite, 1); // 公主在上层
+        _princessSprite->setScale(1.0f);
+        
+        // 调整公主位置到塔顶
+        _princessSprite->setPosition(Vec2(0, 40)); 
+
+        // 3. Animation (只控制公主)
+        auto anim = new AnimationComponent();
+        anim->setTargetSprite(_princessSprite);
+        setAnimationComponent(anim); // 这会替换掉旧的组件，BuildingBase 会处理旧组件的 delete
+
+        // 添加攻击动画
+        std::string attackPrefix = (_camp == ECamp::LEFT) ? "BluePrincessAttack" : "RedPrincessAttack";
+        
+        auto animation = Animation::create();
+        for(int i = 1; i <= 2; ++i)
+        {
+            std::string frameName = StringUtils::format("Images/troops/Animations/%s(%d).png", attackPrefix.c_str(), i);
+            animation->addSpriteFrameWithFile(frameName);
+        }
+        animation->setDelayPerUnit(0.1f);
+        
+        auto animate = Animate::create(animation);
+        auto reset = CallFunc::create([this, princessImage](){
+             if(_princessSprite) _princessSprite->setTexture(princessImage);
+        });
+        
+        auto attackSeq = Sequence::create(
+            animate,
+            reset,
+            DelayTime::create(MAX(0, _attackInterval - 0.2f)),
+            nullptr
+        );
+        
+        anim->addAction(State::ATTACKING, RepeatForever::create(attackSeq));
     }
 }
 

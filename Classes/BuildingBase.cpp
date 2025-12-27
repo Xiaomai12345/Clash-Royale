@@ -5,7 +5,7 @@
 
 USING_NS_CC;
 
-BuildingBase::BuildingBase()  // ✅ 修正：构造函数名拼写
+BuildingBase::BuildingBase()  // 
     : _maxHp(0)
     , _bodyRadius(20.0f)
     , _camp(ECamp::LEFT)
@@ -13,6 +13,7 @@ BuildingBase::BuildingBase()  // ✅ 修正：构造函数名拼写
     , _moveAttacked(MoveAttack::Both)//默认均可被攻击
     , _ai(nullptr)
     , _attack(nullptr)
+    , _anim(nullptr)
     , _sprite(nullptr)
     , _debugDraw(nullptr)
     , _showDebugBounds(0)
@@ -24,20 +25,17 @@ BuildingBase::BuildingBase()  // ✅ 修正：构造函数名拼写
 {
 }
 
-BuildingBase::~BuildingBase()  // ✅ 修正：析构函数名拼写
+BuildingBase::~BuildingBase()  //
 {
 }
 
-bool BuildingBase::init()  // 
+bool BuildingBase::init()  //
 {
     if (!Node::init())
         return false;
 
     _hp = _maxHp;  // 初始化血量
 
-    // =========================
-    // Debug 绘制节点（⚠️ 必须创建）
-    // =========================
 
     if (_showDebugBounds)
     {
@@ -63,10 +61,73 @@ void BuildingBase::update(float dt)
         _ai->update(this, dt);
     }
 
+    if (_anim)
+    {
+        _anim->update(this, dt);
+    }
+
     // 攻击组件更新
     if (_attack)  // ✅ 修正：去掉多余的C括号
     {
         _attack->update(this, dt);
+    }
+
+    // 状态更新逻辑 (简单的自动状态机)
+    // 移除这里强制覆盖状态的逻辑，改为由AI全权控制
+    /*
+    if (_attack && _attack->getTarget())
+    {
+        setState(State::ATTACKING);
+    }
+    else
+    {
+        setState(State::IDLE);
+    }
+    */
+
+    // 4. 旋转逻辑 (如果启用)
+    if (_shouldRotate && _sprite && _attack)
+    {
+        auto target = _attack->getTarget();
+        if (target)
+        {
+            // 计算方向：目标位置 - 自身位置
+            // 为了准确，统一使用世界坐标计算方向
+            Vec2 targetPos = target->getWorldPosition();
+            Vec2 myPos = this->getWorldPosition();
+            Vec2 dir = targetPos - myPos;
+
+            if (dir.lengthSquared() > 0.1f)
+            {
+                float angleRad = dir.getAngle(); // -PI ~ PI
+                float angleDeg = CC_RADIANS_TO_DEGREES(angleRad);
+                
+                // 目标角度
+                float targetRotation = 90.0f - angleDeg;
+
+                // 当前角度
+                float currentRotation = _sprite->getRotation();
+
+                // 简单的平滑旋转 (Lerp)
+                // 解决 180/-180 度跳变问题
+                float diff = targetRotation - currentRotation;
+                while (diff > 180) diff -= 360;
+                while (diff < -180) diff += 360;
+
+                // 旋转速度：每秒 180 度 (可调整)
+                float rotateSpeed = 360.0f; 
+                float maxStep = rotateSpeed * dt;
+
+                if (std::abs(diff) <= maxStep)
+                {
+                    _sprite->setRotation(targetRotation);
+                }
+                else
+                {
+                    _sprite->setRotation(currentRotation + (diff > 0 ? maxStep : -maxStep));
+                }
+            }
+        }
     }
 
     if (_showDebugBounds && _debugDraw)
@@ -115,6 +176,11 @@ void BuildingBase::setAttackComponent(AttackComponent* attack)
     _attack = attack;
 }
 
+void BuildingBase::setAnimationComponent(AnimationComponent* anim)
+{
+    _anim = anim;
+}
+
 // =========================
 // 战斗相关
 // =========================
@@ -159,6 +225,7 @@ void BuildingBase::die()
 
     _isDying = true;
     unscheduleUpdate();
+
 
     if (_sprite)
     {

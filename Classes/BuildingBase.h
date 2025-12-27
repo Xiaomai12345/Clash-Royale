@@ -5,6 +5,7 @@
 #include "cocos2d.h"
 #include "base/CCRef.h"
 #include "IAttackable.h"
+#include "AnimationComponent.h"
 USING_NS_CC;
 
 // 前向声明（减少头文件耦合）
@@ -56,7 +57,7 @@ public:
     float getBodyRadius() const { return _bodyRadius; }
 
     // 阵营
-    void setCamp(ECamp camp) { _camp = camp; }
+    virtual void setCamp(ECamp camp) { _camp = camp; }
     ECamp getCamp() const { return _camp; }
     void setAttackType(AttackType attacktype) {}//设置与获取攻击类型
     AttackType getAttackType()const { return AttackType::Both; }
@@ -72,9 +73,9 @@ public:
     // 组件绑定接口
     // =========================
 
-    void setAIComponent(BuildingAI* ai);  // ✅ 修正：函数声明前的空格
-    void setAttackComponent(AttackComponent* attack);  // ✅ 修正：函数声明前的空格
-
+    void setAIComponent(BuildingAI* ai); 
+    void setAttackComponent(AttackComponent* attack);  
+    void setAnimationComponent(AnimationComponent* anim);
     BuildingAI* getAIComponent() const { return _ai; }
     AttackComponent* getAttackComponent() const { return _attack; }
 
@@ -96,6 +97,7 @@ protected:
     // =========================
     BuildingAI* _ai = nullptr;
     AttackComponent* _attack = nullptr;
+	AnimationComponent* _anim = nullptr;
 
 protected:
     // =========================
@@ -125,6 +127,7 @@ protected:
     void updateHpBarInternal();
     bool _hpBarInited;  // 血条是否已初始化
     bool _isDying;      // 是否已经死亡
+    bool _shouldRotate = false; // 是否允许旋转（如加农炮需要旋转，塔不需要）
 
 public:
     virtual Vec2 getWorldPosition() const override

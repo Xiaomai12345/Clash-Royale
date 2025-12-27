@@ -65,7 +65,7 @@ void KingdomTower::setupComponents()
 
     if (playerID == 0)
     {
-		BattleManager::getInstance()->setMyKingAlive(false);
+        BattleManager::getInstance()->setMyKingAlive(false);
     }
     else
     {

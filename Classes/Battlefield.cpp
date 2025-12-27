@@ -65,20 +65,20 @@ void Battlefield::setupBattlefield(int level)
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
     setupGameEndCallback();
     auto EnemyLeft = PrincessTower::create();
-    EnemyLeft->setPosition(Vec2(300, 1024));
+    EnemyLeft->setPosition(Vec2(200, 1024));
     EnemyLeft->setCamp(ECamp::RIGHT);
     this->addChild(EnemyLeft);
 
- 
+
     auto EnemyRight = PrincessTower::create();
-    EnemyRight->setPosition(Vec2(500, 1024));
+    EnemyRight->setPosition(Vec2(650, 1024));
     EnemyRight->setCamp(ECamp::RIGHT);
     this->addChild(EnemyRight);
 
     auto EnemyKing = KingdomTower::create();
     EnemyKing->setPosition(Vec2(450, 1200));
     EnemyKing->setCamp(ECamp::RIGHT);
-   
+
     this->addChild(EnemyKing);
 
 
@@ -101,8 +101,18 @@ void Battlefield::setupBattlefield(int level)
 
     if (_debugEnabled)
         createDebugLayer();
-    
-  
+
+    // 初始化敌人AI
+    _enemyAI = EnemyAISystem::create();
+    if (_enemyAI)
+    {
+        addChild(_enemyAI);
+        _enemyAI->setBattleManager(BattleManager::getInstance());
+        _enemyAI->setBattlefield(this);
+        _enemyAI->startAI();
+        CCLOG("Enemy AI System started.");
+    }
+
     CCLOG("Setup battlefield level %d", level);
 
 }
@@ -126,13 +136,13 @@ void Battlefield::createBackground()
         originalSize.height * scaleY);
 
     _background->setAnchorPoint(Vec2(0.5f, 1.0f));  // 设置锚点在顶部中间
-    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);  
+    _background->setPosition(_mapSize.width * 0.8 * 0.85 / 2, _mapSize.height * 0.8 - 50);
     addChild(_background, 0);
     auto lavenderRect = LayerColor::create(Color4B(82, 150, 111, 255), _mapSize.width * 0.8 * 0.85, 50);
     lavenderRect->setPosition(0, _mapSize.height * 0.8 - 50);
     this->addChild(lavenderRect);
 
-    auto slot = LayerColor::create(Color4B(142,111,84,255), _mapSize.width * 0.8 * 0.85, 229);
+    auto slot = LayerColor::create(Color4B(142, 111, 84, 255), _mapSize.width * 0.8 * 0.85, 229);
     slot->setPosition(0, 0);
     this->addChild(slot);
     //auto drawNode = cocos2d::DrawNode::create();
@@ -491,24 +501,24 @@ bool Battlefield::hasRiverBetween(const cocos2d::Vec2& p1, const cocos2d::Vec2& 
     // 河流区域是 row 15 和 16
     // Side A: row <= 14
     // Side B: row >= 17
-    
+
     // 我们定义两个区域：Bottom (row <= 14) 和 Top (row >= 17)
     // 如果一个在 Bottom 一个在 Top，则有河。
     // 如果其中一个在 River (15, 16) 中，我们认为它已经在“桥”或“河”上了，不需要寻桥逻辑介入
     // (因为寻桥逻辑是把人引导到桥口，如果已经在河区域，说明已经在过桥了)
-    
+
     bool p1Bottom = (r1 <= 14);
-    bool p1Top    = (r1 >= 17);
-    
+    bool p1Top = (r1 >= 17);
+
     bool p2Bottom = (r2 <= 14);
-    bool p2Top    = (r2 >= 17);
+    bool p2Top = (r2 >= 17);
 
     // 如果一个在下半区，一个在上半区，说明中间隔着河
     if ((p1Bottom && p2Top) || (p1Top && p2Bottom))
     {
         return true;
     }
-    
+
     return false;
 }
 

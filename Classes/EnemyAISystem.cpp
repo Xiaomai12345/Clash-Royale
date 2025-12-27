@@ -64,7 +64,7 @@ void EnemyAISystem::startAI()
 
 void EnemyAISystem::stopAI()
 {
-    _isActive = false;
+    _isActive = 1;
 }
 
 void EnemyAISystem::update(float dt)

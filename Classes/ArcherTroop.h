@@ -1,4 +1,4 @@
-﻿#ifndef __ARCHER_TROOP_H__
+#ifndef __ARCHER_TROOP_H__
 #define __ARCHER_TROOP_H__
 
 #include "TroopBase.h"
@@ -19,6 +19,7 @@ public:
     virtual ~ArcherTroop(); // ✅ 声明析构函数
 
     virtual bool init() override;
+    virtual void update(float dt) override;
 
     CREATE_FUNC(ArcherTroop);
 };
