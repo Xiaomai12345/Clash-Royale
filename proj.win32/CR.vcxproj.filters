@@ -282,7 +282,6 @@
     <ClCompile Include="..\Classes\CardFactory.cpp">
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\DataManager.cpp" />
     <ClCompile Include="..\Classes\EnemyAISystem.cpp">
       <Filter>Classes\Systems</Filter>
     </ClCompile>
@@ -296,6 +295,9 @@
     <ClCompile Include="..\Classes\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\AnimationComponent.cpp">
       <Filter>Classes\Entities\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\DataManager.cpp">
+      <Filter>Classes\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,7 +493,6 @@
     <ClInclude Include="..\Classes\IWalkableWorld.h">
       <Filter>Classes\Entities\Troop\MoveComponent</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\DataManager.h" />
     <ClInclude Include="..\Classes\EnemyAISystem.h">
       <Filter>Classes\Systems</Filter>
     </ClInclude>
@@ -506,6 +507,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\LoadingScene.h">
       <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\DataManager.h">
+      <Filter>Classes\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -32,7 +32,7 @@ bool BattleScene::init()
     _gameStarted = false;
     _gameEnded = false;
     _gameTime = 0.0f;
-    _totalGameTime = 10.0f;
+    _totalGameTime = 180.0f;
     _playerCrowns[0] = _playerCrowns[1] = 0;
     _isPlayer1 = true;
     _selectedCard = nullptr;

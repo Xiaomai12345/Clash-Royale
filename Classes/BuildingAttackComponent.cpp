@@ -14,7 +14,7 @@ void BuildingAttackComponent::doAttack(IAttackable* owner)
     BuildingBase* building = dynamic_cast<BuildingBase*>(owner);
     if (building)
     {
-        if (!_target || _target->isDead())
+        if (!_target)
             return;
 
         // 1. 获取发射位置（世界坐标或父节点坐标）
@@ -44,7 +44,7 @@ void BuildingAttackComponent::doAttack(IAttackable* owner)
                 // 由于 Projectile 内部 retain 了 target，
                 // 所以只要 Projectile 还在，target 指针指向的内存就是有效的。
                 // 我们只需要检查 target 的逻辑状态（是否死亡，是否在场景中）
-                if (target && !target->isDead() && target->getParent())
+                if (target)
                 {
                     target->takeDamage(damage);
                 }

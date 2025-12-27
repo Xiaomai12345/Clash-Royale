@@ -69,7 +69,7 @@ bool ArcherTroop::init()
     // =========================
 
     // 使用 Animations 下的图片作为初始图
-    _sprite = Sprite::create("Images/troops/Animations/ArcherMove(1).png");
+    _sprite = Sprite::create("Images/troops/Animations/ArcherMove1.png");
     
     // 基础缩放值 (参考 Giant/Knight，假设资源规格一致)
     const float baseScale = 0.8f;
@@ -91,7 +91,7 @@ bool ArcherTroop::init()
     setAnimationComponent(anim);
 
     // 设置默认贴图
-    anim->setDefaultTexture("Images/troops/Animations/ArcherMove(1).png");
+    anim->setDefaultTexture("Images/troops/Animations/ArcherMove1.png");
 
     // 1. 待机动画 (IDLE): 呼吸
     // ----------------------------------------------------------------
@@ -107,7 +107,7 @@ bool ArcherTroop::init()
     {
         Vector<SpriteFrame*> walkFrames;
 
-        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/ArcherMove(1).png");
+        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/ArcherMove1.png");
 
         if (tex1 && tex2)
         {

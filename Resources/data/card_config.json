@@ -1,38 +1,194 @@
 [
   {
     "id": 1,
-    "name": "火球术",
+    "name": "fireball",
     "manaCost": 4.0,
-    "imgPath": "cards/fireball.png"
+    "imgPath": "Images/CardsUI/fireball.png",
+    "attackRange":2.5,
+    "viewRange":0.0,
+    "health":0.0,
+    "attackPower":325.0,
+    "attackSpeed":0.0,
+    "moveSpeed":0.0,
+    "level":3,
+    "numberOfCard":0,
+    "rarity":rare,
+    "volume":0.0
   },
   {
     "id": 2,
-    "name": "减速药水",
+    "name": "zap",
     "manaCost": 2.0,
-    "imgPath": "cards/zap.png"
+    "imgPath": "Images/CardsUI/zap.png",
+    "attackRange":2.5,
+    "viewRange":0.0,
+    "health":0.0,
+    "attackPower":75.0,
+    "attackSpeed":0.0,
+    "moveSpeed":0.0,
+    "level":1,
+    "numberOfCard":0,
+    "rarity":normal,
+    "volume":0.0
   },
   {
     "id": 3,
-    "name": "弓箭手",
+    "name": "archer",
     "manaCost": 3.0,
-    "imgPath": "cards/archer.png"
+    "imgPath": "Images/CardsUI/Archer.png",
+    "attackRange":5.0,
+    "viewRange":5.5,
+    "health":119.0,
+    "attackPower":42.0,
+    "attackSpeed":1.2,
+    "moveSpeed":1.2,
+    "level":1,
+    "numberOfCard":0,
+    "rarity":normal,
+    "volume":0.5
   },
   {
     "id": 4,
-    "name": "骑士",
+    "name": "knight",
     "manaCost": 3.0,
-    "imgPath": "cards/knight.png"
+    "imgPath": "Images/CardsUI/Knight.png",
+    "attackRange":1.2,
+    "viewRange":5.5,
+    "health":651.0,
+    "attackPower":79.0,
+    "attackSpeed":1.2,
+    "moveSpeed":1.2,
+    "level":1,
+    "numberOfCard":0,
+    "rarity":normal,
+    "volume":0.5
   },
   {
     "id": 5,
-    "name": "飞龙宝宝",
+    "name": "dragonbaby",
     "manaCost": 4.0,
-    "imgPath": "cards/baby_dragon.png"
+    "imgPath": "Images/CardsUI/DragonBabyApply.png",
+    "attackRange":3.5,
+    "viewRange":5.5,
+    "health":720.0,
+    "attackPower":100.0,
+    "attackSpeed":1.5,
+    "moveSpeed":1.8,
+    "level":6,
+    "numberOfCard":0,
+    "rarity":epic,
+    "volume":0.5
   },
   {
     "id": 6,
-    "name": "巨人",
+    "name": "giant",
     "manaCost": 5.0,
-    "imgPath": "cards/giant.png"
+    "imgPath": "Images/CardsUI/GiantApply.png",
+    "attackRange":1.0,
+    "viewRange":7.5,
+    "health":1861.0,
+    "attackPower":120.0,
+    "attackSpeed":1.5,
+    "moveSpeed":0.9,
+    "level":3,
+    "numberOfCard":0,
+    "rarity":rare,
+    "volume":1.0
+  }
+  {
+    "id": 7,
+    "name": "minions",
+    "manaCost": 3.0,
+    "imgPath": "Images/CardsUI/MinionsApply.png",
+    "attackRange":1.6,
+    "viewRange":5.5,
+    "health":90.0,
+    "attackPower":40.0,
+    "attackSpeed":1.0,
+    "moveSpeed":1.8,
+    "level":1,
+    "numberOfCard":0,
+    "rarity":normal,
+    "volume":0.3
+  }
+  {
+    "id": 8,
+    "name": "cannon"
+    "manaCost": 3.0,
+    "imgPath": "Images/CardsUI/CannonApply.png",
+    "attackRange":5.5,
+    "viewRange":5.5,
+    "health":350.0,
+    "attackPower":83.0,
+    "attackSpeed":0.9,
+    "moveSpeed":0.0,
+    "level":1,
+    "numberOfCard":0,
+    "rarity":normal,
+    "volume":2.0
+  }
+  {
+    "id": 9,
+    "name": "valkyrie",
+    "manaCost": 4.0,
+    "imgPath": "Images/CardsUI/ValkyrieApply.png",
+    "attackRange":1.2,
+    "viewRange":5.5,
+    "health":940.0,
+    "attackPower":126.0,
+    "attackSpeed":1.5,
+    "moveSpeed":1.2,
+    "level":3,
+    "numberOfCard":0,
+    "rarity":rare,
+    "volume":0.5
+  }
+  {
+    "id": 10,
+    "name": "skeleton",
+    "manaCost": 1.0,
+    "imgPath": "Images/CardsUI/SkeletonApply.png",
+    "attackRange":0.5,
+    "viewRange":5.5,
+    "health":32.0,
+    "attackPower":32.0,
+    "attackSpeed":1.0,
+    "moveSpeed":1.8,
+    "level":1,
+    "numberOfCard":0,
+    "rarity":normal,
+    "volume":0.3
+  }
+  {
+    "id": 11,
+    "name": "skeletontombstone",
+    "manaCost": 3.0,
+    "imgPath": "Images/CardsUI/skeletontombstone.jpg",
+    "attackRange":0.0,
+    "viewRange":0.0,
+    "health":250.0,
+    "attackPower":0.0,
+    "attackSpeed":3.8,
+    "moveSpeed":0.0,
+    "level":3,
+    "numberOfCard":0,
+    "rarity":rare,
+    "volume":2.0
+  }
+  {
+    "id": 12,
+    "name": "SkeletonLegion",
+    "manaCost": 3.0,
+    "imgPath": "Images/CardsUI/SkeletonLegion.png",
+    "attackRange":0.0,
+    "viewRange":0.0,
+    "health":0.0,
+    "attackPower":0.0,
+    "attackSpeed":0.0,
+    "moveSpeed":0.0,
+    "level":6,
+    "numberOfCard":0,
+    "rarity":epic,
+    "volume":0.0
   }
 ]

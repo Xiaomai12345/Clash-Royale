@@ -61,7 +61,7 @@ bool DragonBaby::init()
     // =========================
 
     // 使用 Animations 文件夹下的图片作为初始图
-    _sprite = Sprite::create("Images/troops/Animations/BabyDragonMove(1).png");
+    _sprite = Sprite::create("Images/troops/Animations/BabyDragonMove1.png");
     
     // 基础缩放值
     const float baseScale = 0.8f;
