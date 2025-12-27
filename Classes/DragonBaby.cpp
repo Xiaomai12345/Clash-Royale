@@ -131,21 +131,14 @@ bool DragonBaby::init()
         
         auto texAtt1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/BabyDragonAttack1.png");
         auto texAtt2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/BabyDragonAttack2.png");
-        // 注意文件名可能有拼写错误 "Attck"
-        auto texAtt3 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/BabyDragonAttck3.png");
-        auto texAtt4 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/BabyDragonAttack4.png");
         
-        if (texAtt1 && texAtt2 && texAtt3 && texAtt4)
+        if (texAtt1 && texAtt2 )
         {
             auto att1 = SpriteFrame::createWithTexture(texAtt1, Rect(0, 0, texAtt1->getContentSize().width, texAtt1->getContentSize().height));
             auto att2 = SpriteFrame::createWithTexture(texAtt2, Rect(0, 0, texAtt2->getContentSize().width, texAtt2->getContentSize().height));
-            auto att3 = SpriteFrame::createWithTexture(texAtt3, Rect(0, 0, texAtt3->getContentSize().width, texAtt3->getContentSize().height));
-            auto att4 = SpriteFrame::createWithTexture(texAtt4, Rect(0, 0, texAtt4->getContentSize().width, texAtt4->getContentSize().height));
         
             attackFrames.pushBack(att1);
             attackFrames.pushBack(att2);
-            attackFrames.pushBack(att3);
-            attackFrames.pushBack(att4);
             
             // 动态计算帧间隔：总攻击间隔 / 帧数
             // 攻击间隔 2.0s，4帧

@@ -57,6 +57,9 @@ public:
     // 添加游戏结束UI显示方法
     void showGameEndUI(bool isPlayer1Win);
 
+    // 清除场上所有单位
+    void clearAllUnits();
+
     // 添加事件屏蔽方法
     void createEventBlocker();
     void removeEventBlocker();
