@@ -551,8 +551,48 @@ void Battlefield::setupGameEndCallback()
     battleManager->setGameEndCallback([this](int winner) {
         // winner: 0=平局, 1=玩家1胜利, 2=玩家2胜利
         bool isPlayer1Win = (winner == 1);
+        
+        // 游戏结束，清除场上所有单位
+        this->clearAllUnits();
+        
+        // 停止敌人AI
+        if (auto enemyAI = EnemyAISystem::getInstance())
+        {
+            enemyAI->stopAI();
+        }
+
         this->showGameEndUI(isPlayer1Win);
         });
+}
+
+#include "Projectile.h" // 引入 Projectile 头文件以识别它
+
+void Battlefield::clearAllUnits()
+{
+    // 获取所有子节点 (创建副本以避免迭代器失效)
+    auto children = getChildren();
+    
+    for (auto node : children)
+    {
+        // 1. 尝试转换为 IAttackable (TroopBase 和 BuildingBase 都继承自它)
+        if (auto unit = dynamic_cast<IAttackable*>(node))
+        {
+            if (auto troop = dynamic_cast<TroopBase*>(node))
+            {
+                troop->die();
+            }
+            else if (auto building = dynamic_cast<BuildingBase*>(node))
+            {
+                building->die();
+            }
+        }
+        // 2. 尝试识别 Projectile (投射物)
+        // 必须清除它们，否则它们的回调会访问已销毁的单位，导致崩溃
+        else if (auto projectile = dynamic_cast<Projectile*>(node))
+        {
+            projectile->removeFromParent();
+        }
+    }
 }
 
 void Battlefield::showGameEndUI(bool isPlayer1Win)

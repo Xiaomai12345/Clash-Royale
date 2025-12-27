@@ -26,34 +26,78 @@ bool KingdomTower::init()
     if (_maxHp <= 0) _maxHp = 2000;
     _hp = _maxHp;
 
+    // 国王塔不需要旋转
+    _shouldRotate = false;
+    _rooted = true;
+
     setupComponents();
     return true;
 }
 
 void KingdomTower::setupComponents()
 {
-    auto ai = new SimpleBuildingAI();
-    setAIComponent(ai);
+    // 国王塔没有攻击组件，也没有AI（不会主动寻找目标）
+    // 仅负责显示
+    updateAssets();
+}
 
-    auto attack = new BuildingAttackComponent(
-        _attackRange,
-        _attackInterval,
-        _attackDamage,
-        500.0f
-    );
-    setAttackComponent(attack);
+void KingdomTower::setCamp(ECamp camp)
+{
+    ECamp oldCamp = _camp;
+    BuildingBase::setCamp(camp);
 
-    _sprite = Sprite::create("Images/towers/king_tower_red.png");
+    if (oldCamp != camp && _sprite != nullptr)
+    {
+        updateAssets();
+    }
+}
+
+void KingdomTower::updateAssets()
+{
+    // 清理旧资源
+    if (_sprite) {
+        _sprite->removeFromParent();
+        _sprite = nullptr;
+    }
+    if (_kingSprite) {
+        _kingSprite->removeFromParent();
+        _kingSprite = nullptr;
+    }
+
+    // 1. 塔身
+    std::string towerImage = (_camp == ECamp::LEFT)
+        ? "Images/troops/Animations/BlueKingTower.png"
+        : "Images/troops/Animations/KingTower.png"; // 假设 KingTower.png 是红色的
+
+    _sprite = Sprite::create(towerImage);
     if (_sprite)
     {
-        addChild(_sprite);
+        addChild(_sprite, 0); // 底层
         _sprite->setScale(1.0f);
     }
     else
     {
-        CCLOG("ERROR: Could not load Images/towers/king_tower_red.png");
+        CCLOG("ERROR: Could not load king tower image: %s", towerImage.c_str());
     }
-}void KingdomTower::die()
+
+    // 2. 国王
+    std::string kingImage = (_camp == ECamp::LEFT)
+        ? "Images/troops/Animations/BlueKing.png"
+        : "Images/troops/Animations/RedKing.png";
+
+    _kingSprite = Sprite::create(kingImage);
+    if (_kingSprite)
+    {
+        addChild(_kingSprite, 1); // 上层
+        _kingSprite->setScale(1.0f);
+        
+        // 调整国王位置 (塔顶)
+        // 根据素材情况，可能需要微调
+        _kingSprite->setPosition(Vec2(0, 30)); 
+    }
+}
+
+void KingdomTower::die()
 {
     if (_isDying)
         return;

@@ -64,7 +64,8 @@ void EnemyAISystem::startAI()
 
 void EnemyAISystem::stopAI()
 {
-    _isActive = 1;
+    _isActive = false; // ä¿®æ­£ï¼šåº”ä¸º false
+    CCLOG("[EnemyAI] stopAI");
 }
 
 void EnemyAISystem::update(float dt)
@@ -100,12 +101,12 @@ void EnemyAISystem::tryDeployTroop()
     
     _enemyMana->consumeMana(card->getManaCost());
 
-    // ÕæÕý²¿Êðµ¥Î»£¨¹Ø¼ü£©
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½
     bool success = card->use(deployPos, /* enemyId */ 2);
     if (!success)
         return;
 
-    // ¢Û ´ÓÊÖÅÆÒÆ³ý / Ñ­»·
+    // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ³ï¿½ / Ñ­ï¿½ï¿½
     _enemyCard->useCard(card);
 
 
@@ -116,10 +117,10 @@ void EnemyAISystem::tryDeployTroop()
 
 int EnemyAISystem::selectUnitByStrategy() const
 {
-    // Ëæ»ú´òÂÒÅÆ×é
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     std::random_device rd;
     std::mt19937 g(rd());
-    std::uniform_int_distribution<> dist(0, 3);  // Éú³É0-3µÄËæ»úÕûÊý
+    std::uniform_int_distribution<> dist(0, 3);  // ï¿½ï¿½ï¿½ï¿½0-3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     int index = dist(g);
     return index;
 }
