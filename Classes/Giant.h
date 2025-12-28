@@ -3,11 +3,7 @@
 
 #include "TroopBase.h"
 
-// Giant
-// -----------
-// 巨人单位
-// 用于测试 AI / Move / Attack 是否能正常工作
-//
+
 class Giant : public TroopBase
 {
 public:

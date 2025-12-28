@@ -1,6 +1,6 @@
 //所有卡牌的头文件
-#include"FireBallSpell.h"
-#include"SlowDownSpell.h"
+#include"FireBallSpell.h"//已有动画
+#include"SlowDownSpell.h"//	已有动画
 
 
 //士兵
@@ -15,7 +15,7 @@
 
 
 //建筑
-#include"KingdomTower.h"
-#include"PrincessTower.h"
-#include "Cannon.h"
-#include"SkeletonTombstone.h"
+#include"KingdomTower.h"//已有动画
+#include"PrincessTower.h"//已有动画
+#include "Cannon.h"//	已有动画
+#include"SkeletonTombstone.h"//已有动画

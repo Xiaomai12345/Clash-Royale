@@ -63,7 +63,6 @@ void PrincessTower::setupComponents()
     );
     setAttackComponent(attack);
 
-    // 3. 资源加载 (Sprite & Animation)
     updateAssets();
 }
 
@@ -72,7 +71,7 @@ void PrincessTower::setCamp(ECamp camp)
     ECamp oldCamp = _camp;
     BuildingBase::setCamp(camp); // 调用基类更新数据
 
-    // 如果阵营改变了，且组件已经初始化过（_sprite不为空），则刷新外观
+	// 如果阵营改变了则刷新外观,是为了解决初始化时调用setCamp导致资源未加载的问题
     if (oldCamp != camp && _sprite != nullptr)
     {
         updateAssets();
@@ -92,7 +91,7 @@ void PrincessTower::updateAssets()
     }
     // 注意：AnimationComponent 会在析构时释放，这里 setAnimationComponent 会覆盖旧的
 
-    // 1. Sprite (塔身)
+    // 塔身
     std::string towerImage = (_camp == ECamp::LEFT) 
         ? "Images/troops/Animations/BluePrincessTower.png" 
         : "Images/troops/Animations/RedPrincessTower.png";
@@ -111,7 +110,7 @@ void PrincessTower::updateAssets()
         addChild(_sprite, 0);
     }
 
-    // 2. Princess (塔顶公主 - 负责攻击动画)
+     //公主
     std::string princessImage = (_camp == ECamp::LEFT)
         ? "Images/troops/Animations/BluePrincess.png"
         : "Images/troops/Animations/RedPrincess.png";
@@ -125,7 +124,7 @@ void PrincessTower::updateAssets()
         // 调整公主位置到塔顶
         _princessSprite->setPosition(Vec2(0, 40)); 
 
-        // 3. Animation (只控制公主)
+        
         auto anim = new AnimationComponent();
         anim->setTargetSprite(_princessSprite);
         setAnimationComponent(anim); // 这会替换掉旧的组件，BuildingBase 会处理旧组件的 delete

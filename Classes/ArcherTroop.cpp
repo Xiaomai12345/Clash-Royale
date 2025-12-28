@@ -1,4 +1,5 @@
 #include "ArcherTroop.h"
+#include "DataManager.h"
 
 // 组件
 #include "SimpleTroopAIComponent.h"
@@ -12,11 +13,13 @@ USING_NS_CC;
 
 ArcherTroop::ArcherTroop()
 {
-
+    // =========================
+    // 基础属性
+    // =========================
     _moveSpeed = 90.0f;
     _maxHp = 70;
     _alertRange = 300.f;
-    _bodyRadius = 12.f;
+    _bodyRadius = 5.f;
     _camp = ECamp::LEFT;
 
     _attacktype = AttackType::Both;
@@ -40,13 +43,44 @@ bool ArcherTroop::init()
         return false;
 
     // =========================
+    // 0. DataManager 加载数据
+    // =========================
+    float attackRange = 100.0f;
+    float attackInterval = 1.5f;
+    float attackDamage = 100.0f;
+    float attackSpeed = 500.0f; // 弹道速度
+
+    auto data = DataManager::getInstance()->getCardDataByName("archer");
+    if (!data.empty())
+    {
+        if (data.count("health")) {
+            _maxHp = data["health"].asInt();
+            _hp = _maxHp;
+        }
+        if (data.count("moveSpeed")) {
+            _moveSpeed = data["moveSpeed"].asFloat() * 40.5;
+            resetMoveSpeed();
+        }
+        if (data.count("viewRange")) {
+            _alertRange = data["viewRange"].asFloat() * 40.5f;
+        }
+        if (data.count("attackRange")) {
+            attackRange = data["attackRange"].asFloat() * 20.25f;
+        }
+        if (data.count("attackSpeed")) {
+            attackInterval = data["attackSpeed"].asFloat();
+        }
+        if (data.count("attackPower")) {
+            attackDamage = data["attackPower"].asFloat();
+        }
+        
+        CCLOG("ArcherTroop Data Loaded: HP=%d, DMG=%.1f", _maxHp, attackDamage);
+    }
+
+    // =========================
     // 1. 创建并绑定组件
     // =========================
 
-    float AttackRangeClam = 100.0f;//攻击范围
-    float AttackClam = 1.5;//攻击间隔
-    float AttackDamageClam = 100;//攻击伤害
-	float AttackSpeedClam = 500.0f;//弹道速度
     // AI
     auto ai = new SimpleTroopAIComponent();
     setAIComponent(ai);
@@ -57,10 +91,10 @@ bool ArcherTroop::init()
 
     // 远程攻击
     auto attack = new RangedAttackComponent(
-        AttackRangeClam,  // 攻击范围
-        AttackClam,    // 攻击间隔
-        AttackDamageClam,      // 伤害
-        AttackSpeedClam   // 弹道速度
+        attackRange,  // 攻击范围
+        attackInterval,    // 攻击间隔
+        attackDamage,      // 伤害
+        attackSpeed   // 弹道速度
     );
     setAttackComponent(attack);
 
@@ -109,12 +143,12 @@ bool ArcherTroop::init()
 
         auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/ArcherMove1.png");
 
-        if (tex1 && tex2)
+
+        if (tex1)
         {
             auto frame1 = SpriteFrame::createWithTexture(tex1, Rect(0, 0, tex1->getContentSize().width, tex1->getContentSize().height));
 
             walkFrames.pushBack(frame1);
- 
 
             // 创建动画: 每帧 0.2 秒
             auto walkAnim = Animation::createWithSpriteFrames(walkFrames, 0.2f);
@@ -143,7 +177,6 @@ bool ArcherTroop::init()
             attackFrames.pushBack(att4);
 
 
-            float attackInterval = AttackClam;
             float delayPerUnit = attackInterval / 2.0f;
 
             auto attackAnim = Animation::createWithSpriteFrames(attackFrames, delayPerUnit);
@@ -177,13 +210,23 @@ void ArcherTroop::update(float dt)
 
         // 计算角度
         float angleDeg = CC_RADIANS_TO_DEGREES(moveDir.getAngle());
-
-        // 转换公式：TargetRotation = 90 - MathAngle
-        float rotation = 90.0f - angleDeg;
+        float targetRotation = 90.0f - angleDeg;
 
         if (_sprite)
         {
-            _sprite->setRotation(rotation);
+            // 平滑旋转 (Lerp)
+            float currentRotation = _sprite->getRotation();
+            
+            // 处理角度突变 (如 350 -> 10)
+            float diff = targetRotation - currentRotation;
+            while (diff > 180) diff -= 360;
+            while (diff < -180) diff += 360;
+
+            // 插值系数
+            float alpha = 10.0f * dt;
+            if (alpha > 1.0f) alpha = 1.0f;
+
+            _sprite->setRotation(currentRotation + diff * alpha);
         }
     }
 }

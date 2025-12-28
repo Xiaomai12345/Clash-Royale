@@ -1,5 +1,6 @@
 #include "SkeletonTombstone.h"
 #include "SkeletonLegion.h"  // 引入军团生成类
+#include "DataManager.h"
 
 USING_NS_CC;
 
@@ -22,12 +23,35 @@ bool SkeletonTombstone::init()
     if (!BuildingBase::init())  // 调用基类的初始化
         return false;
 
+    // 默认值
+    _spawnInterval = 3.0f; 
+    float lifeTime = 40.0f; // 默认40秒
+    _maxHp = 250;
+
+    // 使用 DataManager 读取数值 (ValueMap 方式，与 ArcherTroop 保持一致)
+    auto data = DataManager::getInstance()->getCardDataByName("skeletontombstone");
+    if (!data.empty())
+    {
+        if (data.count("health")) {
+            _maxHp = data["health"].asInt();
+        }
+        if (data.count("attackSpeed")) {
+            _spawnInterval = data["attackSpeed"].asFloat();
+        }
+    }
+
+    _hp = _maxHp;
+    
+
+    _damageInterval = 1.0f;
+    _damagePerTick = std::ceil((float)_maxHp / lifeTime);
+
     // 设置墓碑的外观
-    _sprite = Sprite::create("Images/buildings/skeleton_tombstone.jpg");
+    _sprite = Sprite::create("Images/buildings/skeleton_tombstone.png");
     if (_sprite)
     {
         addChild(_sprite);
-        _sprite->setScale(0.3f);  // 调整缩放
+        _sprite->setScale(0.7f);  // 调整缩放
     }
     else
     {

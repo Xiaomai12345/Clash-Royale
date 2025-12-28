@@ -5,7 +5,7 @@
 
 USING_NS_CC;
 
-BuildingBase::BuildingBase()  // 
+BuildingBase::BuildingBase()  
     : _maxHp(0)
     , _bodyRadius(20.0f)
     , _camp(ECamp::LEFT)
@@ -25,11 +25,11 @@ BuildingBase::BuildingBase()  //
 {
 }
 
-BuildingBase::~BuildingBase()  //
+BuildingBase::~BuildingBase()  
 {
 }
 
-bool BuildingBase::init()  //
+bool BuildingBase::init()  
 {
     if (!Node::init())
         return false;
@@ -43,9 +43,7 @@ bool BuildingBase::init()  //
         addChild(_debugDraw, 100);
     }
 
-    // =========================
-    // 血条初始化（一次）
-    // =========================
+
     initHpBar();
     _hpBarInited = true;
 
@@ -55,7 +53,7 @@ bool BuildingBase::init()  //
 
 void BuildingBase::update(float dt)
 {
-    // 调用AI组件更新
+
     if (_ai)
     {
         _ai->update(this, dt);
@@ -66,40 +64,25 @@ void BuildingBase::update(float dt)
         _anim->update(this, dt);
     }
 
-    // 攻击组件更新
-    if (_attack)  // ✅ 修正：去掉多余的C括号
+ 
+    if (_attack)  
     {
         _attack->update(this, dt);
     }
 
-    // 状态更新逻辑 (简单的自动状态机)
-    // 移除这里强制覆盖状态的逻辑，改为由AI全权控制
-    /*
-    if (_attack && _attack->getTarget())
-    {
-        setState(State::ATTACKING);
-    }
-    else
-    {
-        setState(State::IDLE);
-    }
-    */
-
-    // 4. 旋转逻辑 (如果启用)
     if (_shouldRotate && _sprite && _attack)
     {
         auto target = _attack->getTarget();
         if (target)
         {
-            // 计算方向：目标位置 - 自身位置
-            // 为了准确，统一使用世界坐标计算方向
+            //方向
             Vec2 targetPos = target->getWorldPosition();
             Vec2 myPos = this->getWorldPosition();
             Vec2 dir = targetPos - myPos;
 
             if (dir.lengthSquared() > 0.1f)
             {
-                float angleRad = dir.getAngle(); // -PI ~ PI
+                float angleRad = dir.getAngle(); 
                 float angleDeg = CC_RADIANS_TO_DEGREES(angleRad);
                 
                 // 目标角度
@@ -144,7 +127,6 @@ void BuildingBase::update(float dt)
             Color4F::RED
         );
 
-        // 攻击范围
         if (_attack)
         {
             _debugDraw->drawCircle(
@@ -159,12 +141,9 @@ void BuildingBase::update(float dt)
 
     }
 
-    updateHpBarInternal();  // 更新血条
+    updateHpBarInternal();  
 }
 
-// =========================
-// 组件绑定
-// =========================
 
 void BuildingBase::setAIComponent(BuildingAI* ai)
 {
@@ -181,9 +160,7 @@ void BuildingBase::setAnimationComponent(AnimationComponent* anim)
     _anim = anim;
 }
 
-// =========================
-// 战斗相关
-// =========================
+
 
 void BuildingBase::takeDamage(int damage)
 {
@@ -243,9 +220,7 @@ void BuildingBase::die()
     }
 }
 
-// =========================
-// 血条
-// =========================
+
 
 void BuildingBase::updateHpBarInternal()
 {
@@ -258,7 +233,12 @@ void BuildingBase::updateHpBarInternal()
     _hpBarFg->setScaleX(hpPercent);
 }
 
-void BuildingBase::initHpBar()  // 初始化血量条
+void BuildingBase::updateHpBar()
+{
+    updateHpBarInternal();
+}
+
+void BuildingBase::initHpBar()  
 {
     _hpBarNode = Node::create();
     addChild(_hpBarNode, 100);

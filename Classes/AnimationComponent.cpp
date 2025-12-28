@@ -7,6 +7,7 @@ AnimationComponent::AnimationComponent()
     : _targetSprite(nullptr)
     , _lastState(State::IDLE)
     , _isAnimating(false)
+    , _firstRun(true)
 {
 }
 
@@ -86,11 +87,12 @@ void AnimationComponent::update(IAttackable* owner, float dt)
     // 特殊处理：FOLLOWING (移动)
     // 如果是 FOLLOWING，对应移动动画
 
-    // 如果状态发生改变，或者当前没有在播放动画（且应该播放）
-    if (currentState != _lastState)
+    // 如果状态发生改变，或者当前没有在播放动画（且应该播放），或者是第一次运行
+    if (_firstRun || currentState != _lastState)
     {
         playAnimation(currentState);
         _lastState = currentState;
+        _firstRun = false;
     }
 }
 

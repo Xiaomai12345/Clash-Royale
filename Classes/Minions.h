@@ -5,11 +5,6 @@
 #include "AirMoveComponent.h"
 #include "MeleeAttackComponent.h"
 
-// UndeadTroop
-// -----------
-// 亡灵
-// 飞行单位，近战攻击
-//
 class Minions : public TroopBase
 {
 public:

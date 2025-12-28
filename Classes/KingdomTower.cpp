@@ -36,7 +36,7 @@ bool KingdomTower::init()
 
 void KingdomTower::setupComponents()
 {
-    // 国王塔没有攻击组件，也没有AI（不会主动寻找目标）
+    // 国王塔没有攻击组件，也没有AI
     // 仅负责显示
     updateAssets();
 }

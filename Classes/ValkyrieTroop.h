@@ -3,12 +3,6 @@
 
 #include "TroopBase.h"
 
-// ValkyrieTroop
-// -------------
-// 女武神
-// 地面单位，近战范围攻击（AOE）
-// 典型：高血量、中速、群体清场
-//
 class ValkyrieTroop : public TroopBase
 {
 public:

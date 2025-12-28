@@ -8,34 +8,30 @@
 #include "AnimationComponent.h"
 USING_NS_CC;
 
-// 前向声明（减少头文件耦合）
+
 class BuildingAI;
 class MoveComponent;
 class AttackComponent;
 
 
-class BuildingBase : public IAttackable  // 修正：类名拼写
+class BuildingBase : public IAttackable 
 {
 public:
     BuildingBase();
-    virtual ~BuildingBase();  // 修正：析构函数名拼写
+    virtual ~BuildingBase();  
 
     virtual bool init() override;
-    CREATE_FUNC(BuildingBase);  // 修正：宏名拼写
+    CREATE_FUNC(BuildingBase);  
 
-    // 每帧更新（核心调度）
     virtual void update(float dt) override;
 
-    // 受伤并更新血量
     void takeDamage(int damage);
     void updateHpBar();
     void showDamageNumber(int damage);
 
-    // 检查是否死亡
     bool isDead() const { return _hp <= 0; }
     bool isAlive() const { return _hp > 0; }
 
-    // 死亡处理
     virtual void die();
 
     DrawNode* getDebugDraw()
@@ -45,33 +41,25 @@ public:
 
 
 public:
-    // =========================
-    // 对外能力接口（供组件使用）
-    // =========================
 
-    // 当前生命值
-    virtual void applySlow(float ratio, float duration) override ;//免疫
+    virtual void applySlow(float ratio, float duration) override ;
     int getHp() const { return _hp; }
 
-    // 碰撞半径（用于距离 / 攻击判断）
     float getBodyRadius() const { return _bodyRadius; }
 
-    // 阵营
     virtual void setCamp(ECamp camp) { _camp = camp; }
     ECamp getCamp() const { return _camp; }
     void setAttackType(AttackType attacktype) {}//设置与获取攻击类型
     AttackType getAttackType()const { return AttackType::Both; }
-    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }//设置
+    void setMoveAttack(MoveAttack moveAttack) { _moveAttack = moveAttack; }
     MoveAttack getMoveAttack()const { return _moveAttack; }//用以返回
-    void setMoveAttacked(MoveAttack moveAttacked) { _moveAttacked = moveAttacked; }//设置
+    void setMoveAttacked(MoveAttack moveAttacked) { _moveAttacked = moveAttacked; }
     MoveAttack getMoveAttacked()const { return _moveAttacked; }//用以返回
     MoveType getMoveType()const { return MoveType::Ground; }//用不到，但需要定义
 	void setState(State state) { _state = state; }//设置当前状态
 	State getState()const override { return _state; }//获取当前状态
 public:
-    // =========================
-    // 组件绑定接口
-    // =========================
+
 
     void setAIComponent(BuildingAI* ai); 
     void setAttackComponent(AttackComponent* attack);  
@@ -80,9 +68,7 @@ public:
     AttackComponent* getAttackComponent() const { return _attack; }
 
 protected:
-    // =========================
-    // 基础属性
-    // =========================
+
     int   _hp = 0;          // 当前生命
     int   _maxHp = 0;       // 最大生命
     float _bodyRadius = 10.0f;
@@ -92,17 +78,13 @@ protected:
     MoveAttack _moveAttacked = MoveAttack::Both;//默认均可被攻击
 	State _state = State::IDLE; // 当前状态
 protected:
-    // =========================
-    // 组件指针（不拥有生命周期）
-    // =========================
+
     BuildingAI* _ai = nullptr;
     AttackComponent* _attack = nullptr;
 	AnimationComponent* _anim = nullptr;
 
 protected:
-    // =========================
-    // Debug Only（测试阶段使用）
-    // =========================
+
 
     // 建筑显示用图片
     Sprite* _sprite = nullptr;
@@ -118,9 +100,7 @@ protected:
     LayerColor* _hpBarFg = nullptr;    // 血条前景
 
 protected:
-    // =========================
-    // 血条初始化
-    // =========================
+
     void initHpBar();  // 声明血条初始化函数
 
     // 血条更新函数（内部调用）

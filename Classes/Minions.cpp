@@ -1,4 +1,5 @@
 #include "Minions.h"
+#include "DataManager.h"
 #include "AirMoveComponent.h"
 #include "MeleeAttackComponent.h"
 #include "SimpleTroopAIComponent.h"
@@ -38,9 +39,39 @@ bool Minions::init()
     if (!TroopBase::init())
         return false;
 
-    float AttackRangeClam = 20.0;//攻击范围
-    float AttackClam = 1.5;//攻击间隔
-    float AttackDamageClam = 50;//攻击伤害
+    // =========================
+    // 0. DataManager 加载数据
+    // =========================
+    float attackRange = 20.0f;
+    float attackInterval = 1.5f;
+    float attackDamage = 50.0f;
+
+    auto data = DataManager::getInstance()->getCardDataByName("minions");
+    if (!data.empty())
+    {
+        if (data.count("health")) {
+            _maxHp = data["health"].asInt();
+            _hp = _maxHp;
+        }
+        if (data.count("moveSpeed")) {
+            _moveSpeed = data["moveSpeed"].asFloat() * 40.5f;
+            resetMoveSpeed();
+        }
+        if (data.count("viewRange")) {
+            _alertRange = data["viewRange"].asFloat() * 40.5f;
+        }
+        if (data.count("attackRange")) {
+            // JSON 1.6 -> 32 (if * 20).
+            attackRange = data["attackRange"].asFloat() * 20.25f;
+        }
+        if (data.count("attackSpeed")) {
+            attackInterval = data["attackSpeed"].asFloat();
+        }
+        if (data.count("attackPower")) {
+            attackDamage = data["attackPower"].asFloat();
+        }
+        CCLOG("Minions Data Loaded: HP=%d, DMG=%.1f", _maxHp, attackDamage);
+    }
 
     // AI
     auto ai = new SimpleTroopAIComponent();
@@ -52,9 +83,9 @@ bool Minions::init()
 
     // 近战攻击
     auto attack = new MeleeAttackComponent(
-        AttackRangeClam,   // 攻击范围（很近）
-        AttackClam,    // 攻击间隔（快攻）
-        AttackDamageClam       // 伤害
+        attackRange,   // 攻击范围
+        attackInterval,    // 攻击间隔
+        attackDamage       // 伤害
     );
     setAttackComponent(attack);
 
@@ -63,16 +94,6 @@ bool Minions::init()
     // =========================
 
     // 使用 Animations 文件夹下的图片作为初始图
-    // 注意：文件名格式为 MinionMove(1).png，与 ls 结果 MinionMove1.png 不完全一致，
-    // 需要根据实际文件名调整。根据 ls 结果：
-    // MinionMove(1).png, MinionMove(2).png
-    // MinionAttack(1).png ~ (4).png
-    
-    // 检查目录 ls 结果，发现文件名是:
-    // MinionMove(1).png
-    // MinionMove(2).png
-    // MinionAttack(1).png ... (4).png
-    
     _sprite = Sprite::create("Images/troops/Animations/MinionMove(1).png");
     
     // 基础缩放值 (统一标准)
@@ -112,16 +133,20 @@ bool Minions::init()
     {
         Vector<SpriteFrame*> walkFrames;
         
-        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionMove1.png");
+        // 注意：这里需要确保文件名正确，假设之前的文件名是正确的
+        auto tex1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionMove(1).png");
+        auto tex2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionMove(2).png");
         
         if (tex1 && tex2)
         {
             auto frame1 = SpriteFrame::createWithTexture(tex1, Rect(0, 0, tex1->getContentSize().width, tex1->getContentSize().height));
+            auto frame2 = SpriteFrame::createWithTexture(tex2, Rect(0, 0, tex2->getContentSize().width, tex2->getContentSize().height));
             
             walkFrames.pushBack(frame1);
+            walkFrames.pushBack(frame2);
             
             // 创建动画: 每帧 0.2 秒
-            auto walkAnim = Animation::createWithSpriteFrames(walkFrames, 0.5f);
+            auto walkAnim = Animation::createWithSpriteFrames(walkFrames, 0.2f);
             anim->addAnimation(State::FOLLOWING, walkAnim);
         }
         else
@@ -135,21 +160,25 @@ bool Minions::init()
     {
         Vector<SpriteFrame*> attackFrames;
         
-        auto texAtt1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionAttack1.png");
-        auto texAtt2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionAttack2.png");
+        auto texAtt1 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionAttack(1).png");
+        auto texAtt2 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionAttack(2).png");
+        auto texAtt3 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionAttack(3).png");
+        auto texAtt4 = Director::getInstance()->getTextureCache()->addImage("Images/troops/Animations/MinionAttack(4).png");
         
-        if (texAtt1 && texAtt2 )
+        if (texAtt1 && texAtt2 && texAtt3 && texAtt4)
         {
             auto att1 = SpriteFrame::createWithTexture(texAtt1, Rect(0, 0, texAtt1->getContentSize().width, texAtt1->getContentSize().height));
             auto att2 = SpriteFrame::createWithTexture(texAtt2, Rect(0, 0, texAtt2->getContentSize().width, texAtt2->getContentSize().height));
+            auto att3 = SpriteFrame::createWithTexture(texAtt3, Rect(0, 0, texAtt3->getContentSize().width, texAtt3->getContentSize().height));
+            auto att4 = SpriteFrame::createWithTexture(texAtt4, Rect(0, 0, texAtt4->getContentSize().width, texAtt4->getContentSize().height));
         
             attackFrames.pushBack(att1);
             attackFrames.pushBack(att2);
+            attackFrames.pushBack(att3);
+            attackFrames.pushBack(att4);
             
             // 动态计算帧间隔：总攻击间隔 / 帧数
-      
-            float attackInterval = AttackClam;
-            float delayPerUnit = attackInterval / 2.0f;
+            float delayPerUnit = attackInterval / 4.0f;
             
             auto attackAnim = Animation::createWithSpriteFrames(attackFrames, delayPerUnit);
             anim->addAnimation(State::ATTACKING, attackAnim);
@@ -182,13 +211,23 @@ void Minions::update(float dt)
         
         // 计算角度
         float angleDeg = CC_RADIANS_TO_DEGREES(moveDir.getAngle());
-        
-        // 转换公式：TargetRotation = 90 - MathAngle
-        float rotation = 90.0f - angleDeg;
+        float targetRotation = 90.0f - angleDeg;
         
         if (_sprite)
         {
-            _sprite->setRotation(rotation);
+            // 平滑旋转 (Lerp)
+            float currentRotation = _sprite->getRotation();
+            
+            // 处理角度突变 (如 350 -> 10)
+            float diff = targetRotation - currentRotation;
+            while (diff > 180) diff -= 360;
+            while (diff < -180) diff += 360;
+
+            // 插值系数
+            float alpha = 10.0f * dt;
+            if (alpha > 1.0f) alpha = 1.0f;
+
+            _sprite->setRotation(currentRotation + diff * alpha);
         }
     }
 }

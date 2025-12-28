@@ -1,4 +1,5 @@
 #include "ValkyrieTroop.h"
+#include "DataManager.h"
 #include "SimpleTroopAIComponent.h"
 #include "GroundMoveComponent.h"
 #include "MeleeAreaAttackComponent.h"
@@ -15,7 +16,7 @@ ValkyrieTroop::ValkyrieTroop()
     _moveSpeed = 90.0f;    // 比骑士略慢
     _maxHp = 800;      // 女武神血厚
     _alertRange = 220.f;
-    _bodyRadius = 18.f;
+    _bodyRadius = 10.f;
 
     _camp = ECamp::LEFT;
 
@@ -40,6 +41,39 @@ bool ValkyrieTroop::init()
         return false;
 
     // =========================
+    // 0. DataManager 加载数据
+    // =========================
+    float attackRange = 45.0f; // AOE Radius
+    float attackInterval = 1.2f;
+    float attackDamage = 200.0f;
+
+    auto data = DataManager::getInstance()->getCardDataByName("valkyrie");
+    if (!data.empty())
+    {
+        if (data.count("health")) {
+            _maxHp = data["health"].asInt();
+            _hp = _maxHp;
+        }
+        if (data.count("moveSpeed")) {
+            _moveSpeed = data["moveSpeed"].asFloat() * 40.25;
+            resetMoveSpeed();
+        }
+        if (data.count("viewRange")) {
+            _alertRange = data["viewRange"].asFloat() * 40.5f;
+        }
+        if (data.count("attackRange")) {
+            attackRange = data["attackRange"].asFloat() * 30.25;
+        }
+        if (data.count("attackSpeed")) {
+            attackInterval = data["attackSpeed"].asFloat();
+        }
+        if (data.count("attackPower")) {
+            attackDamage = data["attackPower"].asFloat();
+        }
+        CCLOG("Valkyrie Data Loaded: HP=%d, DMG=%.1f", _maxHp, attackDamage);
+    }
+
+    // =========================
     // 1. 组件绑定
     // =========================
 
@@ -53,9 +87,9 @@ bool ValkyrieTroop::init()
 
     // 近战范围攻击（核心区别）
     auto attack = new MeleeAreaAttackComponent(
-        45.0f,   // 攻击范围（AOE 半径）
-        1.2f,    // 攻击间隔
-        200      // 单次伤害
+        attackRange,   // 攻击范围（AOE 半径）
+        attackInterval,    // 攻击间隔
+        attackDamage      // 单次伤害
     );
     setAttackComponent(attack);
 
@@ -151,7 +185,7 @@ bool ValkyrieTroop::init()
             
             // 动态计算帧间隔：总攻击间隔 / 帧数
             // 攻击间隔 1.2s，4帧
-            float attackInterval = 1.2f; 
+            // float attackInterval = 1.2f; 
             float delayPerUnit = attackInterval / 4.0f;
             
             auto attackAnim = Animation::createWithSpriteFrames(attackFrames, delayPerUnit);
@@ -185,13 +219,23 @@ void ValkyrieTroop::update(float dt)
         
         // 计算角度
         float angleDeg = CC_RADIANS_TO_DEGREES(moveDir.getAngle());
-        
-        // 转换公式：TargetRotation = 90 - MathAngle
-        float rotation = 90.0f - angleDeg;
+        float targetRotation = 90.0f - angleDeg;
         
         if (_sprite)
         {
-            _sprite->setRotation(rotation);
+            // 平滑旋转 (Lerp)
+            float currentRotation = _sprite->getRotation();
+            
+            // 处理角度突变 (如 350 -> 10)
+            float diff = targetRotation - currentRotation;
+            while (diff > 180) diff -= 360;
+            while (diff < -180) diff += 360;
+
+            // 插值系数
+            float alpha = 10.0f * dt;
+            if (alpha > 1.0f) alpha = 1.0f;
+
+            _sprite->setRotation(currentRotation + diff * alpha);
         }
     }
 }

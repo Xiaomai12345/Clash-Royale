@@ -42,12 +42,12 @@ void AirMoveComponent::onUpdateMove(TroopBase* owner, float dt)
 
     // 获取自身半径
     float ownerRadius = owner->getBodyRadius();
-
+    float targetRadius = _followTarget->getBodyRadius();
     // 计算实际表面距离（考虑碰撞体积）
-    float surfaceDistance = centerDistance - ownerRadius;
+    float surfaceDistance = centerDistance - targetRadius;
 
     // 如果已经达到攻击距离，停止移动
-    if (surfaceDistance <= _desiredDistance)
+    if (surfaceDistance<=_desiredDistance)
     {
         this->stop();
         return;

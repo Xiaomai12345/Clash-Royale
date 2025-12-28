@@ -3,16 +3,7 @@
 
 #include "AttackComponent.h"
 class TroopBase;
-// =========================
-// MeleeAttackComponent
-// =========================
-//
-// 近战攻击组件
-//
-// 特点：
-// - 攻击范围小
-// - 直接对目标造成伤害
-//
+
 class MeleeAttackComponent : public AttackComponent
 {
 public:

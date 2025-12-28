@@ -89,6 +89,15 @@ void TroopBase::update(float dt)
     {
         _anim->update(this, dt);
     }
+    else
+    {
+        // 尝试自动查找并绑定动画组件 (如果子类没有绑定)
+        if (auto animComp = dynamic_cast<AnimationComponent*>(getAnimationComponent()))
+        {
+             _anim = animComp;
+             _anim->update(this, dt);
+        }
+    }
 
 
     if (_showDebugBounds && _debugDraw)

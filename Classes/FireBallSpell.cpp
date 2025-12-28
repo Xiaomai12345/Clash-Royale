@@ -36,7 +36,7 @@ void FireballSpell::cast(const Vec2& worldPos, ECamp casterCamp)
     CCLOG("Fireball cast at (%.1f, %.1f)", worldPos.x, worldPos.y);
 
     // 1. 创建火球精灵 (起始位置在屏幕上方)
-    auto fireballSprite = Sprite::create("Images/cards/fireball.png"); // 暂时用卡牌图标代替，建议换成特效图
+    auto fireballSprite = Sprite::create("Images/cards/fireball(1).png"); // 暂时用卡牌图标代替，建议换成特效图
     if (fireballSprite)
     {
         addChild(fireballSprite);
@@ -61,7 +61,7 @@ void FireballSpell::cast(const Vec2& worldPos, ECamp casterCamp)
             applyDamage();
             
             // 播放爆炸特效 (这里可以用粒子系统或帧动画，暂时用简单的缩放模拟)
-            auto explosion = Sprite::create("Images/cards/fireball.png"); // 临时用
+            auto explosion = Sprite::create("Images/cards/fireball(1).png"); // 临时用
             if (explosion) {
                 this->addChild(explosion);
                 explosion->setScale(0.1f);
@@ -78,7 +78,8 @@ void FireballSpell::cast(const Vec2& worldPos, ECamp casterCamp)
         });
 
         // 4. 移除自身
-        auto remove = Sequence::create(DelayTime::create(0.5f), RemoveSelf::create(), nullptr);
+        // 修正：等待飞行时间 (0.5s) + 爆炸动画时间 (0.3s) + 一点缓冲
+        auto remove = Sequence::create(DelayTime::create(0.5f + 0.3f + 0.1f), RemoveSelf::create(), nullptr);
 
         fireballSprite->runAction(Sequence::create(spawn, callback, nullptr));
         
@@ -90,7 +91,7 @@ void FireballSpell::cast(const Vec2& worldPos, ECamp casterCamp)
         // 如果没有图片，直接结算
         drawDebugRange();
         applyDamage();
-        runAction(Sequence::create(DelayTime::create(0.2f), RemoveSelf::create(), nullptr));
+        runAction(Sequence::create(DelayTime::create(0.5f), RemoveSelf::create(), nullptr));
     }
 }
 
@@ -104,8 +105,15 @@ void FireballSpell::applyDamage()
     // Fireball 的世界坐标
     Vec2 center = this->convertToWorldSpaceAR(Vec2::ZERO);
 
-    for (Node* node : parent->getChildren())
+    // 获取 BattleField 的子节点
+    // 注意：获取子节点副本，防止遍历时删除节点导致迭代器失效
+    auto children = parent->getChildren();
+    
+    // 使用倒序索引遍历，防止迭代器失效
+    for (ssize_t i = children.size() - 1; i >= 0; --i)
     {
+        Node* node = children.at(i);
+        // 先判断是否是 IAttackable
         auto target = dynamic_cast<IAttackable*>(node);
         if (!target)
             continue;
@@ -117,21 +125,25 @@ void FireballSpell::applyDamage()
         if (target->getCamp() == _casterCamp)  // 目标与法术同阵营
             continue;
 
+        // 计算距离
         float dist = center.distance(target->getWorldPosition());
         float hitRange = _radius + target->getBodyRadius();
 
         if (dist <= hitRange)
         {
             // 对建筑和士兵分别处理
-            if (target == dynamic_cast<TroopBase*>(node))
+            // 使用 target 进行 cast，而不是 node (虽然在这个 context 下是一样的，但更严谨)
+            if (dynamic_cast<TroopBase*>(target))
             {
                 target->takeDamage(_damage);
                 CCLOG("Fireball hit %p Troop for %d damage", target, _damage);
             }
-            else if (target == dynamic_cast<BuildingBase*>(node))
+            else if (dynamic_cast<BuildingBase*>(target))
             {
-                target->takeDamage(0.3 * _damage);  // 对建筑造成30%伤害
-                CCLOG("Fireball hit %p Building for %d damage", target, 0.3 * _damage);
+                // 建筑受到较少伤害 (例如 30%)
+                int buildingDamage = static_cast<int>(_damage * 0.3f); 
+                target->takeDamage(buildingDamage);
+                CCLOG("Fireball hit %p Building for %d damage", target, buildingDamage);
             }
         }
     }

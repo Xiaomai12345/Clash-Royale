@@ -44,6 +44,7 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
         {
             clearTarget();
             attackComponent->clearTarget();
+            owner->setState(State::IDLE); // 立即停止攻击状态
         }
     }
     else
@@ -51,6 +52,13 @@ void SimpleBuildingAI::update(BuildingBase* owner, float dt)
         // 目标无效，清除
         clearTarget();
         attackComponent->clearTarget();
+        // 如果之前有目标但现在没了（例如目标刚死），也应立即切回 IDLE
+        // 但为了避免在搜索间隔期间反复切换，这里可以暂时不强制设为 IDLE，
+        // 而是让下面的搜索逻辑决定。不过为了保险起见，没目标就该 IDLE。
+        if (owner->getState() == State::ATTACKING)
+        {
+            owner->setState(State::IDLE);
+        }
     }
 
     // 需要寻找新目标

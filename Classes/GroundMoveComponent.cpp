@@ -42,18 +42,13 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
         return;
     }
 
-    // =========================
     // 桥目标判断
-    // =========================
     bool bridgeTarget =
         dynamic_cast<PrincessTower*>(_followTarget) ||
         dynamic_cast<KingdomTower*>(_followTarget);
 
     if (bridgeTarget && _bridgeState == BridgeState::None)
     {
-        // 关键修复：检查是否真的需要过河
-        // 只有当“我”和“目标”之间隔着河时，才进入 ToBridge 状态
-        // 否则直接走直线（例如已经投放在敌方区域）
         if (world->hasRiverBetween(ownerPos, targetPos))
         {
             _bridgeState = BridgeState::ToBridge;
@@ -118,9 +113,7 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
 
     Vec2 finalPos = world->constrainPosition(newPos, ownerPos);
 
-    // =========================
     // 河道 / 桥口滑行
-    // =========================
 
     if (!world->canWalk(newPos + bodyOffset) &&
         _bridgeState != BridgeState::OnBridge)
@@ -156,10 +149,7 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
             finalPos = ownerPos;
         }
     }
-
-    // =========================
-    // 桥上约束
-    // =========================
+//桥上约束
     if (world->isBridge(ownerPos) || _bridgeState == BridgeState::OnBridge)
     {
         Vec2 constrained = world->constrainPosition(newPos, ownerPos);
@@ -189,9 +179,7 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
         _bridgeState = BridgeState::OnBridge;
     }
 
-    // =========================
     // 微调防卡死
-    // =========================
     if (finalPos.distance(ownerPos) < 0.01f)
     {
         Vec2 micro = ownerPos + moveDir * 0.1f;
@@ -206,14 +194,7 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
 	moveDirection.normalize();
 
 
-
-
-    // =========================
     // 碰撞推挤（单位之间）
-    // =========================
-
-
-
     Node* parent = owner->getParent();
     if (!parent)
         return;
@@ -239,18 +220,15 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
 
         if (dist <= hitRange && dist > 0.001f)
         {
-            // =========================
-            // 1️⃣ 法线方向（分离）
-            // =========================
+           
             Vec2 normal = (selfPos - targetPos).getNormalized();
 
             float overlap = hitRange - dist;
             float separateStrength = std::max(1.0f, overlap * 0.6f);
             Vec2 separateOffset = normal * separateStrength;
 
-            // =========================
-            // 2️⃣ 切线方向（滑动）
-            // =========================
+
+            // 切线方向（滑动）
             Vec2 tangent(-normal.y, normal.x);
 
             // 根据当前移动方向决定切线正负
@@ -260,14 +238,9 @@ void GroundMoveComponent::onUpdateMove(TroopBase* owner, float dt)
             float slideStrength = separateStrength * 0.8f;
             Vec2 slideOffset = tangent * slideStrength;
 
-            // =========================
-            // 3️⃣ 合成位移
-            // =========================
+
             Vec2 candidatePos = selfPos + separateOffset + slideOffset;
 
-            // =========================
-            // 4️⃣ 安全校验
-            // =========================
             Vec2 safePos = world->constrainPosition(candidatePos, selfPos);
 
             if (world->canWalk(safePos))

@@ -3,20 +3,12 @@
 
 #include "TroopBase.h"
 
-// ArcherTroop
-// -----------
-// 测试用远程士兵（弓箭手）
-//
-// 用于验证：
-// - 远程攻击组件
-// - 攻击距离停靠逻辑
-// - AI / Move / Attack 协作
-//
+
 class ArcherTroop : public TroopBase
 {
 public:
-    ArcherTroop();        // ✅ 声明构造函数
-    virtual ~ArcherTroop(); // ✅ 声明析构函数
+    ArcherTroop();        
+    virtual ~ArcherTroop(); 
 
     virtual bool init() override;
     virtual void update(float dt) override;

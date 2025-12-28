@@ -4,11 +4,7 @@
 #include "AttackComponent.h"
 #include "cocos2d.h"
 
-// MeleeAreaAttackComponent
-// ------------------------
-// 近战范围攻击（女武神）
-// 攻击范围 = AOE 范围
-//
+
 class MeleeAreaAttackComponent : public AttackComponent
 {
 public:

@@ -65,13 +65,13 @@ void Battlefield::setupBattlefield(int level)
     BattleManager::getInstance()->init(/* battlefield 指针 */ this);
     setupGameEndCallback();
     auto EnemyLeft = PrincessTower::create();
-    EnemyLeft->setPosition(Vec2(200, 1024));
+    EnemyLeft->setPosition(Vec2(200, 1074));
     EnemyLeft->setCamp(ECamp::RIGHT);
     this->addChild(EnemyLeft);
 
 
     auto EnemyRight = PrincessTower::create();
-    EnemyRight->setPosition(Vec2(650, 1024));
+    EnemyRight->setPosition(Vec2(650, 1074));
     EnemyRight->setCamp(ECamp::RIGHT);
     this->addChild(EnemyRight);
 
@@ -93,7 +93,7 @@ void Battlefield::setupBattlefield(int level)
     this->addChild(MyRight);
 
     auto MyKing = KingdomTower::create();
-    MyKing->setPosition(Vec2(450, 300));
+    MyKing->setPosition(Vec2(450, 400));
     MyKing->setCamp(ECamp::LEFT);
     this->addChild(MyKing);
 
@@ -572,8 +572,12 @@ void Battlefield::clearAllUnits()
     // 获取所有子节点 (创建副本以避免迭代器失效)
     auto children = getChildren();
     
-    for (auto node : children)
+    // 使用索引进行倒序遍历，避免 vector 迭代器失效
+    for (ssize_t i = children.size() - 1; i >= 0; --i)
     {
+        Node* node = children.at(i);
+        if (!node) continue;
+
         // 1. 尝试转换为 IAttackable (TroopBase 和 BuildingBase 都继承自它)
         if (auto unit = dynamic_cast<IAttackable*>(node))
         {

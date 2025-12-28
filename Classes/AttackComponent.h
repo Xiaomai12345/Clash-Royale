@@ -20,7 +20,7 @@ class AttackComponent
 {
 public:
     AttackComponent(float range, float interval);
-    virtual ~AttackComponent() = default;
+    virtual ~AttackComponent(); // 改为非 default，我们需要实现析构函数
 
     // 设置目标
     void setTarget(IAttackable* target);

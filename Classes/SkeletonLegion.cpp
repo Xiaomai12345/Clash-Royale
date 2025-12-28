@@ -54,7 +54,7 @@ void SkeletonLegion::spawnAt(Node* parent, const Vec2& worldPos)
         parent->addChild(skeleton);
     }
 
-    // 一次性生成器，用完即销毁（你的原设计，非常合理）
+    // 一次性生成器，用完即销毁
     removeFromParent();
 }
 void SkeletonLegion::setWorld(IWalkableWorld* world)
