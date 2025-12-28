@@ -271,6 +271,9 @@
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Button.cpp" />
+    <ClCompile Include="..\Classes\Button.cpp">
+      <Filter>Classes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -447,7 +450,9 @@
     <ClInclude Include="..\Classes\CardSelectingScene.h">
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Button.h" />
+    <ClInclude Include="..\Classes\Button.h">
+      <Filter>Classes\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
