@@ -84,7 +84,7 @@ bool DragonBaby::init()
     setAnimationComponent(anim);
     
     // 设置默认贴图
-    anim->setDefaultTexture("Images/troops/Animations/BabyDragonMove(1).png");
+    anim->setDefaultTexture("Images/troops/Animations/BabyDragonMove1.png");
 
     // 1. 待机动画 (IDLE): 呼吸
     // ----------------------------------------------------------------
