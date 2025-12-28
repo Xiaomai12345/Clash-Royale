@@ -290,7 +290,7 @@ Card* CardFactory::createSlowDownCard() // 12
         12,          // cardId
         "SlowDown",  // name
         3          ,  // mana
-        "Images/CardsUI/SlowDownApply.png"
+        "Images/CardsUI/zap.png"
     );
 
     card->setPlayFunc([](const Vec2& pos, int playerId)
