@@ -10,7 +10,13 @@ AudioManager* AudioManager::getInstance()
 	}
 	return _instance;
 }
-
+//删除实例
+void AudioManager::destroyInstance() {
+	if (_instance != nullptr) {
+		delete _instance;
+		_instance = nullptr;
+	}
+}
 //初始化音频
 void AudioManager::initAudio()
 {

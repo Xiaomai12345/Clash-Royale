@@ -11,7 +11,7 @@ class AudioManager {
 public:
 	//单例
 	static AudioManager* getInstance();
-
+	static void destroyInstance();
 	//初始化音频
 	void initAudio();
 

@@ -53,7 +53,6 @@ public:
     std::vector<Area>getEnemyarea() { return enemyArea; }
     std::vector<Area>getUnDeployarea();
     cocos2d::Size getGridSize() { return _gridSize; }
-    std::vector<Area>getDeployarea();
     // 添加游戏结束UI显示方法
     void showGameEndUI(bool isPlayer1Win);
 

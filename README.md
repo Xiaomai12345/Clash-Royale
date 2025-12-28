@@ -1,205 +1,262 @@
-# Clash-Royale
-同济大学2025年程序设计范式大作业——皇室战争
+# 项目实现功能与项目技术细节文档
+## 一、项目概述
 
-一.结构目录
-```
-ClashRoyale/
-├── Classes/
-│   ├── Core/
-│   │   ├── AppDelegate.h
-│   │   ├── AppDelegate.cpp
-│   │   ├── GameManager.h
-│   │   ├── GameManager.cpp
-│   │   ├── AudioManager.h
-│   │   ├── AudioManager.cpp
-│   │   └── GlobalDefines.h
-│   ├── Scenes/
-│   │   ├── MainMenuScene.h
-│   │   ├── MainMenuScene.cpp
-│   │   ├── BattleScene.h
-│   │   └── BattleScene.cpp
-│   ├── Entities/
-│   │   ├── Card/
-│   │   │   ├── Card.h
-│   │   │   ├── Card.cpp
-│   │   │   ├── UnitCard.h
-│   │   │   ├── UnitCard.cpp
-│   │   │   ├── BuildingCard.h
-│   │   │   ├── BuildingCard.cpp
-│   │   │   ├── SpellCard.h
-│   │   │   └── SpellCard.cpp
-│   │   ├── Unit/
-│   │   │   ├── UnitBase.h
-│   │   │   ├── UnitBase.cpp
-│   │   │   ├── Knight.h
-│   │   │   ├── Knight.cpp
-│   │   │   ├── Archer.h
-│   │   │   ├── Archer.cpp
-│   │   │   ├── Giant.h
-│   │   │   ├── Giant.cpp
-│   │   │   ├── BabyDragon.h
-│   │   │   ├── BabyDragon.cpp
-│   │   │   ├── GoblinThrower.h
-│   │   │   ├── GoblinThrower.cpp
-│   │   │   ├── SkeletonArmy.h
-│   │   │   └── SkeletonArmy.cpp
-│   │   ├── Tower/
-│   │   │   ├── TowerBase.h
-│   │   │   ├── TowerBase.cpp
-│   │   │   ├── KingTower.h
-│   │   │   ├── KingTower.cpp
-│   │   │   ├── PrincessTower.h
-│   │   │   └── PrincessTower.cpp
-│   │   ├── Building/
-│   │   │   ├── BuildingBase.h
-│   │   │   ├── BuildingBase.cpp
-│   │   │   ├── TeslaTower.h
-│   │   │   ├── TeslaTower.cpp
-│   │   │   ├── BarbarianHut.h
-│   │   │   └── BarbarianHut.cpp
-│   │   └── Battlefield.h
-│   │   └── Battlefield.cpp
-│   ├── Managers/
-│   │   ├── BattleManager.h
-│   │   ├── BattleManager.cpp
-│   │   ├── CardManager.h
-│   │   ├── CardManager.cpp
-│   │   ├── NetworkManager.h
-│   │   ├── NetworkManager.cpp
-│   │   ├── LevelManager.h
-│   │   └── LevelManager.cpp
-│   ├── Systems/
-│   │   ├── ManaSystem.h
-│   │   ├── ManaSystem.cpp
-│   │   ├── CollisionSystem.h
-│   │   ├── CollisionSystem.cpp
-│   │   ├── PathfindingSystem.h
-│   │   ├── PathfindingSystem.cpp
-│   │   ├── AISystem.h
-│   │   └── AISystem.cpp
-│   ├── UI/
-│   │   ├── Button.h
-│   │   ├── Button.cpp
-│   │   ├── ManaBar.h
-│   │   ├── ManaBar.cpp
-│   │   ├── HandCardUI.h
-│   │   ├── HandCardUI.cpp
-│   │   ├── CountdownLabel.h
-│   │   └── CountdownLabel.cpp
-│   └── Utils/
-│       ├── Singleton.h
-│       ├── Singleton.cpp
-│       ├── ConfigLoader.h
-│       ├── ConfigLoader.cpp
-│       └── MathUtils.h
-├── Resources/
-│   ├── Images/
-│   │   ├── background/
-│   │   │   ├── main_menu.jpg
-│   │   │   ├── battlefield.jpg
-│   │   │   ├── river.png
-│   │   │   ├── bridge.png
-│   │   │   ├── tree.png
-│   │   │   └── rock.png
-│   │   ├── units/
-│   │   │   ├── knight.png
-│   │   │   ├── archer.png
-│   │   │   ├── giant.png
-│   │   │   ├── baby_dragon.png
-│   │   │   ├── goblin_thrower.png
-│   │   │   └── skeletons.png
-│   │   ├── towers/
-│   │   │   ├── king_tower_blue.png
-│   │   │   ├── king_tower_red.png
-│   │   │   ├── princess_tower_blue.png
-│   │   │   └── princess_tower_red.png
-│   │   ├── buildings/
-│   │   │   ├── tesla_tower.png
-│   │   │   └── barbarian_hut.png
-│   │   ├── cards/
-│   │   │   ├── card_back.png
-│   │   │   ├── knight_card.png
-│   │   │   ├── archer_card.png
-│   │   │   └── ...
-│   │   └── ui/
-│   │       ├── button_normal.png
-│   │       ├── button_pressed.png
-│   │       ├── mana_background.png
-│   │       ├── mana_bar.png
-│   │       ├── mana_border.png
-│   │       ├── mana_icon.png
-│   │       ├── crown.png
-│   │       └── card_back.png
-│   ├── Sounds/
-│   │   ├── bgm/
-│   │   │   ├── menu_bgm.mp3
-│   │   │   └── battle_bgm.mp3
-│   │   └── sfx/
-│   │       ├── deploy.wav
-│   │       ├── attack.wav
-│   │       ├── hit.wav
-│   │       ├── explosion.wav
-│   │       ├── tower_destroyed.wav
-│   │       ├── game_start.wav
-│   │       ├── victory.wav
-│   │       └── defeat.wav
-│   ├── Particles/
-│   │   ├── explosion.plist
-│   │   ├── mana_glow.plist
-│   │   ├── damage.plist
-│   │   └── heal.plist
-│   ├── Fonts/
-│   │   ├── arial.ttf
-│   │   └── game_font.ttf
-│   └── Config/
-│       ├── GameConfig.plist
-│       ├── CardData.json
-│       ├── UnitData.json
-│       ├── TowerData.json
-│       └── BuildingData.json
-├── proj.win32/
-│   ├── ClashRoyale.vcxproj
-│   ├── ClashRoyale.vcxproj.filters
-│   ├── main.cpp
-│   ├── main.h
-│   └── Resource.rc
-├── CMakeLists.txt
-└── README.md
-```
+本项目是一款基于经典即时策略卡牌游戏《皇室战争》进行设计与实现的策略对战游戏。
+游戏以卡牌驱动的即时战斗为核心玩法，玩家通过消耗圣水值（Mana）部署不同类型的单位、建筑或法术，与敌方AI进行对抗，最终以摧毁对方主塔为胜利目标。
 
-成员A：游戏核心和框架
-负责模块：
-```
+项目重点在于卡牌系统、单位系统、战斗系统与AI系统的协同设计，通过模块化架构与数据驱动方式，使游戏具备良好的可扩展性与可维护性。玩家需要在有限的资源条件下进行决策，在单位部署、圣水管理与战术选择之间取得平衡，体现较强的策略深度与操作性。
 
-游戏规则和流程控制
+## 二、项目核心系统
+### 1. 卡牌管理系统（Card System）
 
-圣水系统
+卡牌系统是整个项目的核心之一，主要负责卡牌的数据管理、实例创建以及卡牌与单位之间的映射关系。
 
-网络同步（如需）
+主要功能：
+
+- 卡牌基础信息管理（ID、名称、消耗、图片路径等）
+
+- 单位卡、建筑卡、法术卡的区分
+
+- 卡牌与对应实体（Unit / Building / Spell）的创建
+
+- 卡牌工厂（CardFactory）统一管理卡牌实例生成
+
+- 支持后续扩展更多卡牌类型
+
+技术实现：
+
+- 使用 DataManager 统一加载并管理卡牌配置数据（JSON）
+
+- 通过 ValueMap / ValueVector 进行数据解析与存储
+
+- 使用工厂模式隔离卡牌创建逻辑，避免外部模块直接依赖具体实现
+
+### 2. 单位与建筑系统（Entity System）
+
+单位系统负责游戏中所有可部署实体的行为与属性管理。
+
+系统划分：
+
+- UnitBase：所有单位的基类
+
+ TroopBase：地面 / 空中作战单位
+
+- BuildingBase：防御建筑、主塔、功能建筑
+
+- TowerBase：王塔、公主塔等核心建筑
+
+功能特点：
+
+- 区分空中单位与地面单位
+
+- 不同单位具备独立的攻击范围、视野范围、移动速度
+
+- 建筑单位具备独立的AI逻辑
+
+- 通过继承实现单位的差异化行为（如 Giant、Archer、Skeleton 等）
+
+### 3. 战斗系统（Battle System）
+
+战斗系统负责单位间的攻击判定、伤害结算以及战场管理。
+
+主要模块：
+
+- Battlefield：战斗主场景，负责整体调度
+
+- Grid：战斗网格系统，用于部署、路径与站位判断
+
+- Attack 逻辑：统一处理攻击判定与结算
+
+战斗流程：
+
+- 单位进入战场
+
+- AI 或逻辑系统判断目标
+
+- 执行攻击逻辑
+
+- 计算伤害与单位状态变化
+
+- 处理单位死亡与移除
+
+### 4. 圣水值与资源系统（Mana System）
+
+圣水系统用于限制玩家的操作频率，增强策略性。
+
+功能实现：
+
+- 圣水值随时间自动回复
+
+- 不同卡牌消耗不同法力
+
+- ManaBar 负责可视化展示
+
+- ManaSystem 负责逻辑计算
+#### 5. UI 系统（UI System）
+UI 系统负责玩家与游戏的交互界面。
+
+主要功能：
+
+- 手牌卡牌显示（HandCardUI）
+
+- 圣水条显示（ManaBar）
+
+- 战斗反馈动画
+
+- 状态实时刷新
+
+### 三、关键技术细节
+
+### 1. 工厂模式
+
+通过 CardFactory 实现卡牌的集中创建：
+
+- 隔离具体卡牌实现
+
+- 新增卡牌无需修改原有逻辑
+
+- 提升系统扩展性
+
+### 2. 组件化与继承设计
+
+- 使用继承实现单位差异
+
+- 使用组件（AI、动画）增强灵活性
+
+- 基类提供统一接口，子类扩展具体行为
+
+### 3. 数据驱动设计
+
+- 卡牌属性存储于 JSON
+
+- 可直接修改配置而无需改代码
+
+- 支持后期数值平衡与版本迭代
+
+### 4. C++11 特性使用
+
+- auto 自动类型推导
+
+- 构造函数初始化列表
+
+- nullptr 代替 NULL
+
+- lambda 表达式简化回调逻辑
+
+## 四、基础实现功能
+
+- 游戏正常启动与运行
+
+- 背景音乐与音效播放
+
+- 单位部署与即时战斗
+
+- 法力消耗与回复
+
+- 卡牌使用与冷却
+
+- 敌方AI自动行动
+
+- 单位死亡与资源回收
+
+- UI 实时刷新
+
+## 五、拓展功能实现
+
+- 实现了卡牌等级系统，卡牌可以通过升级获得更强大的属性
+
+- 实现了多种游戏模式，如突然死亡模式、双倍、三倍圣水模式
+
+## 六、加分项
+
+- 项目规模较大，模块清晰
+
+- 完整 C++ 实现
+
+- 系统解耦程度高
+
+- 支持后期扩展与维护
+
+- 无明显内存泄漏与崩溃问题
+
+## 七、项目分工
+|成员	|任务描述	|贡献度|
+|------|----------|--------|
+|余伟强	|圣水系统，卡牌管理系统，战斗场景搭建，战斗流程管理,AI系统	|35%|
+|张纪昆	|士兵、建筑、法术的基础逻辑，寻路逻辑，战斗动画实现，所有卡牌的实例化,AI系统	|35%|
+|李灏文	|UI系统，主界面搭建，音效管理|	30%|
+
+## 八、开发日志（12.1-12.28）
+
+### **12月1日-12月7日:前置准备工作和框架搭建**
+
+- 选定了使用COCOS2d-x 3.17.2版本作为开发引擎,配置了对应的C++开发环境，安装相应的库和工具
+- 搭建基础的项目框架，完成分工
+
+### **12月8日-12月14日:核心系统的设计与实现**
+
+#### 卡牌管理系统:
+
+- 实现了卡牌的拖拽释放
+- 实现牌组的使用、回收
+- 实现对应的动画效果
+
+#### 圣水管理系统:
+
+- 实现圣水随倒计时自然增长
+- 实现在不同模式下圣水增长速率的切换
+- 实现圣水的使用消耗
+- 实现圣水条的动画效果
+
+#### 战斗系统：
+
+- 移动、攻击、AI组件的初步搭建
+- 角色基本属性的创建
+- 基本寻路逻辑
+- 基本碰撞逻辑
+
+#### 网格系统：
+
+- 将地图划分成网格
+- 完成每个格子的属性
+- 将地图划分为不同的区域
+
+#### 战斗管理系统：
+
+- 搭建了正确的战斗流程
+- 完成了游戏胜利条件的判定
+
+#### UI系统：
+
+- 完成了主场景的搭建，实现从主场景进入战斗
+- 完成加载动画的搭建
+
+#### 数据管理系统：
+
+- 实现了通过json文件保存每张卡牌的信息
+
+### **12月15日-12月21日:战斗系统完善**
+
+#### 寻路逻辑完善：
+- 现在地面兵种，天空兵种都能找到正确的路线行进，地面单位可以正确的通过桥
+- 优化士兵索敌，现在巨人可以正确的向建筑移动
+#### 碰撞系统优化：
+- 碰撞时单位会向切向滑动，而不是仅仅弹开一段距离
+#### 动画实现：
+- 为每张卡牌添加了移动、攻击、弹道动画
+#### 战斗流程优化
+- 解决战斗结束后士兵仍残留在场上的问题
+#### 卡牌管理优化：
+- 实现了备战界面，现在可以通过备战界面调整出战的卡组
+- 修复了卡牌循环中少一张的bug
 
 
-```
-成员B：单位和战斗系统
-负责模块：
-```
+### **12月22日-12月28日:项目最终完善和测试**
+#### 增添主场景，加载界面的音效
+#### 调整了每张卡牌的数值，保证游戏平衡
+#### 游戏界面优化
+- 对游戏界面进行了优化，确保界面清晰简洁，易于操作。
 
-战斗系统（CombatSystem）
+## 九、结语
 
-伤害计算和碰撞
-
-AI控制器
-
-```
-成员C：
-负责模块：
-```
-
-数据管理
-
-Loading界面和MainMenu界面
-
-UI系统
-
-音乐播放器系统
-
-```
+本项目完整实现了一套基于卡牌驱动的即时策略战斗系统，核心玩法明确，系统架构清晰，代码可维护性与扩展性良好。通过合理的系统拆分与技术选型，项目不仅完成了预期目标，也为后续功能拓展提供了稳定基础。
