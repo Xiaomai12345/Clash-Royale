@@ -261,7 +261,7 @@
     <ClCompile Include="..\Classes\AnimationComponent.cpp">
       <Filter>Classes\Entities\Animation</Filter>
     </ClCompile>
-   <ClCompile Include="..\Classes\DataManager.cpp">
+    <ClCompile Include="..\Classes\DataManager.cpp">
       <Filter>Classes\Managers</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\LoadingScene.cpp">
@@ -270,6 +270,7 @@
     <ClCompile Include="..\Classes\CardSelectingScene.cpp">
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -446,6 +447,7 @@
     <ClInclude Include="..\Classes\CardSelectingScene.h">
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Button.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

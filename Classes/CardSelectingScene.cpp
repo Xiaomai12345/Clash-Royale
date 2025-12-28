@@ -1,6 +1,5 @@
 #include "CardSelectingScene.h"
 #include "MainMenuScene.h"
-#include "GameManager.h"
 #include"AudioManager.h"
 #include"DataManager.h"
 #include "json/document.h"
