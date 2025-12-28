@@ -3,6 +3,7 @@
 #include <random>     
 #include "json/document.h"
 #include "json/writer.h"
+#include<unordered_set>
 USING_NS_CC;
 using namespace rapidjson;
 
@@ -89,16 +90,17 @@ void CardManager::initDeck()
     Card* FireBall = CardFactory::createFireBallCard();
     Card* SlowDown = CardFactory::createSlowDownCard();
 
-    _deck.push_back(knight);
-    _deck.push_back(archer);
-    _deck.push_back(giant);
-    _deck.push_back(valkyrie);
-    _deck.push_back(dragonbaby);
-    _deck.push_back(cannon);
-    _deck.push_back(skeleton);
-    _deck.push_back(minions);
-    _deck.push_back(FireBall);
-    _deck.push_back(SlowDown);
+    //每个Card被_deck持有前，调用retain()，引用计数+1
+    if (knight) { _deck.push_back(knight); knight->retain(); }
+    if (archer) { _deck.push_back(archer); archer->retain(); }
+    if (giant) { _deck.push_back(giant); giant->retain(); }
+    if (valkyrie) { _deck.push_back(valkyrie); valkyrie->retain(); }
+    if (dragonbaby) { _deck.push_back(dragonbaby); dragonbaby->retain(); }
+    if (cannon) { _deck.push_back(cannon); cannon->retain(); }
+    if (skeleton) { _deck.push_back(skeleton); skeleton->retain(); }
+    if (minions) { _deck.push_back(minions); minions->retain(); }
+    if (FireBall) { _deck.push_back(FireBall); FireBall->retain(); }
+    if (SlowDown) { _deck.push_back(SlowDown); SlowDown->retain(); }
 
     // 随机打乱牌组
     std::random_device rd;
@@ -110,19 +112,28 @@ void CardManager::initHandCards()
     _handCards.clear();
     for (int i = 0; i < 4; ++i)
     {
-        _handCards.push_back(_deck[i]);
+        Card* card = _deck[i];
+        if (card)
+        {
+            _handCards.push_back(card);
+            card->retain(); // 引用计数+1
+        }
     }
 }
+
 void CardManager::initDiscardPile()
 {
     _discardPile.clear();
     for (int i = 4; i < 8; i++)
     {
-        _discardPile.push_back(_deck[i]);
+        Card* card = _deck[i];
+        if (card)
+        {
+            _discardPile.push_back(card);
+            card->retain(); // 引用计数+1
+        }
     }
 }
-
-
 
 
 bool CardManager::useCard(Card* card)
@@ -139,6 +150,7 @@ bool CardManager::useCard(Card* card)
             card->setVisible(false);
             // 2. 卡回牌库尾（循环）
             _discardPile.push_back(card);
+            card->retain(); //引用计数+1
 
             _drawTimer = 0.0f;
             return true;
@@ -170,43 +182,62 @@ void CardManager::update(float delta)
 
 void CardManager::reset()
 {
-    // 清理所有卡牌
+    std::unordered_set<Card*> releasedCards; // 记录已释放的Card，避免重复释放
+
+    // 清理手牌
     for (auto card : _handCards)
     {
-        if (card)
+        if (card && releasedCards.find(card) == releasedCards.end())
         {
             card->release();
+            releasedCards.insert(card);
         }
     }
 
+    // 清理牌库
     for (auto card : _deck)
     {
-        if (card)
+        if (card && releasedCards.find(card) == releasedCards.end())
         {
             card->release();
+            releasedCards.insert(card);
         }
     }
 
+    // 清理弃牌堆
     for (auto card : _discardPile)
     {
-        if (card)
+        if (card && releasedCards.find(card) == releasedCards.end())
         {
             card->release();
+            releasedCards.insert(card);
         }
     }
+
     // 清理仓库和备战区
     for (auto card : _warehouseCards)
     {
-        if (card) card->release();
+        if (card && releasedCards.find(card) == releasedCards.end())
+        {
+            card->release();
+            releasedCards.insert(card);
+        }
     }
     for (auto card : _selectedCards)
     {
-        if (card) card->release();
+        if (card && releasedCards.find(card) == releasedCards.end())
+        {
+            card->release();
+            releasedCards.insert(card);
+        }
     }
 
+    // 清空所有容器
     _handCards.clear();
     _deck.clear();
     _discardPile.clear();
+    _warehouseCards.clear();
+    _selectedCards.clear();
 
     _drawTimer = 0.0f;
     _handSize = 0;
