@@ -28,16 +28,16 @@ void MeleeAreaAttackComponent::doAttack(IAttackable* owner)
     Vec2 center = ownerNode->getWorldPosition();
     float attackRange = getAttackRange();
 
-    // =========================
-    // 1?? 显示攻击范围闪烁
-    // =========================
     showAttackRange(ownerNode);
 
-    // =========================
-    // 2?? 对范围内敌人造成伤害
-    // =========================
-    for (Node* node : parent->getChildren())
+
+    // 获取子节点副本，防止遍历时删除节点导致迭代器失效
+    auto children = parent->getChildren();
+    
+    // 使用倒序索引遍历，防止迭代器失效
+    for (ssize_t i = children.size() - 1; i >= 0; --i)
     {
+        Node* node = children.at(i);
         auto target = dynamic_cast<IAttackable*>(node);
         if (!target || target->isDead())
             continue;

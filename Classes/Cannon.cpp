@@ -2,6 +2,7 @@
 #include "BuildingAttackComponent.h"
 #include "SimpleBuildingAI.h"
 #include"AnimationComponent.h"
+#include"Datamanager.h"
 USING_NS_CC;
 
 Cannon::Cannon(float maxHp, float attackRange, float attackInterval, int attackDamage)
@@ -24,6 +25,26 @@ bool Cannon::init()
 {
     if (!BuildingBase::init())
         return false;
+    
+    auto data = DataManager::getInstance()->getCardDataByName("cannon");
+    if (!data.empty())
+    {
+        if (data.count("health")) {
+            _maxHp = data["health"].asInt();
+            _hp = _maxHp;
+        }
+        if (data.count("attackRange")) {
+            _attackRange = data["attackRange"].asFloat() * 30.25f;
+        }
+        if (data.count("attackSpeed")) {
+            _attackInterval = data["attackSpeed"].asFloat();
+        }
+        if (data.count("attackPower")) {
+            _attackDamage = data["attackPower"].asInt();
+        }
+        
+        CCLOG("Cannon Data Loaded: HP=%d, DMG=%d, Range=%.1f", _maxHp, _attackDamage, _attackRange);
+    }
 
     // 确保血量正确
     if (_maxHp <= 0) _maxHp = 1500;
@@ -120,5 +141,35 @@ void Cannon::setupComponents()
         auto attackAnim = Spawn::create(recoilAction, flashAction, nullptr);
         
         anim->addAction(State::ATTACKING, RepeatForever::create(attackAnim));
+    }
+}
+
+void Cannon::update(float dt)
+{
+    // 1. 调用基类 update (处理旋转、攻击等)
+    BuildingBase::update(dt);
+
+    // 2. 处理自动扣血 (生命周期衰减)
+    if (_isDying) return; // 死了就不扣了
+
+    _decayTimer += dt;
+    if (_decayTimer >= _decayInterval)
+    {
+        _decayTimer -= _decayInterval;
+
+        // 计算每秒扣血量：总血量 / 总时间
+        // 向上取整，确保最后能死掉
+        int decayDamage = std::ceil((float)_maxHp / _lifeTime * _decayInterval);
+        
+        _hp -= decayDamage;
+        if (_hp <= 0)
+        {
+            _hp = 0;
+            die();
+        }
+        
+        // 更新血条
+        updateHpBar();     
+        // 可选：显示小的扣血数字
     }
 }

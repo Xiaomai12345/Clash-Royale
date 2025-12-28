@@ -29,9 +29,7 @@ void AreaAttackComponent::doAttack(IAttackable* owner)
 
     Vec2 aoeCenterWorld = _target->getWorldPosition(); // 获取目标位置
 
-    // =========================
-    // 显示 AOE 范围
-    // =========================
+
     if (!_aoeDraw)
     {
         _aoeDraw = DrawNode::create();
@@ -52,11 +50,14 @@ void AreaAttackComponent::doAttack(IAttackable* owner)
         Color4F(1, 0, 0, 0.8f)  // 圆的颜色（红色）
     );
 
-    // =========================
-    // 造成范围伤害
-    // =========================
-    for (Node* node : parent->getChildren())
+
+    // 获取子节点副本，防止遍历时删除节点导致迭代器失效
+    auto children = parent->getChildren();
+    
+    // 使用倒序索引遍历，防止迭代器失效
+    for (ssize_t i = children.size() - 1; i >= 0; --i)
     {
+        Node* node = children.at(i);
         auto target = dynamic_cast<IAttackable*>(node);
         if (!target || target->isDead())
             continue;
@@ -75,9 +76,7 @@ void AreaAttackComponent::doAttack(IAttackable* owner)
         }
     }
 
-    // =========================
-    // 4️⃣ 延迟隐藏 AOE（否则看不见）
-    // =========================
+
     ownerNode->runAction(Sequence::create(
         DelayTime::create(0.3f),  // AOE 显示 0.3 秒后消失
         CallFunc::create([this]() {

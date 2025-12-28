@@ -32,7 +32,7 @@ bool AppDelegate::applicationDidFinishLaunching()
         _director->setOpenGLView(_glview);
     }
     //加载卡牌Json配置
-    DataManager::getInstance()->loadCardConfig("data\\card_config.json");
+    DataManager::getInstance()->loadCardConfig("data/card_config.json");
     // 设置FPS显示
     _director->setDisplayStats(true);
 

@@ -14,11 +14,8 @@ public:
 
     virtual bool init() override;
     virtual void update(float delta) override;
-    /*测试datamanager时再打开
     void testDataManager();
-    */
     CREATE_FUNC(BattleScene);
-
 private:
     void setupUI();
     void setupInput();

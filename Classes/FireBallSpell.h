@@ -26,8 +26,8 @@ protected:
     void drawDebugRange();
 
 protected:
-    float _radius = 100.0f;   // 爆炸半径
-    int   _damage = 150;      // 伤害值
+    float _radius = 2.5*40.5;   // 爆炸半径
+    int   _damage = 325;      // 伤害值
     ECamp _casterCamp = ECamp::LEFT; // 记录施法者的阵营
 
     DrawNode* _debugDraw = nullptr;

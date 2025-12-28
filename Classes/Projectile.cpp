@@ -91,9 +91,9 @@ void Projectile::update(float dt)
                 _lastTargetPos = _target->getWorldPosition();
             }
 
-            // 既然目标已经逻辑丢失，我们可以提前释放引用
-            _target->release();
-            _target = nullptr;
+            // 既然目标已经逻辑丢失，我们不能释放引用，因为回调函数可能还在引用它
+            // _target->release();
+            // _target = nullptr;
         }
         else
         {

@@ -6,10 +6,6 @@
 #include "AreaAttackComponent.h"
 
 // DragonBaby
-// ----------
-// 飞龙宝宝
-// 会执行范围攻击，使用飞行组件
-//
 class DragonBaby : public TroopBase
 {
 public:

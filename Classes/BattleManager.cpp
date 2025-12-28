@@ -146,9 +146,36 @@ void BattleManager::deployUnit(int unitType,
     }
     case UNIT_SKELETON:
     {
-        auto skeleton = SkeletonTroop::create();
-        unit = skeleton;
-        break;
+        // 生成3个骷髅，呈三角形分布
+        Vec2 offsets[] = {
+            Vec2(0, 20),
+            Vec2(-20, -20),
+            Vec2(20, -20)
+        };
+
+        for (int i = 0; i < 3; ++i) {
+            Vec2 spawnPos = position + offsets[i];
+            
+            // 确保生成位置在有效区域内（使用 Battlefield 的校验）
+            if (_battlefield) {
+                // 如果位置不可行走（比如在河里或地图外），尝试修正到最近的可行走位置
+                // 或者简单地约束在地图边界内
+                // 这里我们调用 constrainPosition 确保不出界
+                spawnPos = _battlefield->constrainPosition(spawnPos, position);
+                
+                // 也可以额外检查 isWalkable，如果不可走则跳过或进一步调整
+                // 但 SkeletonTroop 一般能处理简单的碰撞，主要防止生成在完全无效区域
+            }
+
+            auto skeleton = SkeletonTroop::create();
+            if (skeleton) {
+                skeleton->setPosition(spawnPos);
+                skeleton->setCamp(camp);
+                skeleton->setWorld(_battlefield);
+                _battlefield->addUnit(skeleton);
+            }
+        }
+        return;
     }
     case UNIT_MINIONS:
     {
@@ -183,12 +210,14 @@ void BattleManager::deployUnit(int unitType,
     case UNIT_FIREBALL:
     {
         auto fireball = FireballSpell::create();
+        _battlefield->addChild(fireball, 1000); // 添加到战场，层级设高一点
         fireball->cast(position, camp);
         return;
     }
     case UNIT_SLWOWSPELL:
     {
         auto slowDownSpell = SlowDownSpell::create();
+        _battlefield->addChild(slowDownSpell, 999); // 添加到战场
         slowDownSpell->cast(position, camp);
         return;
     }

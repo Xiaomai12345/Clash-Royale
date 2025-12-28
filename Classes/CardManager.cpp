@@ -79,7 +79,7 @@ void CardManager::initDeck()
     Card* dragonbaby = CardFactory::createDragonBabyCard();
     Card* cannon = CardFactory::createCannonCard();
     Card* skeleton = CardFactory::createSkeletonCard();
-    Card* minions = CardFactory::createMinionsCard();
+    Card* minions = CardFactory::createSkeletonTombstoneCard();
 
     _deck.push_back(knight);
     _deck.push_back(archer);

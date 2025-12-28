@@ -7,6 +7,7 @@
 #include "CardManager.h"
 #include "ManaBar.h"
 #include "DataManager.h"
+#include"UnitType.h"
 /*
 PS:这个头文件是用于DataManager测试的，测试时去掉注释即可
 #include <fstream>
@@ -72,7 +73,7 @@ bool BattleScene::init()
     initNextCard();
     // 开始游戏
     startGame();
-
+    testDataManager();
     // 开启更新
     scheduleUpdate();
 
@@ -315,18 +316,42 @@ void BattleScene::onTouchMoved(Touch* touch, Event* event)
     if (!_selectedCard || !_cardGhost)
         return;
 
-    showDeployPosition();
     // 当前触摸的世界坐标
     Vec2 touchPos = touch->getLocation();
+    int cardId = _selectedCard->getCardId();
+    bool isSpell = (cardId == UNIT_FIREBALL || cardId == UNIT_SLWOWSPELL);
+
+    // 显示部署区域提示
+    if (isSpell)
+    {
+        // 法术全图可放，不需要显示红色禁放区
+        clearDeployPosition();
+    }
+    else
+    {
+        showDeployPosition();
+    }
 
     // 虚影跟随鼠标
     _cardGhost->setPosition(touchPos);
 
     // 判断整体是否为可部署区域
-    bool isValid = _battlefield->isValidDeployPosition(
-        touchPos,
-        _isPlayer1 ? 1 : 2
-    );
+    bool isValid = false;
+    
+    if (isSpell)
+    {
+        // 法术：只要在地图网格范围内都有效
+        int r, c;
+        isValid = _battlefield->worldToGrid(touchPos, r, c);
+    }
+    else
+    {
+        // 单位：需要遵循部署规则
+        isValid = _battlefield->isValidDeployPosition(
+            touchPos,
+            _isPlayer1 ? 1 : 2
+        );
+    }
 
     // 根据是否合法，修改“卡牌虚影”的颜色
     if (!_cardGhost->getChildren().empty())
@@ -371,9 +396,24 @@ void BattleScene::onTouchEnded(Touch* touch, Event* event)
     if (_cardGhost && _selectedCard)
     {
         Vec2 touchPos = touch->getLocation();
+        int cardId = _selectedCard->getCardId();
+        bool isSpell = (cardId == UNIT_FIREBALL || cardId == UNIT_SLWOWSPELL);
 
         // 检查是否可以部署
-        if (_battlefield->isValidDeployPosition(touchPos, _isPlayer1 ? 1 : 2))
+        bool isValid = false;
+        if (isSpell)
+        {
+            // 法术全图判定
+            int r, c;
+            isValid = _battlefield->worldToGrid(touchPos, r, c);
+        }
+        else
+        {
+            // 普通单位判定
+            isValid = _battlefield->isValidDeployPosition(touchPos, _isPlayer1 ? 1 : 2);
+        }
+
+        if (isValid)
         {
             // 检查圣水是否足够
             float manaCost = _selectedCard->getManaCost();
@@ -521,12 +561,10 @@ void BattleScene::clearDeployPosition()
 
 
 
-/*测试DataManager, 由于容易编码错误，log日志生成到项目根目录（需要请自行去掉注释）
+
 void BattleScene::testDataManager() {
     auto dataMgr = DataManager::getInstance();
-    std::string logFilePath = "D:/teamwork/Clash-Royale/test_log.txt";//这里是项目根目录
-    std::ofstream logFile(logFilePath, std::ios::out | std::ios::trunc); // 清空原有内容，重新写入
-    // 定义日志内容（和输出窗口的日志一致）
+    std::string logFilePath = "D:/Clash-Royale/Resources/data/card_config.json";//这里是项目根目录
     std::string logContent;
     logContent += "==================================\n";
     logContent += "========= DataManager Test =======\n";
@@ -574,14 +612,4 @@ void BattleScene::testDataManager() {
     logContent += "==================================\n";
     logContent += "========= Test Finished ==========\n";
     logContent += "==================================\n";
-    //把日志内容写入本地文件
-    if (logFile.is_open()) {
-        logFile.write(logContent.c_str(), logContent.size());
-        logFile.close();
-        log("日志已写入本地文件：test_log.txt");
-    }
-    else {
-        log("无法创建日志文件！");
-    }
 }
-*/

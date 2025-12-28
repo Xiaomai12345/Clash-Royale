@@ -3,11 +3,6 @@
 
 #include "TroopBase.h"
 
-// KnightTroop
-// -----------
-// 测试用近战士兵
-// 用于验证 AI / Move / Attack 是否能正常工作
-//
 class KnightTroop : public TroopBase
 {
 public:

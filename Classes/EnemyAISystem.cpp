@@ -31,7 +31,6 @@ bool EnemyAISystem::init()
     CCLOG("[EnemyAI] init %p", this);
     _enemyMana = ManaSystem::getEnemyInstance();
     _enemyCard = CardManager::getEnemyInstance();
-    _enemyMana->init();
     _enemyCard->init();
     //scheduleUpdate();
     return true;
@@ -100,7 +99,7 @@ void EnemyAISystem::tryDeployTroop()
 
     
     _enemyMana->consumeMana(card->getManaCost());
-
+    CCLOG("enemymana %f %f", _enemyMana->getCurrentMana(),_enemyMana->getRegenRate());
     // ��������λ���ؼ���
     bool success = card->use(deployPos, /* enemyId */ 2);
     if (!success)

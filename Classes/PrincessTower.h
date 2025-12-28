@@ -7,7 +7,7 @@ class PrincessTower : public BuildingBase
 {
 public:
     // 使用构造函数进行赋值初始化
-    PrincessTower(float maxHp = 1200, float attackRange = 300.0f, float attackInterval = 1.f, int attackDamage = 10);
+    PrincessTower(float maxHp = 1400, float attackRange = 11.5* 20.25, float attackInterval = 0.8f, int attackDamage = 50);
     virtual bool init() override;  // 初始化
     virtual void die() override; // 重写死亡处理函数
     virtual void setCamp(ECamp camp) override; // 重写 setCamp 以刷新外观

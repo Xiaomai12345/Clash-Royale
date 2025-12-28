@@ -3,7 +3,7 @@
 #include "AreaAttackComponent.h"
 #include "SimpleTroopAIComponent.h"
 #include "AnimationComponent.h"
-
+#include"DataManager.h"
 DragonBaby::DragonBaby()
 {
     // 在构造函数中给基类和成员变量赋值
@@ -13,7 +13,7 @@ DragonBaby::DragonBaby()
     _bodyRadius = 20.f;    // 设置碰撞半径
     _camp = ECamp::LEFT;   // 设置阵营为左侧
 
-    _attacktype = AttackType::Both;  // 
+    _attacktype = AttackType::Both;  
     _moveAttack = MoveAttack::Both;  // 设置可攻击地面和空中的目标
     _moveAttacked = MoveAttack::Air; // 设置可被攻击地面和空中的目标
     _moveType = MoveType::Air;    // 设置为飞行移动
@@ -34,10 +34,43 @@ bool DragonBaby::init()
     if (!TroopBase::init())  // 初始化基类 (TroopBase)
         return false;
 
-    float AttackRangeClam = 200.0f;//攻击范围
-    float AttackClam = 1.5;//攻击间隔
-    float AttackDamageClam = 50;//攻击伤害
-	float AttackAOERadiusClam = 100.0f;//攻击AOE半径
+    // =========================
+    // 0. DataManager 加载数据
+    // =========================
+    float attackRange = 200.0f;
+    float attackInterval = 1.5f;
+    float attackDamage = 50.0f;
+    float attackAOERadius = 100.0f; // AOE Radius
+
+    auto data = DataManager::getInstance()->getCardDataByName("dragonbaby");
+    if (!data.empty())
+    {
+        if (data.count("health")) {
+            _maxHp = data["health"].asInt();
+            _hp = _maxHp;
+        }
+        if (data.count("moveSpeed")) {
+            _moveSpeed = data["moveSpeed"].asFloat() * 40.5f;
+            resetMoveSpeed();
+        }
+        if (data.count("viewRange")) {
+            _alertRange = data["viewRange"].asFloat() * 40.5f;
+        }
+        if (data.count("attackRange")) {
+            attackRange = data["attackRange"].asFloat() * 20.25f;
+        }
+        if (data.count("attackSpeed")) {
+            attackInterval = data["attackSpeed"].asFloat();
+        }
+        if (data.count("attackPower")) {
+            attackDamage = data["attackPower"].asFloat();
+        }
+        // AOE Radius not in JSON, keep default or derive?
+        // Maybe proportional to range?
+        // Keep 100.0f for now.
+        
+        CCLOG("DragonBaby Data Loaded: HP=%d, DMG=%.1f", _maxHp, attackDamage);
+    }
 
     // 创建并绑定AI组件（简单的AI逻辑）
     auto ai = new SimpleTroopAIComponent();
@@ -49,10 +82,10 @@ bool DragonBaby::init()
 
     // 创建并绑定区域攻击组件（飞龙宝宝的范围攻击）
     auto attack = new AreaAttackComponent(
-        AttackRangeClam,   // 攻击范围
-        AttackClam,     // 攻击间隔
-        AttackDamageClam,       // 伤害值
-        AttackAOERadiusClam    // AOE 半径
+        attackRange,   // 攻击范围
+        attackInterval,     // 攻击间隔
+        attackDamage,       // 伤害值
+        30.f    // AOE 半径
     );
     setAttackComponent(attack);
 
@@ -142,7 +175,6 @@ bool DragonBaby::init()
             
             // 动态计算帧间隔：总攻击间隔 / 帧数
             // 攻击间隔 2.0s，4帧
-            float attackInterval = 2.0f; 
             float delayPerUnit = attackInterval / 4.0f;
             
             auto attackAnim = Animation::createWithSpriteFrames(attackFrames, delayPerUnit);
@@ -177,13 +209,23 @@ void DragonBaby::update(float dt)
         
         // 计算角度
         float angleDeg = CC_RADIANS_TO_DEGREES(moveDir.getAngle());
-        
-        // 转换公式：TargetRotation = 90 - MathAngle
-        float rotation = 90.0f - angleDeg;
+        float targetRotation = 90.0f - angleDeg;
         
         if (_sprite)
         {
-            _sprite->setRotation(rotation);
+            // 平滑旋转 (Lerp)
+            float currentRotation = _sprite->getRotation();
+            
+            // 处理角度突变 (如 350 -> 10)
+            float diff = targetRotation - currentRotation;
+            while (diff > 180) diff -= 360;
+            while (diff < -180) diff += 360;
+
+            // 插值系数
+            float alpha = 10.0f * dt;
+            if (alpha > 1.0f) alpha = 1.0f;
+
+            _sprite->setRotation(currentRotation + diff * alpha);
         }
     }
 }

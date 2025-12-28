@@ -18,8 +18,7 @@ public:
     CREATE_FUNC(SkeletonTroop);
 
 private:
-    // 在构造函数中初始化组件
-    void setupComponents();
+    cocos2d::Sprite* _sprite = nullptr; // 士兵的图片
 };
 
 #endif // __SKELETON_TROOP_H__

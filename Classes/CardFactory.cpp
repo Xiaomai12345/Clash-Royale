@@ -10,11 +10,11 @@ Card* CardFactory::createKnightCard()//1
     auto card = Card::create();
     card->retain();
 
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "Knight",   // name
-        2       ,    // mana
+        3       ,    // mana
         "Images/CardsUI/KnightApply.png"
     );
     card->setPlayFunc([](const Vec2& pos, int playerId)
@@ -39,7 +39,7 @@ Card* CardFactory::createArcherCard()//2
     card->setCardInfo(
         1,          // cardId
         "Archer",   // name
-        2       ,    // mana
+        1       ,    // mana
         "Images/CardsUI/ArcherApply.png"
     );
 
@@ -61,11 +61,11 @@ Card* CardFactory::createGiantCard()//3
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "Giant",   // name
-        4       ,     // mana
+        5       ,     // mana
         "Images/CardsUI/GiantApply.png"
     );
     card->setPlayFunc([](const Vec2& pos, int playerId)
@@ -86,7 +86,7 @@ Card* CardFactory::createValkyrieCard()//4
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "Valkyrie",   // name
@@ -111,7 +111,7 @@ Card* CardFactory::createDragonBabyCard()//5
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "DragonBaby",   // name
@@ -136,11 +136,11 @@ Card* CardFactory::createCannonCard()//6
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "Cannon",   // name
-        4       ,     // mana
+        3      ,     // mana
         "Images/CardsUI/CannonApply.png"
     );
     card->setPlayFunc([](const Vec2& pos, int playerId)
@@ -161,11 +161,11 @@ Card* CardFactory::createSkeletonCard()//7
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "Skeleton",   // name
-        4         ,   // mana
+        1         ,   // mana
         "Images/CardsUI/SkeletonApply.png"
     );
     card->setPlayFunc([](const Vec2& pos, int playerId)
@@ -186,11 +186,11 @@ Card* CardFactory::createSkeletonLegionCard()//8
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "Skeleton",   // name
-        4         ,   // mana
+        3         ,   // mana
         "Images/CardsUI/SkeletonLegionApply.png"
     );
     card->setPlayFunc([](const Vec2& pos, int playerId)
@@ -211,12 +211,12 @@ Card* CardFactory::createSkeletonTombstoneCard()//9
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "SkeletonTombstone",   // name
-        4          ,  // mana
-        "Images/CardsUI/SkeletonTombstoneApply.png"
+        3          ,  // mana
+        "Images/CardsUI/SkeletonTombstoneApply.jpg"
     );
     card->setPlayFunc([](const Vec2& pos, int playerId)
         {
@@ -236,11 +236,11 @@ Card* CardFactory::createMinionsCard()//10
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         1,          // cardId
         "Minons",   // name
-        4       ,     // mana
+        1       ,     // mana
         "Images/CardsUI/MinionsApply.png"
     );
     card->setPlayFunc([](const Vec2& pos, int playerId)
@@ -260,11 +260,11 @@ Card* CardFactory::createFireBallCard() // 11
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         11,          // cardId
         "Fireball",  // name
-        5         ,   // mana
+         4      ,   // mana
         "Images/CardsUI/FireballApply.png"
     );
 
@@ -285,7 +285,7 @@ Card* CardFactory::createSlowDownCard() // 12
 {
     auto card = Card::create();
     card->retain();
-    // 1️。信息
+    // 信息
     card->setCardInfo(
         12,          // cardId
         "SlowDown",  // name

@@ -23,7 +23,7 @@ public:
     MoveComponent();
     virtual ~MoveComponent();
 
-    // 高层移动意图（AI 调用）
+    // 高层移动意图
     virtual void followTarget(IAttackable* target, float desiredDistance);
     virtual void stop();
 

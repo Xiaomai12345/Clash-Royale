@@ -132,9 +132,6 @@
     <ClCompile Include="..\Classes\MainMenuScene.cpp">
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\BuildingCard.cpp">
-      <Filter>Classes\Entities\Card</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Card.cpp">
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
@@ -299,6 +296,9 @@
     <ClCompile Include="..\Classes\DataManager.cpp">
       <Filter>Classes\Core</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\BuildingCard.cpp">
+      <Filter>Classes\Entities\Card</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -321,9 +321,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\MainMenuScene.h">
       <Filter>Classes\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\BuildingCard.h">
-      <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SpellCard.h">
       <Filter>Classes\Entities\Card</Filter>
@@ -510,6 +507,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\DataManager.h">
       <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BuildingCard.h">
+      <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

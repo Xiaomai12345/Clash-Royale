@@ -15,10 +15,10 @@ public:
     // 每帧更新，检测状态变化
     void update(IAttackable* owner, float dt);
 
-    // 注册基于帧的动画 (Cocos2d Animation)
+    // 注册基于帧的动画 
     void addAnimation(State state, cocos2d::Animation* animation, bool loop = true);
 
-    // 注册通用动作 (Cocos2d Action, 例如移动、缩放、旋转等)
+    // 注册通用动作
     // 适用于没有序列帧资源，想用代码模拟动画的情况
     void addAction(State state, cocos2d::ActionInterval* action);
 
@@ -41,6 +41,7 @@ private:
     
     State _lastState; // 上一帧的状态
     bool _isAnimating;
+    bool _firstRun;
 };
 
 #endif // __ANIMATION_COMPONENT_H__

@@ -6,15 +6,6 @@
 #include"IAttackable.h"
 USING_NS_CC;
 
-// =========================
-// SpellBase
-// =========================
-//
-// 法术基类（一次性效果）
-// - 由 Card 创建并施放
-// - 不可被攻击
-// - 不参与 AI / Move / Attack
-//
 class SpellBase : public Node
 {
 public:

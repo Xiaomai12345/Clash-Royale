@@ -1,4 +1,4 @@
-﻿#include "AttackComponent.h"
+#include "AttackComponent.h"
 
 AttackComponent::AttackComponent(float range, float interval)
     : _attackRange(range)
@@ -7,14 +7,36 @@ AttackComponent::AttackComponent(float range, float interval)
 {
 }
 
+AttackComponent::~AttackComponent()
+{
+    clearTarget();
+}
+
 void AttackComponent::setTarget(IAttackable* target)
 {
+    if (_target == target)
+        return;
+
+    if (_target)
+    {
+        _target->release(); // 释放旧目标
+    }
+
     _target = target;
+
+    if (_target)
+    {
+        _target->retain(); // 持有新目标，防止其内存被回收
+    }
 }
 
 void AttackComponent::clearTarget()
 {
-    _target = nullptr;
+    if (_target)
+    {
+        _target->release(); // 释放引用
+        _target = nullptr;
+    }
 }
 
 void AttackComponent::update(IAttackable* owner, float dt)

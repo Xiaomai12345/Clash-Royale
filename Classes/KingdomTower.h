@@ -7,7 +7,7 @@ class KingdomTower : public BuildingBase
 {
 public:
     // 使用构造函数进行赋值初始化
-    KingdomTower(float maxHp = 2000, float attackRange = 400.0f, float attackInterval = 2.f, int attackDamage = 20);
+    KingdomTower(float maxHp = 2400, float attackRange = 20.25f, float attackInterval = 2.f, int attackDamage = 20);
     virtual bool init() override;  // 初始化
     virtual void die() override;   // 重写死亡逻辑
     virtual void setCamp(ECamp camp) override; // 重写 setCamp 以刷新外观
