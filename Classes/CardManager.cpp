@@ -106,7 +106,7 @@ void CardManager::initHandCards()
 void CardManager::initDiscardPile()
 {
     _discardPile.clear();
-    for (int i = 5; i < 8; i++)
+    for (int i = 4; i < 8; i++)
     {
         _discardPile.push_back(_deck[i]);
     }

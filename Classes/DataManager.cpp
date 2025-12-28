@@ -1,7 +1,9 @@
 #include "DataManager.h"
-
+#include "json/writer.h"
+#include "json/stringbuffer.h"
 DataManager* DataManager::_instance = nullptr;
-
+using namespace cocos2d;
+using namespace rapidjson;
 //获取实例
 DataManager* DataManager::getInstance() {
     if (_instance == nullptr) {
@@ -61,8 +63,17 @@ bool DataManager::loadCardConfig(const std::string& jsonPath) {
         cardMap["name"] = card.HasMember("name") ? card["name"].GetString() : "未知卡牌";
         cardMap["manaCost"] = card.HasMember("manaCost") ? card["manaCost"].GetFloat() : 0.0f;
         cardMap["imgPath"] = card.HasMember("imgPath") ? card["imgPath"].GetString() : "";
-
-        _allCardData.push_back(Value(cardMap));
+        cardMap["attackRange"] = card.HasMember("attackRange") ? card["attackRange"].GetFloat() : 0.0f;
+        cardMap["viewRange"] = card.HasMember("viewRange") ? card["viewRange"].GetFloat() : 0.0f;
+        cardMap["health"] = card.HasMember("health") ? card["health"].GetFloat() : 0.0f;
+        cardMap["attackPower"] = card.HasMember("attackPower") ? card["attackPower"].GetFloat() : 0.0f;
+        cardMap["attackSpeed"] = card.HasMember("attackSpeed") ? card["attackSpeed"].GetFloat() : 0.0f;
+        cardMap["moveSpeed"] = card.HasMember("moveSpeed") ? card["moveSpeed"].GetFloat() : 0.0f;
+        cardMap["level"] = card.HasMember("level") ? card["level"].GetInt() : 1;
+        cardMap["numberOfCard"] = card.HasMember("numberOfCard") ? card["numberOfCard"].GetInt() : 1;
+        cardMap["rarity"] = card.HasMember("rarity") ? card["rarity"].GetString() : "";
+        cardMap["volume"] = card.HasMember("volume") ? card["volume"].GetFloat() : 0.0f;
+        _allCardData.push_back(cocos2d::Value(cardMap));
     }
 
     _isLoaded = true;
@@ -103,3 +114,83 @@ ValueMap DataManager::getCardDataByName(const std::string& name) {
 int DataManager::getCardCount() {
     return _allCardData.size();
 }
+
+bool DataManager::upgrade(const std::string& name)
+{
+    for (auto& cardValue : _allCardData)
+    {
+        ValueMap cardMap = cardValue.asValueMap();
+        if (cardMap["name"].asString() == name) 
+        {
+            if (cardMap["numberOfCard"].asInt() >= _requiredCardOfUpgrade[cardMap["level"].asInt()])
+            {
+                float health = cardMap["health"].asFloat();
+                health *= 1.1f;
+                float attack = cardMap["attackPower"].asFloat();
+                attack *= 1.1f;
+                cardMap["health"] = health;      // 写回
+                cardMap["attackPower"] = attack;
+
+                int card= cardMap["numberOfCard"].asInt();
+                card -= _requiredCardOfUpgrade[cardMap["level"].asInt()];
+                int level = cardMap["level"].asInt();
+                level += 1;
+                cardValue = cocos2d::Value(cardMap);      // 再写回 ValueVector
+                //saveSingleCardToFile(cardMap);
+                return true;
+            }
+
+        }
+        return false;
+    }
+    return false;
+}
+//更新数据文件，但是由于运行时不能更改resources文件，只能放在别的地方
+//void saveSingleCardToFile(const ValueMap& cardData)
+//{
+//    // 1. 创建 JSON 文档
+//    Document doc;
+//    doc.SetObject();
+//    Document::AllocatorType& allocator = doc.GetAllocator();
+//
+//    // 2. 按你的格式逐字段写
+//    doc.AddMember("id", cardData.at("id").asInt(), allocator);
+//    doc.AddMember("name",
+//        rapidjson::Value(cardData.at("name").asString().c_str(), allocator),
+//        allocator);
+//
+//    doc.AddMember("manaCost", cardData.at("manaCost").asFloat(), allocator);
+//
+//    doc.AddMember("imgPath",
+//        rapidjson::Value(cardData.at("imgPath").asString().c_str(), allocator),
+//        allocator);
+//
+//    doc.AddMember("attackRange", cardData.at("attackRange").asFloat(), allocator);
+//    doc.AddMember("viewRange", cardData.at("viewRange").asFloat(), allocator);
+//    doc.AddMember("health", cardData.at("health").asFloat(), allocator);
+//    doc.AddMember("attackPower", cardData.at("attackPower").asFloat(), allocator);
+//    doc.AddMember("attackSpeed", cardData.at("attackSpeed").asFloat(), allocator);
+//    doc.AddMember("moveSpeed", cardData.at("moveSpeed").asFloat(), allocator);
+//
+//    doc.AddMember("level", cardData.at("level").asInt(), allocator);
+//    doc.AddMember("numberOfCard", cardData.at("numberOfCard").asInt(), allocator);
+//
+//    doc.AddMember("rarity",
+//        rapidjson::Value(cardData.at("rarity").asString().c_str(), allocator),
+//        allocator);
+//
+//    doc.AddMember("volume", cardData.at("volume").asFloat(), allocator);
+//
+//    // 3. 转成字符串
+//    StringBuffer buffer;
+//    Writer<StringBuffer> writer(buffer);
+//    doc.Accept(writer);
+//
+//    // 4. 写入文件（可写目录）
+//    std::string path =
+//        FileUtils::getInstance()->getWritablePath() ;
+//
+//    FileUtils::getInstance()->writeStringToFile(buffer.GetString(), path);
+//
+//    CCLOG("卡牌数据已写入文件：%s", path.c_str());
+//}
