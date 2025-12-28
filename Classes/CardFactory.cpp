@@ -37,7 +37,7 @@ Card* CardFactory::createArcherCard()//2
     card->retain();
     // 1️。信息
     card->setCardInfo(
-        1,          // cardId
+        2,          // cardId
         "Archer",   // name
         1       ,    // mana
         "Images/CardsUI/ArcherApply.png"
@@ -63,7 +63,7 @@ Card* CardFactory::createGiantCard()//3
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        3,          // cardId
         "Giant",   // name
         5       ,     // mana
         "Images/CardsUI/GiantApply.png"
@@ -88,7 +88,7 @@ Card* CardFactory::createValkyrieCard()//4
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        4,          // cardId
         "Valkyrie",   // name
         4         ,   // mana
         "Images/CardsUI/ValkyrieApply.png"
@@ -113,7 +113,7 @@ Card* CardFactory::createDragonBabyCard()//5
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        5,          // cardId
         "DragonBaby",   // name
         4          ,  // mana
         "Images/CardsUI/DragonBabyApply.png"
@@ -138,7 +138,7 @@ Card* CardFactory::createCannonCard()//6
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        6,          // cardId
         "Cannon",   // name
         3      ,     // mana
         "Images/CardsUI/CannonApply.png"
@@ -163,7 +163,7 @@ Card* CardFactory::createSkeletonCard()//7
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        7,          // cardId
         "Skeleton",   // name
         1         ,   // mana
         "Images/CardsUI/SkeletonApply.png"
@@ -188,7 +188,7 @@ Card* CardFactory::createSkeletonLegionCard()//8
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        8,          // cardId
         "Skeleton",   // name
         3         ,   // mana
         "Images/CardsUI/SkeletonLegionApply.png"
@@ -213,7 +213,7 @@ Card* CardFactory::createSkeletonTombstoneCard()//9
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        9,          // cardId
         "SkeletonTombstone",   // name
         3          ,  // mana
         "Images/CardsUI/SkeletonTombstoneApply.jpg"
@@ -238,7 +238,7 @@ Card* CardFactory::createMinionsCard()//10
     card->retain();
     // 信息
     card->setCardInfo(
-        1,          // cardId
+        10,          // cardId
         "Minons",   // name
         1       ,     // mana
         "Images/CardsUI/MinionsApply.png"

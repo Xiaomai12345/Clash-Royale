@@ -22,6 +22,9 @@ private:
     void startGame();
     void setupTime(float _time) { _gameTime = _time; }
     void endGame(bool isPlayer1Win);
+    
+    //放音乐
+    void playMusic();
 
     // 输入处理 - 修改函数签名
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
