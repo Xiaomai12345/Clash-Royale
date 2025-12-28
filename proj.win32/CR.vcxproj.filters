@@ -285,16 +285,17 @@
     <ClCompile Include="..\Classes\Projectile.cpp">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\AnimationComponent.cpp">
       <Filter>Classes\Entities\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LoadingScene.cpp" />
-    <ClCompile Include="..\Classes\AnimationComponent.cpp">
-      <Filter>Classes\Entities\Animation</Filter>
+   <ClCompile Include="..\Classes\DataManager.cpp">
+      <Filter>Classes\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\DataManager.cpp">
-      <Filter>Classes\Core</Filter>
+    <ClCompile Include="..\Classes\LoadingScene.cpp">
+      <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\CardSelectingScene.cpp">
+      <Filter>Classes\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\BuildingCard.cpp">
       <Filter>Classes\Entities\Card</Filter>
@@ -496,9 +497,6 @@
     <ClInclude Include="..\Classes\Projectile.h">
       <Filter>Classes\Entities\Attack\TroopAttack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\LoadingScene.h">
-      <Filter>Classes\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\AnimationComponent.h">
       <Filter>Classes\Entities\Animation</Filter>
     </ClInclude>
@@ -506,7 +504,10 @@
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\DataManager.h">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\CardSelectingScene.h">
+      <Filter>Classes\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\BuildingCard.h">
       <Filter>Classes\Entities\Card</Filter>

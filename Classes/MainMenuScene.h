@@ -10,10 +10,13 @@ public:
     static cocos2d::Scene* createScene();
     void createBackground();
     void createButton();
+    void createUI();
+    void playMusic();
     bool init();
 
 private:
     void onStartGame(cocos2d::Ref* sender);
+    void toCardSelecting(cocos2d::Ref* sender);
     cocos2d::Sprite* background;
 };
 

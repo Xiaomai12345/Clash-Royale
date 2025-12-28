@@ -8,6 +8,7 @@
 #include "ManaBar.h"
 #include "DataManager.h"
 #include"UnitType.h"
+#include"AudioManager.h"
 /*
 PS:这个头文件是用于DataManager测试的，测试时去掉注释即可
 #include <fstream>
@@ -45,6 +46,9 @@ bool BattleScene::init()
     _battlefield->setupBattlefield(1);
     addChild(_battlefield, 0);
 
+    //放音乐
+    playMusic();
+
     // 设置UI
     setupUI();
 
@@ -57,8 +61,9 @@ bool BattleScene::init()
     // 初始化圣水系统
     ManaSystem::getInstance()->init(5.0f, 10.0f, 0.3333f);
     ManaSystem::getEnemyInstance()->init(5.0f, 10.0f, 0.3333f);
-    // 初始化卡牌管理器
-    CardManager::getInstance()->init();
+    // 初始化战斗牌库
+    auto cardMgr = CardManager::getInstance();
+    cardMgr->initBattleDeckFromSelectedCards(); 
 
     //初始化AI
     _enemyAi = EnemyAISystem::getInstance();
@@ -78,6 +83,19 @@ bool BattleScene::init()
     scheduleUpdate();
 
     return true;
+}
+
+//播放战斗音乐
+void BattleScene::playMusic()
+{
+    //播放背景音乐
+    AudioManager::getInstance()->playBgMusic("music/sounds/2min_loop_battle.wav");
+
+    float bgVol = SimpleAudioEngine::getInstance()->getBackgroundMusicVolume();
+
+    //确认音量设置无异常
+    float effectVol = SimpleAudioEngine::getInstance()->getEffectsVolume();
+    CCLOG("背景音乐音量：%.2f，音效音量：%.2f", bgVol, effectVol);
 }
 
 void BattleScene::initNextCard()

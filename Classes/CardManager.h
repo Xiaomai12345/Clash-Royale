@@ -23,6 +23,8 @@ public:
     void initHandCards();
     void initDiscardPile();
 
+    // 仓库初始化
+    void initWarehouseCards();
     // 手牌管理
     std::vector<Card*> getHandCards() const { return _handCards; }
     // 卡牌使用
@@ -35,6 +37,18 @@ public:
     void reset();
 
     Card* getCardAtWorldPos(const cocos2d::Vec2& pos);
+
+    //仓库/备战区
+    void removeCardFromWarehouse(Card* card);
+    void addCardToSelected(Card* card);
+    void removeCardFromSelected(Card* card);
+    void addCardToWarehouse(Card* card);
+   
+    std::vector<Card*> getWarehouseCards() const { return _warehouseCards; }
+    std::vector<Card*> getSelectedCards() const { return _selectedCards; }
+
+    // 战斗专用接口
+    void initBattleDeckFromSelectedCards(); // 从备战区初始化战斗牌库
 
     Card* getNextCard()const { return _nextCard; }
 private:
@@ -58,6 +72,9 @@ private:
     int _maxHandSize;
     int _handSize;
     Card* _nextCard;
+    //仓库/备战区容器
+    std::vector<Card*> _warehouseCards; 
+    std::vector<Card*> _selectedCards;  
 };
 
 #endif // CARD_MANAGER_H
