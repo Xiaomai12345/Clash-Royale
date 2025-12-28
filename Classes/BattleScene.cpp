@@ -73,7 +73,7 @@ bool BattleScene::init()
     initNextCard();
     // 开始游戏
     startGame();
-    testDataManager();
+   /* testDataManager();*/
     // 开启更新
     scheduleUpdate();
 
@@ -562,54 +562,54 @@ void BattleScene::clearDeployPosition()
 
 
 
-void BattleScene::testDataManager() {
-    auto dataMgr = DataManager::getInstance();
-    std::string logFilePath = "D:/Clash-Royale/Resources/data/card_config.json";//这里是项目根目录
-    std::string logContent;
-    logContent += "==================================\n";
-    logContent += "========= DataManager Test =======\n";
-    logContent += "==================================\n";
-    // 1. 卡牌总数
-    int cardCount = dataMgr->getCardCount();
-    char buffer[256];
-    sprintf(buffer, "Card Total Number: %d\n\n", cardCount);
-    logContent += buffer;
-    log(buffer);
-    // 2. 检查ID=1的卡牌
-    logContent += "--- Check Card ID=1 ---\n";
-    log("--- Check Card ID=1 ---");
-    ValueMap card1 = dataMgr->getCardDataById(1);
-    if (!card1.empty()) {
-        sprintf(buffer, "ID: %d\n", card1["id"].asInt());
-        logContent += buffer; log(buffer);
-
-        sprintf(buffer, "Name: %s\n", card1["name"].asString().c_str());
-        logContent += buffer; log(buffer);
-
-        sprintf(buffer, "Mana Cost: %.0f\n", card1["manaCost"].asFloat());
-        logContent += buffer; log(buffer);
-
-        sprintf(buffer, "Image Path: %s\n", card1["imgPath"].asString().c_str());
-        logContent += buffer; log(buffer);
-    }
-    else {
-        logContent += "Card ID=1 NOT FOUND!\n";
-        log("Card ID=1 NOT FOUND!");
-    }
-    // 3. 所有卡牌列表
-    logContent += "\n--- All Cards List ---\n";
-    log("\n--- All Cards List ---");
-    ValueVector allCards = dataMgr->getAllCardData();
-    for (int i = 0; i < allCards.size(); i++) {
-        ValueMap card = allCards[i].asValueMap();
-        sprintf(buffer, "Card %d: ID=%d, Name=%s, Mana=%.0f\n",
-            i + 1,
-            card["id"].asInt(),
-            card["name"].asString().c_str(),
-            card["manaCost"].asFloat());
-        logContent += buffer; log(buffer);
-    }
-    logContent += "==================================\n";
-    logContent += "========= Test Finished ==========\n";
-    logContent += "==================================\n";
-}
+//void BattleScene::testDataManager() {
+//    auto dataMgr = DataManager::getInstance();
+//    std::string logFilePath = "D:/Clash-Royale/Resources/data/card_config.json";//这里是项目根目录
+//    std::string logContent;
+//    logContent += "==================================\n";
+//    logContent += "========= DataManager Test =======\n";
+//    logContent += "==================================\n";
+//    // 1. 卡牌总数
+//    int cardCount = dataMgr->getCardCount();
+//    char buffer[256];
+//    sprintf(buffer, "Card Total Number: %d\n\n", cardCount);
+//    logContent += buffer;
+//    log(buffer);
+//    // 2. 检查ID=1的卡牌
+//    logContent += "--- Check Card ID=1 ---\n";
+//    log("--- Check Card ID=1 ---");
+//    ValueMap card1 = dataMgr->getCardDataById(1);
+//    if (!card1.empty()) {
+//        sprintf(buffer, "ID: %d\n", card1["id"].asInt());
+//        logContent += buffer; log(buffer);
+//
+//        sprintf(buffer, "Name: %s\n", card1["name"].asString().c_str());
+//        logContent += buffer; log(buffer);
+//
+//        sprintf(buffer, "Mana Cost: %.0f\n", card1["manaCost"].asFloat());
+//        logContent += buffer; log(buffer);
+//
+//        sprintf(buffer, "Image Path: %s\n", card1["imgPath"].asString().c_str());
+//        logContent += buffer; log(buffer);
+//    }
+//    else {
+//        logContent += "Card ID=1 NOT FOUND!\n";
+//        log("Card ID=1 NOT FOUND!");
+//    }
+//    // 3. 所有卡牌列表
+//    logContent += "\n--- All Cards List ---\n";
+//    log("\n--- All Cards List ---");
+//    ValueVector allCards = dataMgr->getAllCardData();
+//    for (int i = 0; i < allCards.size(); i++) {
+//        ValueMap card = allCards[i].asValueMap();
+//        sprintf(buffer, "Card %d: ID=%d, Name=%s, Mana=%.0f\n",
+//            i + 1,
+//            card["id"].asInt(),
+//            card["name"].asString().c_str(),
+//            card["manaCost"].asFloat());
+//        logContent += buffer; log(buffer);
+//    }
+//    logContent += "==================================\n";
+//    logContent += "========= Test Finished ==========\n";
+//    logContent += "==================================\n";
+//}

@@ -1,6 +1,5 @@
 #include "MainMenuScene.h"
 #include "BattleScene.h"
-#include "GameManager.h"
 #include"AudioManager.h"
 USING_NS_CC;
 

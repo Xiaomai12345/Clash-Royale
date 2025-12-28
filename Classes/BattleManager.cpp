@@ -76,7 +76,7 @@ void BattleManager::update(float delta)
     // 检查游戏模式切换
     if (_gameTime >= 180.0f && _playerCrowns[0] == _playerCrowns[1] && _currentGameMode == "normal")
     {
-        _gameTime = 170.0f;
+        _gameTime = 0.0f;
         setGameMode("sudden_death");
     }
 

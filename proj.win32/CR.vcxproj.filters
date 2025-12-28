@@ -123,9 +123,6 @@
     <ClCompile Include="..\Classes\AudioManager.cpp">
       <Filter>Classes\Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\GameManager.cpp">
-      <Filter>Classes\Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\BattleScene.cpp">
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
@@ -133,9 +130,6 @@
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Card.cpp">
-      <Filter>Classes\Entities\Card</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\SpellCard.cpp">
       <Filter>Classes\Entities\Card</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\UnitCard.cpp">
@@ -150,32 +144,11 @@
     <ClCompile Include="..\Classes\CardManager.cpp">
       <Filter>Classes\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LevelManager.cpp">
-      <Filter>Classes\Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Button.cpp">
-      <Filter>Classes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CountdownLabel.cpp">
-      <Filter>Classes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\HandCardUI.cpp">
       <Filter>Classes\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ManaBar.cpp">
       <Filter>Classes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\ConfigLoader.cpp">
-      <Filter>Classes\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\AISystem.cpp">
-      <Filter>Classes\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\CollisionSystem.cpp">
-      <Filter>Classes\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\PathfindingSystem.cpp">
-      <Filter>Classes\Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\UnitBase.cpp">
       <Filter>Classes\Entities\Unit</Filter>
@@ -296,9 +269,6 @@
     <ClCompile Include="..\Classes\DataManager.cpp">
       <Filter>Classes\Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\BuildingCard.cpp">
-      <Filter>Classes\Entities\Card</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -310,20 +280,11 @@
     <ClInclude Include="..\Classes\AudioManager.h">
       <Filter>Classes\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\GameManager.h">
-      <Filter>Classes\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\GlobalDefines.h">
-      <Filter>Classes\Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\BattleScene.h">
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MainMenuScene.h">
       <Filter>Classes\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\SpellCard.h">
-      <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\UnitCard.h">
       <Filter>Classes\Entities\Card</Filter>
@@ -337,38 +298,14 @@
     <ClInclude Include="..\Classes\CardManager.h">
       <Filter>Classes\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\LevelManager.h">
-      <Filter>Classes\Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Button.h">
-      <Filter>Classes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CountdownLabel.h">
-      <Filter>Classes\UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\HandCardUI.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ManaBar.h">
       <Filter>Classes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ConfigLoader.h">
-      <Filter>Classes\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MathUtils.h">
-      <Filter>Classes\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Singleton.h">
       <Filter>Classes\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\AISystem.h">
-      <Filter>Classes\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\CollisionSystem.h">
-      <Filter>Classes\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\PathfindingSystem.h">
-      <Filter>Classes\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\UnitBase.h">
       <Filter>Classes\Entities\Unit</Filter>
@@ -507,9 +444,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\DataManager.h">
       <Filter>Classes\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\BuildingCard.h">
-      <Filter>Classes\Entities\Card</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

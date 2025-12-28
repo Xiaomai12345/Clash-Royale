@@ -113,7 +113,7 @@ void Cannon::setupComponents()
 
     // 设置动画组件 (主要是为了后坐力效果)
     auto anim = new AnimationComponent();
-    anim->setTargetSprite(_sprite); // ⚠️ 关键修正：设置动画目标 Sprite
+    anim->setTargetSprite(_sprite); //  关键修正：设置动画目标 Sprite
     setAnimationComponent(anim);
 
     // 攻击状态：模拟后坐力 + 炮口火焰

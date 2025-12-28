@@ -3,6 +3,8 @@
 #include "BattleScene.h"
 #include"MainMenuScene.h"
 #include"LoadingScene.h"
+#include"BattleManager.h"
+#include"AudioManager.h"
 // 如果使用预编译头，请包含它
 // #include "AppDelegate.h"
 
@@ -56,5 +58,14 @@ void AppDelegate::applicationWillEnterForeground()
 }
 //退出时销毁实例
 void AppDelegate::applicationExit() {
+    EnemyAISystem::destroyInstance();
+
+    ManaSystem::destroyInstance();
+    ManaSystem::destroyEnemyInstance();
+
+    EnemyAISystem::destroyInstance();
+    CardManager::destroyInstance();
+    BattleManager::destroyInstance();
     DataManager::destroyInstance();
+    AudioManager::destroyInstance();
 }
